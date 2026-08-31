@@ -1,0 +1,278 @@
+/* ============================================================================
+   MANIFIESTO DE IMÁGENES
+   ----------------------------------------------------------------------------
+   TODAS las imágenes de la app se declaran aquí. Mientras `src` sea `null`, la
+   app muestra un marcador visible que indica qué imagen falta y dónde dejarla.
+
+   CÓMO REEMPLAZAR UNA IMAGEN
+   1. Copia el archivo en `public/images/…` (usa la ruta de `suggestedPath`).
+   2. Cambia `src: null` por `src: '/images/…'` en la entrada correspondiente.
+   3. Ajusta `alt` para describir la imagen real (accesibilidad).
+
+   No hace falta tocar ningún componente.
+   ========================================================================== */
+
+export type ImageRatio = '16/9' | '3/2' | '4/3' | '1/1' | '21/9';
+
+export interface ImageAsset {
+  /** Ruta pública de la imagen final. `null` = marcador pendiente. */
+  src: string | null;
+  /** Texto alternativo (obligatorio para accesibilidad). */
+  alt: string;
+  /** Qué debe mostrar la imagen. Se ve en el marcador. */
+  description: string;
+  ratio: ImageRatio;
+  /** Dónde dejar el archivo definitivo. */
+  suggestedPath: string;
+}
+
+function pending(
+  description: string,
+  suggestedPath: string,
+  ratio: ImageRatio = '16/9',
+  alt = '',
+): ImageAsset {
+  return { src: null, alt: alt || description, description, ratio, suggestedPath };
+}
+
+export const images: Record<string, ImageAsset> = {
+  /* --- Identidad ---------------------------------------------------------
+     El logo oficial ya está incorporado. Para actualizarlo hay dos archivos:
+     · public/icons/logo.png → el que se ve dentro de la app (blanco)
+     · public/icons/icon.png → el cuadrado verde, icono al instalar la app   */
+  'brand.logo': {
+    src: '/icons/logo.png',
+    alt: 'Logo oficial Caa 2026',
+    description: 'Logo oficial del Centro de Alumnos (blanco, sobre placa verde)',
+    ratio: '3/2',
+    suggestedPath: 'public/icons/logo.png',
+  },
+  'auth.hero': pending(
+    'Foto de portada de la pantalla de acceso: comunidad estudiantil, patio o actividad masiva',
+    'public/images/brand/acceso-portada.jpg',
+    '4/3',
+  ),
+
+  /* --- Inicio ----------------------------------------------------------- */
+  'home.banner': pending(
+    'Imagen destacada del banner de Inicio (campaña o actividad vigente)',
+    'public/images/inicio/banner.jpg',
+    '21/9',
+  ),
+
+  /* --- Noticias --------------------------------------------------------- */
+  'news.asamblea': pending(
+    'Foto de la asamblea estudiantil o reunión del Centro de Alumnos',
+    'public/images/noticias/asamblea.jpg',
+  ),
+  'news.resultados': pending(
+    'Foto del conteo de votos o de la directiva electa',
+    'public/images/noticias/resultados-eleccion.jpg',
+  ),
+  'news.campana-solidaria': pending(
+    'Foto de la recolección de la campaña solidaria',
+    'public/images/noticias/campana-solidaria.jpg',
+  ),
+  'news.horario-biblioteca': pending(
+    'Foto de la biblioteca o sala de estudio',
+    'public/images/noticias/biblioteca.jpg',
+  ),
+  'news.taller-liderazgo': pending(
+    'Foto del taller de liderazgo estudiantil',
+    'public/images/noticias/taller-liderazgo.jpg',
+  ),
+
+  /* --- Eventos ---------------------------------------------------------- */
+  'event.aniversario': pending(
+    'Foto de la semana de aniversario (alianzas, decoración, público)',
+    'public/images/eventos/aniversario.jpg',
+  ),
+  'event.torneo-futbol': pending(
+    'Foto del torneo de fútbol interescolar',
+    'public/images/eventos/torneo-futbol.jpg',
+  ),
+  'event.feria-vocacional': pending(
+    'Foto de la feria vocacional o stands de universidades',
+    'public/images/eventos/feria-vocacional.jpg',
+  ),
+  'event.gala-arte': pending(
+    'Foto de la muestra de arte o presentación cultural',
+    'public/images/eventos/gala-arte.jpg',
+  ),
+  'event.jornada-scout': pending(
+    'Foto de la jornada scout al aire libre',
+    'public/images/eventos/jornada-scout.jpg',
+  ),
+
+  /* --- Inscripciones ---------------------------------------------------- */
+  'signup.accion-social': pending(
+    'Foto de voluntariado o trabajo de acción social',
+    'public/images/inscripciones/accion-social.jpg',
+  ),
+  'signup.torneo-ajedrez': pending(
+    'Foto del club o torneo de ajedrez',
+    'public/images/inscripciones/ajedrez.jpg',
+  ),
+  'signup.brigada-ambiental': pending(
+    'Foto de la brigada ambiental en actividad',
+    'public/images/inscripciones/brigada-ambiental.jpg',
+  ),
+  'signup.revista-estudiantil': pending(
+    'Foto del equipo de la revista estudiantil trabajando',
+    'public/images/inscripciones/revista.jpg',
+  ),
+
+  /* --- Comunidad -------------------------------------------------------- */
+  'community.scouts.cover': pending(
+    'Portada del grupo scout: campamento o formación',
+    'public/images/comunidad/scouts-portada.jpg',
+  ),
+  'community.scouts.logo': pending(
+    'Insignia o logo del grupo scout',
+    'public/images/comunidad/scouts-logo.png',
+    '1/1',
+  ),
+  'community.accion-social.cover': pending(
+    'Portada del área de acción social',
+    'public/images/comunidad/accion-social-portada.jpg',
+  ),
+  'community.accion-social.logo': pending(
+    'Logo del área de acción social',
+    'public/images/comunidad/accion-social-logo.png',
+    '1/1',
+  ),
+  'community.barra.cover': pending(
+    'Portada de la barra oficial: hinchada en un partido',
+    'public/images/comunidad/barra-portada.jpg',
+  ),
+  'community.barra.logo': pending(
+    'Logo de la barra oficial',
+    'public/images/comunidad/barra-logo.png',
+    '1/1',
+  ),
+  'community.academia.cover': pending(
+    'Portada de la academia de debate',
+    'public/images/comunidad/debate-portada.jpg',
+  ),
+  'community.academia.logo': pending(
+    'Logo de la academia de debate',
+    'public/images/comunidad/debate-logo.png',
+    '1/1',
+  ),
+  'community.pastoral.cover': pending(
+    'Portada del grupo de pastoral o voluntariado',
+    'public/images/comunidad/pastoral-portada.jpg',
+  ),
+  'community.pastoral.logo': pending(
+    'Logo del grupo de pastoral',
+    'public/images/comunidad/pastoral-logo.png',
+    '1/1',
+  ),
+
+  /* --- Proyectos del colegio ---------------------------------------------
+     Una foto por proyecto. Idealmente alumnos trabajando en él, no un montaje:
+     el apartado lo miran los cursos pequeños y la foto es lo que los engancha.
+     Al crear un proyecto nuevo desde la app, agrega aquí su clave.        */
+  'projects.huerto': pending(
+    'Alumnos de básica trabajando en el huerto escolar',
+    'public/images/proyectos/huerto.jpg',
+  ),
+  'projects.reciclaje': pending(
+    'Punto de reciclaje de una sala, con los contenedores por material',
+    'public/images/proyectos/reciclaje.jpg',
+  ),
+  'projects.radio': pending(
+    'Equipo de la radio del recreo transmitiendo',
+    'public/images/proyectos/radio.jpg',
+  ),
+  'projects.padrinos-lectura': pending(
+    'Un alumno de media leyendo un cuento a un grupo de niños en la biblioteca',
+    'public/images/proyectos/padrinos-lectura.jpg',
+  ),
+  'projects.mural': pending(
+    'El mural terminado en el patio de básica',
+    'public/images/proyectos/mural.jpg',
+  ),
+  'projects.campana-kilo': pending(
+    'Alimentos reunidos durante la campaña del kilo',
+    'public/images/proyectos/campana-kilo.jpg',
+  ),
+
+  /* --- Beneficios (QR) --------------------------------------------------
+     Logo del comercio o institución que otorga cada beneficio. Cuadrado, con
+     fondo claro: se muestra dentro de un círculo en el listado.            */
+  'benefit.comida-rapida': pending(
+    'Logo del local de comida rápida en convenio',
+    'public/images/beneficios/comida-rapida.png',
+    '1/1',
+  ),
+  'benefit.cine': pending(
+    'Logo del cine en convenio',
+    'public/images/beneficios/cine.png',
+    '1/1',
+  ),
+  'benefit.libreria': pending(
+    'Logo de la librería en convenio',
+    'public/images/beneficios/libreria.png',
+    '1/1',
+  ),
+  'benefit.gimnasio': pending(
+    'Logo del gimnasio en convenio',
+    'public/images/beneficios/gimnasio.png',
+    '1/1',
+  ),
+  'benefit.copias': pending(
+    'Logo del centro de copiado en convenio',
+    'public/images/beneficios/copias.png',
+    '1/1',
+  ),
+
+  /* --- Marketplace ------------------------------------------------------ */
+  'market.stickers': pending(
+    'Foto del producto: stickers ilustrados',
+    'public/images/marketplace/stickers.jpg',
+    '1/1',
+  ),
+  'market.pasteleria': pending(
+    'Foto del producto: tortas y postres por encargo',
+    'public/images/marketplace/pasteleria.jpg',
+    '1/1',
+  ),
+  'market.clases-matematica': pending(
+    'Foto del servicio: clases particulares',
+    'public/images/marketplace/clases.jpg',
+    '1/1',
+  ),
+  'market.fotografia': pending(
+    'Foto del servicio: fotografía de eventos',
+    'public/images/marketplace/fotografia.jpg',
+    '1/1',
+  ),
+  'market.pulseras': pending(
+    'Foto del producto: pulseras artesanales',
+    'public/images/marketplace/pulseras.jpg',
+    '1/1',
+  ),
+  'market.diseno-afiches': pending(
+    'Foto del servicio: diseño de afiches',
+    'public/images/marketplace/diseno.jpg',
+    '1/1',
+  ),
+};
+
+/**
+ * Devuelve el descriptor de una imagen. Si la clave no está registrada,
+ * genera un marcador igualmente visible para no romper la interfaz.
+ */
+export function getImage(key: string | undefined): ImageAsset | null {
+  if (!key) return null;
+  return (
+    images[key] ?? {
+      src: null,
+      alt: '',
+      description: `Imagen sin registrar (clave: ${key})`,
+      ratio: '16/9',
+      suggestedPath: 'Registrar la clave en src/content/images.ts',
+    }
+  );
+}

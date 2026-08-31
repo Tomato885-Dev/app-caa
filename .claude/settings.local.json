@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)",
+      "PowerShell(npm install --prefix \"C:\\\\Users\\\\mateo\\\\Downloads\\\\AppCaa\" --no-fund --no-audit)"
+    ]
+  }
+}

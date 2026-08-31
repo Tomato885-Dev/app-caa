@@ -1,0 +1,115 @@
+@import 'tailwindcss';
+@import './styles/theme.css';
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--sf-canvas);
+    color: var(--sf-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  /* Jerarquía tipográfica: títulos compactos, cuerpo cómodo. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Foco visible y consistente en toda la app (accesibilidad). */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button,
+  [role='button'] {
+    touch-action: manipulation;
+  }
+}
+
+/* ============================================================================
+   UTILIDADES PROPIAS
+   ========================================================================== */
+
+@utility safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Recorte de texto a N líneas sin depender de plugins. */
+@utility line-clamp-* {
+  display: -webkit-box;
+  -webkit-line-clamp: --value(integer);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@layer utilities {
+  .animate-in-up {
+    animation: in-up 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-fade {
+    animation: fade 0.24s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in-up,
+    .animate-fade {
+      animation: none;
+    }
+  }
+}
+
+@keyframes in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

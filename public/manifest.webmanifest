@@ -1,0 +1,20 @@
+{
+  "name": "App CAA · Centro de Alumnos",
+  "short_name": "App CAA",
+  "description": "Noticias, eventos, inscripciones, comunidad y marketplace estudiantil.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#11673c",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "./icons/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

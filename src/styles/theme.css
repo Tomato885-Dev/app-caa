@@ -1,0 +1,144 @@
+/* ============================================================================
+   THEME · TOKENS DE DISEÑO
+   ----------------------------------------------------------------------------
+   Este archivo es el ÚNICO lugar donde se definen colores, radios y sombras.
+
+   PALETA OFICIAL
+   · #11673C  verde    → dominante: encabezados, navegación, botones primarios
+   · #FFD101  amarillo → acento: indicadores, elementos seleccionados, detalles
+   · #FFFFFF  blanco   → base: fondos, tarjetas y espacios de contenido
+
+   REGLA DE CONTRASTE (no romper):
+   · Texto blanco sobre el verde #11673C → 6.93:1, cumple WCAG AA.
+   · Texto blanco sobre el amarillo #FFD101 → 1.46:1, ILEGIBLE.
+     El amarillo lleva SIEMPRE texto oscuro (`text-on-accent` o `accent-700`).
+
+   La paleta se mantiene deliberadamente corta: verde, amarillo, blanco y
+   neutros. No se introduce ningún cuarto color.
+   ========================================================================== */
+
+@theme {
+  /* --- Marca · verde #11673C ---------------------------------------------- */
+  --color-brand-50: #ebf5f0;
+  --color-brand-100: #d3e9de;
+  --color-brand-200: #a8d3bd;
+  --color-brand-300: #71b593;
+  --color-brand-400: #348c63;
+  --color-brand-500: #11673c;
+  --color-brand-600: #0e5632;
+  --color-brand-700: #0b4527;
+  --color-brand-800: #08331d;
+  --color-brand-900: #062616;
+
+  /* --- Acento · amarillo #FFD101 ------------------------------------------
+     Indicadores, elementos seleccionados y detalles importantes.
+     `accent-700` es el único tono legible como texto sobre fondo claro.     */
+  --color-accent-100: #fff7d6;
+  --color-accent-300: #ffe477;
+  --color-accent-500: #ffd101;
+  --color-accent-600: #e0b800;
+  --color-accent-700: #6b5200;
+  /* Texto sobre amarillo pleno. Fijo en ambos temas: el amarillo no cambia,
+     así que su color de contraste tampoco debe hacerlo. */
+  --color-on-accent: #101a15;
+
+  /* --- Tintes sólidos para modo oscuro ------------------------------------
+     Sustituyen a las superposiciones translúcidas (antes `brand-500/15`):
+     mismo aspecto, pero color plano. La interfaz no usa alfa en sus fondos. */
+  --color-brand-950: #0f2a1c;
+  --color-accent-950: #3a3410;
+
+  /* --- Confirmación · comparte la escala de la marca ----------------------- */
+  --color-success-100: #d3e9de;
+  --color-success-300: #71b593;
+  --color-success-500: #11673c;
+  --color-success-700: #0b4527;
+  --color-success-950: #0f2a1c;
+
+  /* --- Advertencia · comparte la escala del acento ------------------------- */
+  --color-warning-100: #fff7d6;
+  --color-warning-300: #ffe477;
+  --color-warning-500: #ffd101;
+  --color-warning-700: #6b5200;
+  --color-warning-950: #3a3410;
+
+  /* --- Destructivo · neutro oscuro ----------------------------------------
+     Rechazar o eliminar no puede compartir el verde de aprobar, y la paleta
+     no contempla un rojo. Se resuelve con un carboncillo de alto contraste,
+     visualmente inconfundible junto al verde y al amarillo.                 */
+  --color-danger-100: #e4e8e6;
+  --color-danger-300: #b2bdb7;
+  --color-danger-500: #263029;
+  --color-danger-700: #141a17;
+
+  /* --- Informativo · neutro, para no sumar un color más -------------------- */
+  --color-info-100: #edf1ef;
+  --color-info-500: #64716a;
+  --color-info-700: #46514b;
+
+  /* --- Superficies semánticas (cambian en modo oscuro, ver abajo) --------- */
+  --color-canvas: var(--sf-canvas);
+  --color-surface: var(--sf-surface);
+  --color-surface-2: var(--sf-surface-2);
+  --color-surface-3: var(--sf-surface-3);
+  --color-line: var(--sf-line);
+  --color-line-strong: var(--sf-line-strong);
+  --color-ink: var(--sf-ink);
+  --color-ink-2: var(--sf-ink-2);
+  --color-ink-3: var(--sf-ink-3);
+
+  /* --- Tipografía --------------------------------------------------------- */
+  --font-sans:
+    'Inter var', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  /* --- Radios ------------------------------------------------------------- */
+  --radius-card: 1.125rem;
+  --radius-field: 0.75rem;
+
+  /* --- Sombras (suaves, nunca dramáticas) --------------------------------- */
+  --shadow-card: 0 1px 2px rgb(16 26 21 / 0.04), 0 8px 24px -12px rgb(16 26 21 / 0.14);
+  --shadow-raised: 0 2px 4px rgb(16 26 21 / 0.05), 0 16px 40px -16px rgb(16 26 21 / 0.24);
+  --shadow-nav: 0 -1px 0 rgb(16 26 21 / 0.06), 0 -12px 32px -20px rgb(16 26 21 / 0.28);
+}
+
+/* --- Modo claro (por defecto) ---------------------------------------------
+   El blanco puro queda reservado a las superficies (tarjetas, barras, hojas).
+   El lienzo lleva un blanco apenas verdoso para que esas superficies se
+   distingan sin necesidad de bordes marcados.                              */
+:root {
+  --sf-canvas: #f4f7f5;
+  --sf-surface: #ffffff;
+  --sf-surface-2: #eef2ef;
+  --sf-surface-3: #e3eae6;
+  --sf-line: #e4eae6;
+  --sf-line-strong: #cfd9d3;
+  --sf-ink: #101a15;
+  --sf-ink-2: #4f5c55;
+  --sf-ink-3: #7c8981;
+  color-scheme: light;
+}
+
+/* --- Modo oscuro ----------------------------------------------------------
+   Se activa con data-theme="dark" en <html>. El ThemeProvider resuelve la
+   preferencia del sistema y escribe ese atributo, por lo que aquí no hace
+   falta duplicar la lógica con media queries.                               */
+[data-theme='dark'] {
+  --sf-canvas: #080d0a;
+  --sf-surface: #101714;
+  --sf-surface-2: #17201b;
+  --sf-surface-3: #1f2b24;
+  --sf-line: #1f2b24;
+  --sf-line-strong: #2f3e35;
+  --sf-ink: #f2f7f4;
+  --sf-ink-2: #a3b0a9;
+  --sf-ink-3: #6f7d75;
+  color-scheme: dark;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-raised: 0 2px 4px rgb(0 0 0 / 0.45), 0 16px 40px -16px rgb(0 0 0 / 0.7);
+  --shadow-nav: 0 -1px 0 rgb(255 255 255 / 0.05), 0 -12px 32px -20px rgb(0 0 0 / 0.8);
+}
+
+/* Variante `dark:` basada en el atributo, no en la media query. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));

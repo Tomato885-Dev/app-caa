@@ -1,0 +1,37 @@
+# Dependencias
+node_modules/
+
+# Compilado
+dist/
+*.tsbuildinfo
+
+# Entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Registros
+npm-debug.log*
+yarn-error.log*
+
+# ============================================================================
+# DATOS PERSONALES — NUNCA en el control de versiones
+# ----------------------------------------------------------------------------
+# La nómina oficial tiene nombres y correos de alumnos, menores de edad.
+# Vive solo en los computadores del Centro de Alumnos.
+# Si falta, la app arranca con la nómina de demostración (roster.demo.ts).
+# ============================================================================
+src/content/roster.ts
+
+# Contenido exportado desde la app: se sube a propósito cuando corresponde,
+# no automáticamente. Quita esta línea si quieres versionarlo.
+src/content/seed/contenido.json
