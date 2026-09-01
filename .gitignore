@@ -32,6 +32,7 @@ yarn-error.log*
 # ============================================================================
 src/content/roster.ts
 
-# Contenido exportado desde la app: se sube a propósito cuando corresponde,
-# no automáticamente. Quita esta línea si quieres versionarlo.
-src/content/seed/contenido.json
+# NOTA: `src/content/seed/contenido.json` SÍ se versiona a propósito.
+# Es el contenido oficial del Centro de Alumnos (noticias, comunicados,
+# eventos…), o sea, trabajo que hay que respaldar y que debe llegar a la
+# versión publicada. No es un dato personal como la nómina.
