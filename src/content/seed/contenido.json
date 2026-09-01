@@ -1,7 +1,7 @@
 {
   "_leeme": "Contenido de la App CAA exportado desde el panel de administración. Guarda este archivo en src/content/seed/contenido.json para que sea el contenido oficial de la aplicación.",
-  "version": "2026-08-31.2055",
-  "exportadoEl": "2026-08-31T20:42:33.383377Z",
+  "version": "2026-08-31.2150",
+  "exportadoEl": "2026-09-01T01:50:20.992Z",
   "announcements": [
     {
       "id": "com_1",
@@ -902,159 +902,161 @@
   "projects": [
     {
       "id": "prj_01",
-      "title": "Proyecto 1",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Medioambiente",
+      "title": "Imprime Al Toque",
+      "summary": "Que ningún estudiante quede en desventaja por no tener una impresora.",
+      "description": "Este proyecto implementará un servicio de impresión gestionado por el Centro de Alumnos, permitiendo que todos los estudiantes de 5 EB a 4 EM puedan imprimir material académico de forma simple, ordenada y accesible. Con ello, buscamos reducir las brechas de acceso y asegurar que ningún alumno quede en desventaja por no contar con una impresora.",
+      "area": "Ciencia y tecnología",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-01T12:00:00.000Z",
-      "updatedAt": "2026-01-01T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:37:18.498Z"
     },
     {
       "id": "prj_02",
-      "title": "Proyecto 2",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
+      "title": "Semana Social",
+      "summary": "Salir de nuestra burbuja para conocer, servir y transformar otras realidades.",
+      "description": "Esta iniciativa busca que los estudiantes salgan de su realidad cotidiana y conozcan distintas realidades de nuestro país, superando la llamada “burbuja social” en la que muchas veces vivimos. A través de experiencias de servicio y contacto directo con otras comunidades, en trabajos de fábrica, alumnos de 2° y 3° medio podrán poner sus talentos al servicio de los demás, fortaleciendo la empatía, la conciencia social y el compromiso de ser agentes de cambio desde los valores del Verbo Divino.",
       "area": "Acción social",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-02T12:00:00.000Z",
-      "updatedAt": "2026-01-02T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:38:43.259Z",
+      "ledBy": "Pastoral y Centro de Alumnos"
     },
     {
       "id": "prj_03",
-      "title": "Proyecto 3",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
+      "title": "Más que un Saludo",
+      "summary": "Conocernos más allá de nuestros roles para construir una comunidad más cercana.",
+      "description": "Más que un Saludo busca fortalecer los vínculos dentro de la comunidad escolar, generando un espacio donde alumnos y funcionarios puedan conocerse más allá de sus roles habituales. A través del deporte, juegos y actividades compartidas, el proyecto promueve el respeto, la cercanía y el sentido de pertenencia, reconociendo el aporte de cada persona que forma parte del Verbo Divino.",
       "area": "Cultura y arte",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-03T12:00:00.000Z",
-      "updatedAt": "2026-01-03T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:39:36.084Z"
     },
     {
       "id": "prj_04",
-      "title": "Proyecto 4",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Deporte",
+      "title": "Verbo por el Mundo",
+      "summary": "Salir al mundo para servir, evangelizar y vivir nuestra identidad verbita.",
+      "description": "Verbo por el Mundo propone una experiencia misionera que permitirá a los estudiantes recorrer distintas comunidades de Chile, viviendo el servicio, la evangelización y el encuentro con otras realidades. Más que un viaje, busca fortalecer la fe, el compromiso con los demás y la identidad verbita, haciendo vida el lema \"Salgan al Mundo\".",
+      "area": "Acción social",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-04T12:00:00.000Z",
-      "updatedAt": "2026-01-04T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:40:33.691Z"
     },
     {
       "id": "prj_05",
-      "title": "Proyecto 5",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Ciencia y tecnología",
+      "title": "La Noche Verde",
+      "summary": "Volver a sentir la pasión de ser Verbita, unidos por nuestra barra y nuestros atletas.",
+      "description": "La Noche Verde busca recuperar y fortalecer el espíritu de la barra verbita, transformándola en un espacio de unión, identidad y apoyo hacia nuestros atletas. A través de una jornada previa al interescolar con actividades, música, invitados y un banderazo final, queremos revivir una tradición basada en el orgullo, el respeto y la sana competencia, representando lo que significa ser Verbita.",
+      "area": "Convivencia",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-05T12:00:00.000Z",
-      "updatedAt": "2026-01-05T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:41:27.753Z",
+      "ledBy": "Delegado de Barra"
     },
     {
       "id": "prj_06",
-      "title": "Proyecto 6",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
+      "title": "¡Elige TÚ Plan Lector!",
+      "summary": "Leer por interés, no por obligación: formar lectores autónomos, críticos y motivados.",
+      "description": "Queremos transformar el Plan Lector para que leer deje de ser una obligación y se convierta en una experiencia significativa. Sin eliminar las lecturas obligatorias, proponemos que una de las lecturas del año sea de libre elección, permitiendo que los estudiantes seleccionen un libro de acuerdo con sus intereses, siempre con la aprobación del profesor.\nLa evaluación se realizará de forma oral, promoviendo el análisis, la reflexión y el desarrollo de habilidades de comunicación, además de reducir el uso de la inteligencia artificial como sustituto de la lectura.\nCon esta reforma buscamos formar lectores más autónomos, críticos y motivados, acercando la lectura a los intereses reales de los alumnos y fortaleciendo una cultura lectora que perdure más allá del colegio.",
       "area": "Convivencia",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-06T12:00:00.000Z",
-      "updatedAt": "2026-01-06T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:42:49.992Z"
     },
     {
       "id": "prj_07",
-      "title": "Proyecto 7",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Medioambiente",
+      "title": "A-D-N",
+      "summary": "Prepararnos para la vida, desarrollando herramientas que nos hagan más autónomos y seguros.",
+      "description": "ADN transforma la hora de Orientación en un espacio para aprender habilidades útiles para la vida. Desde 3° Básico hasta 4° Medio, los alumnos desarrollarán herramientas prácticas que los preparen para enfrentar con autonomía, responsabilidad y confianza los desafíos del futuro.",
+      "area": "Convivencia",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-07T12:00:00.000Z",
-      "updatedAt": "2026-01-07T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:43:54.541Z"
     },
     {
       "id": "prj_08",
-      "title": "Proyecto 8",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Acción social",
-      "status": "activo",
-      "startYear": 2026,
-      "endYear": null,
-      "createdAt": "2026-01-08T12:00:00.000Z",
-      "updatedAt": "2026-01-08T12:00:00.000Z"
-    },
-    {
-      "id": "prj_09",
-      "title": "Proyecto 9",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Cultura y arte",
-      "status": "activo",
-      "startYear": 2026,
-      "endYear": null,
-      "createdAt": "2026-01-09T12:00:00.000Z",
-      "updatedAt": "2026-01-09T12:00:00.000Z"
-    },
-    {
-      "id": "prj_10",
-      "title": "Proyecto 10",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
+      "title": "Reforma Copa Wickso",
+      "summary": "Una temporada completa para competir, disfrutar y coronar al gran campeón.",
+      "description": "Proponemos una Copa Wickso anual con un campeonato de liga en el primer semestre y playoffs en el segundo, finalizando con una Gran Final que defina al campeón absoluto.\nAdemás, cada equipo podrá diseñar su propia camiseta, fortaleciendo la identidad, la participación y el sentido de pertenencia.",
       "area": "Deporte",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
+      "createdAt": "2026-01-08T12:00:00.000Z",
+      "updatedAt": "2026-09-01T01:44:52.943Z"
+    },
+    {
+      "id": "prj_09",
+      "title": "Reforma Comitivas",
+      "summary": "Más estudiantes participando, liderando y transformando nuestra comunidad.",
+      "description": "Buscamos fortalecer las comitivas del Centro de Alumnos entregándoles una organización clara, funciones definidas y proyectos propios. Así, más estudiantes podrán participar activamente, desarrollar habilidades de liderazgo y trabajo en equipo, y contribuir de manera concreta a la vida escolar.",
+      "area": "Convivencia",
+      "status": "activo",
+      "startYear": 2026,
+      "endYear": null,
+      "createdAt": "2026-01-09T12:00:00.000Z",
+      "updatedAt": "2026-09-01T01:45:18.830Z"
+    },
+    {
+      "id": "prj_10",
+      "title": "Reforma Reciclaje CVD",
+      "summary": "Hacer del reciclaje un hábito diario y parte de nuestra vida en el Verbo.",
+      "description": "Queremos que reciclar sea parte de la vida diaria del Verbo. Para ello, instalaremos multicontenedores de reciclaje en puntos estratégicos del colegio, junto con una campaña de educación ambiental para toda la comunidad.",
+      "area": "Medioambiente",
+      "status": "activo",
+      "startYear": 2026,
+      "endYear": null,
       "createdAt": "2026-01-10T12:00:00.000Z",
-      "updatedAt": "2026-01-10T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:45:49.566Z"
     },
     {
       "id": "prj_11",
-      "title": "Proyecto 11",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Ciencia y tecnología",
+      "title": "Reforma Paseos Culturales",
+      "summary": "Salir de la rutina, conocer nuestra cultura y vivir nuevas experiencias juntos.",
+      "description": "Los Paseos Culturales no deberían ser una actividad que ocurre una vez y desaparece. Queremos recuperarlos y convertirlos en una experiencia mensual, donde nosotros mismos podamos elegir a dónde ir y qué conocer. Desde lugares históricos y artísticos hasta expresiones de la cultura popular, cada salida será una oportunidad para salir de la rutina, compartir con otros cursos y descubrir algo nuevo. Y para cerrar el año, quienes más participen podrán vivir una experiencia especial en el Teatro Municipal.",
+      "area": "Cultura y arte",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-11T12:00:00.000Z",
-      "updatedAt": "2026-01-11T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:46:26.074Z"
     },
     {
       "id": "prj_12",
-      "title": "Proyecto 12",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
+      "title": "CAA 911",
+      "summary": "¿Tienes un problema o una idea? Estamos para escucharte y actuar.",
+      "description": "¿Tienes un problema o idea urgente? Tu Centro de Alumnos al rescate: un canal rápido y directo para responder a tus necesidades en el colegio.",
       "area": "Convivencia",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-12T12:00:00.000Z",
-      "updatedAt": "2026-01-12T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:48:27.522Z"
     },
     {
       "id": "prj_13",
-      "title": "Proyecto 13",
-      "summary": "Pendiente de completar: describe el proyecto en una frase.",
-      "description": "Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.",
-      "area": "Medioambiente",
+      "title": "App CAA",
+      "summary": "Todo lo que pasa en el Verbo, en un solo lugar: infórmate, participa y conecta.",
+      "description": "¿Te ha pasado que te enteras tarde de una actividad, torneo o iniciativa que te habría gustado conocer? Esta app busca cambiar eso. Tendremos en un solo lugar noticias, eventos, inscripciones, actividades y espacios para participar y conectar con estudiantes de toda la enseñanza media. Además, podrás conocer iniciativas, proyectos y emprendimientos de otros alumnos. Una plataforma hecha para nuestra comunidad, segura, organizada y pensada para seguir creciendo junto a nosotros.",
+      "area": "Ciencia y tecnología",
       "status": "activo",
       "startYear": 2026,
       "endYear": null,
       "createdAt": "2026-01-13T12:00:00.000Z",
-      "updatedAt": "2026-01-13T12:00:00.000Z"
+      "updatedAt": "2026-09-01T01:49:25.164Z"
     }
   ],
   "communityGroups": [
