@@ -1,0 +1,1162 @@
+{
+  "_leeme": "Contenido de la App CAA exportado desde el panel de administración. Guarda este archivo en src/content/seed/contenido.json para que sea el contenido oficial de la aplicación.",
+  "version": "2026-08-31.2030",
+  "exportadoEl": "2026-09-01T00:30:55.401Z",
+  "announcements": [
+    {
+      "id": "com_1",
+      "title": "Semana de Campaña",
+      "body": "Del 5 al 12 de octubre vivimos nuestra Semana de Campaña, un momento clave para nuestra comunidad estudiantil. Durante estos días podrás conocer las propuestas, ideas y proyectos de las distintas listas que buscan representar a los estudiantes.",
+      "priority": "normal",
+      "audience": "Enseñanza media",
+      "pinned": true,
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-31T18:52:49.386Z",
+      "createdAt": "2026-08-31T18:52:49.386Z",
+      "updatedAt": "2026-09-01T00:29:36.739Z"
+    },
+    {
+      "id": "com_2",
+      "title": "Último día para entregar los aportes de la campaña",
+      "body": "Mañana cierra la recepción de aportes para la campaña solidaria. La caja estará en portería hasta las 16:00 y no se recibirán entregas atrasadas.\nLos cursos que ya completaron su meta pueden retirar su certificado en la oficina del Centro de Alumnos.",
+      "priority": "urgente",
+      "audience": "Toda la comunidad",
+      "pinned": true,
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-31T02:52:49.386Z",
+      "createdAt": "2026-08-31T02:52:49.386Z",
+      "updatedAt": "2026-08-31T02:52:49.386Z"
+    },
+    {
+      "id": "com_3",
+      "title": "Resultados de la votación por el lema del aniversario",
+      "body": "Con 412 votos válidos, el lema elegido para la semana de aniversario fue el presentado por III Medio B.\nAgradecemos a todos los cursos que enviaron propuestas. El detalle del conteo queda disponible en la oficina del Centro de Alumnos para quien quiera revisarlo.",
+      "priority": "normal",
+      "audience": "Toda la comunidad",
+      "pinned": false,
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-29T22:52:49.386Z",
+      "createdAt": "2026-08-29T22:52:49.386Z",
+      "updatedAt": "2026-08-29T22:52:49.386Z"
+    },
+    {
+      "id": "com_4",
+      "title": "Se habilita el nuevo horario de la sala de estudio",
+      "body": "A partir del lunes, la sala de estudio queda abierta hasta las 18:30 de lunes a jueves.\nEl uso es libre y no requiere inscripción, pero se pide mantener silencio y dejar los puestos ordenados al salir.",
+      "priority": "normal",
+      "audience": "Enseñanza media",
+      "pinned": false,
+      "author": {
+        "id": "usr_mod",
+        "name": "Equipo de Moderación",
+        "grade": "III Medio B"
+      },
+      "publishedAt": "2026-08-27T22:52:49.386Z",
+      "createdAt": "2026-08-27T22:52:49.386Z",
+      "updatedAt": "2026-08-27T22:52:49.386Z"
+    },
+    {
+      "id": "com_5",
+      "title": "Recordatorio: uso de la cancha durante los recreos",
+      "body": "La cancha principal se reparte por niveles según el calendario publicado en el diario mural. Esta semana corresponde a I y II Medio.\nDurante los entrenamientos de las selecciones la cancha queda cerrada al uso libre.",
+      "priority": "normal",
+      "audience": "I y II Medio",
+      "pinned": false,
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-25T22:52:49.386Z",
+      "createdAt": "2026-08-25T22:52:49.386Z",
+      "updatedAt": "2026-08-25T22:52:49.386Z"
+    }
+  ],
+  "news": [
+    {
+      "id": "new_1",
+      "title": "Se abre la convocatoria a proyectos estudiantiles 2027",
+      "summary": "Cualquier grupo de estudiantes puede presentar una iniciativa para recibir apoyo del Centro de Alumnos.",
+      "body": "El Centro de Alumnos abre la convocatoria anual de proyectos estudiantiles. La invitación está dirigida a todos los cursos de enseñanza media que quieran desarrollar una iniciativa cultural, deportiva, académica o solidaria.\n\nCada proyecto debe presentar un objetivo claro, el equipo responsable y una estimación de los recursos necesarios. Las propuestas seleccionadas contarán con acompañamiento del Centro de Alumnos y espacio de difusión en esta plataforma.\n\nLas postulaciones se reciben a través de la sección Inscripciones hasta la fecha indicada en la convocatoria.",
+      "category": "Centro de Alumnos",
+      "imageKey": "news.asamblea",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "featured": true,
+      "publishedAt": "2026-08-30T22:52:49.386Z",
+      "status": "approved",
+      "createdAt": "2026-08-30T22:52:49.386Z",
+      "updatedAt": "2026-08-30T22:52:49.386Z"
+    },
+    {
+      "id": "new_2",
+      "title": "Resultados de la elección de directivas de curso",
+      "summary": "Ya están disponibles los resultados oficiales del proceso eleccionario de todos los niveles.",
+      "body": "Finalizó el proceso de elección de directivas de curso con una participación cercana al 90% de los estudiantes habilitados.\n\nAgradecemos a las comisiones electorales de cada nivel por su trabajo y a todas las listas que participaron. Las directivas electas asumen funciones a partir de la próxima semana.\n\nEl detalle por curso está disponible en la oficina del Centro de Alumnos y será enviado a cada profesor jefe.",
+      "category": "Comunicados",
+      "imageKey": "news.resultados",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "featured": false,
+      "publishedAt": "2026-08-27T22:52:49.386Z",
+      "status": "approved",
+      "createdAt": "2026-08-27T22:52:49.386Z",
+      "updatedAt": "2026-08-27T22:52:49.386Z"
+    },
+    {
+      "id": "new_3",
+      "title": "La campaña solidaria de invierno superó su meta",
+      "summary": "Gracias a la participación de todos los niveles se reunieron más de mil artículos de abrigo.",
+      "body": "La campaña solidaria de invierno cerró con un resultado muy por encima de lo esperado. Participaron los cursos de 8° básico a IV medio junto al área de acción social.\n\nLos artículos reunidos serán entregados a las organizaciones con las que trabaja la comunidad escolar durante las próximas semanas.\n\nAgradecemos especialmente a los equipos que coordinaron la recolección en cada nivel.",
+      "category": "Acción social",
+      "imageKey": "news.campana-solidaria",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "featured": true,
+      "publishedAt": "2026-08-22T22:52:49.386Z",
+      "status": "approved",
+      "createdAt": "2026-08-22T22:52:49.386Z",
+      "updatedAt": "2026-08-22T22:52:49.386Z"
+    },
+    {
+      "id": "new_4",
+      "title": "Nuevo horario extendido de biblioteca en período de pruebas",
+      "summary": "La sala de estudio permanecerá abierta hasta las 18:30 durante las semanas de evaluaciones.",
+      "body": "Durante los períodos de evaluación, la biblioteca ampliará su horario de atención hasta las 18:30 de lunes a jueves.\n\nEl espacio estará disponible para estudio individual y grupal. Se pide mantener el silencio en la sala principal y usar las salas anexas para trabajos en equipo.",
+      "category": "Académico",
+      "imageKey": "news.horario-biblioteca",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "featured": false,
+      "publishedAt": "2026-08-16T22:52:49.386Z",
+      "status": "approved",
+      "createdAt": "2026-08-16T22:52:49.386Z",
+      "updatedAt": "2026-08-16T22:52:49.386Z"
+    },
+    {
+      "id": "new_5",
+      "title": "Taller de liderazgo para directivas de curso",
+      "summary": "Dos jornadas de formación en trabajo en equipo, organización y comunicación para representantes.",
+      "body": "Se realizará un taller de liderazgo dirigido a las directivas de curso electas y a quienes participan en organizaciones estudiantiles.\n\nEl taller aborda organización de equipos, planificación de actividades y comunicación efectiva dentro de la comunidad escolar.\n\nLos cupos son limitados y la inscripción se realiza desde la sección Inscripciones.",
+      "category": "Centro de Alumnos",
+      "imageKey": "news.taller-liderazgo",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "featured": false,
+      "publishedAt": "2026-08-09T22:52:49.386Z",
+      "status": "approved",
+      "createdAt": "2026-08-09T22:52:49.386Z",
+      "updatedAt": "2026-08-09T22:52:49.386Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "evt_1",
+      "title": "Semana de aniversario",
+      "description": "Cinco días de competencias entre alianzas, actividades culturales y el acto de cierre. Cada alianza presenta su barra, coreografía y stand temático.",
+      "category": "Institucional",
+      "imageKey": "event.aniversario",
+      "startsAt": "2026-09-06T11:30:00.000Z",
+      "endsAt": "2026-09-10T21:00:00.000Z",
+      "location": "Patio central y gimnasio",
+      "requirements": "Participación abierta a toda la enseñanza media. Uso de buzo institucional.",
+      "contactName": "Comisión de aniversario",
+      "contactEmail": "centrodealumnos@verbo.cl",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "status": "approved",
+      "createdAt": "2026-08-11T22:52:49.386Z",
+      "updatedAt": "2026-08-28T22:52:49.386Z"
+    },
+    {
+      "id": "evt_2",
+      "title": "Torneo interescolar de fútbol",
+      "description": "Fase de grupos del torneo interescolar. Participan las selecciones de I a IV medio en categorías damas y varones.",
+      "category": "Deportivo",
+      "imageKey": "event.torneo-futbol",
+      "startsAt": "2026-09-03T19:00:00.000Z",
+      "endsAt": "2026-09-03T23:00:00.000Z",
+      "location": "Cancha principal",
+      "requirements": "Solo jugadores inscritos en la nómina de cada selección.",
+      "contactName": "Coordinación deportiva",
+      "contactEmail": "deportes@verbo.cl",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "status": "approved",
+      "createdAt": "2026-08-17T22:52:49.386Z",
+      "updatedAt": "2026-08-17T22:52:49.386Z"
+    },
+    {
+      "id": "evt_3",
+      "title": "Feria vocacional",
+      "description": "Instituciones de educación superior presentan sus carreras y procesos de admisión. Incluye charlas breves durante toda la jornada.",
+      "category": "Académico",
+      "imageKey": "event.feria-vocacional",
+      "startsAt": "2026-09-18T12:00:00.000Z",
+      "endsAt": "2026-09-18T16:30:00.000Z",
+      "location": "Gimnasio techado",
+      "requirements": "Dirigida principalmente a III y IV medio. Asistencia libre para el resto.",
+      "contactName": "Orientación",
+      "contactEmail": "orientacion@verbo.cl",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "status": "approved",
+      "createdAt": "2026-08-21T22:52:49.386Z",
+      "updatedAt": "2026-08-21T22:52:49.386Z"
+    },
+    {
+      "id": "evt_4",
+      "title": "Muestra de arte y música estudiantil",
+      "description": "Exposición de trabajos visuales y presentaciones musicales preparadas por estudiantes de todos los niveles.",
+      "category": "Cultural",
+      "imageKey": "event.gala-arte",
+      "startsAt": "2026-09-27T21:30:00.000Z",
+      "endsAt": "2026-09-28T00:00:00.000Z",
+      "location": "Salón de actos",
+      "requirements": "Entrada liberada. Inscripción previa para quienes expongan.",
+      "contactName": "Academia de artes",
+      "contactEmail": "artes@verbo.cl",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "status": "approved",
+      "createdAt": "2026-08-23T22:52:49.386Z",
+      "updatedAt": "2026-08-23T22:52:49.386Z"
+    },
+    {
+      "id": "evt_5",
+      "title": "Jornada scout de fin de semestre",
+      "description": "Actividad al aire libre con juegos de patrulla, fogata y ceremonia de progresión personal.",
+      "category": "Recreativo",
+      "imageKey": "event.jornada-scout",
+      "startsAt": "2026-10-10T12:00:00.000Z",
+      "endsAt": "2026-10-11T20:00:00.000Z",
+      "location": "Por confirmar",
+      "requirements": "Autorización del apoderado y equipo personal de campamento.",
+      "contactName": "Grupo scout",
+      "contactEmail": "scouts@verbo.cl",
+      "organizer": {
+        "id": "usr_est4",
+        "name": "Benjamín Cortés",
+        "grade": "I Medio A"
+      },
+      "signupActivityId": "act_2",
+      "status": "approved",
+      "createdAt": "2026-08-25T22:52:49.386Z",
+      "updatedAt": "2026-08-25T22:52:49.386Z"
+    }
+  ],
+  "signupActivities": [
+    {
+      "id": "act_1",
+      "title": "Voluntariado de acción social",
+      "description": "Equipo permanente que organiza visitas, colectas y apoyo escolar en instituciones de la comuna. Se trabaja en turnos de sábado por medio.",
+      "kind": "accion_social",
+      "imageKey": "signup.accion-social",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "closesAt": "2026-09-12T22:52:49.386Z",
+      "capacity": 40,
+      "location": "Punto de encuentro: portería principal",
+      "requirements": "Autorización del apoderado. Disponibilidad de al menos dos sábados al mes.",
+      "questions": [
+        {
+          "id": "q_disponibilidad",
+          "label": "¿Qué sábados tienes disponibilidad?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Primer y tercer sábado",
+            "Segundo y cuarto sábado",
+            "Todos los sábados"
+          ]
+        },
+        {
+          "id": "q_experiencia",
+          "label": "¿Has participado antes en voluntariados? Cuéntanos brevemente.",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "open": true,
+      "status": "approved",
+      "createdAt": "2026-08-13T22:52:49.386Z",
+      "updatedAt": "2026-08-29T22:52:49.386Z"
+    },
+    {
+      "id": "act_2",
+      "title": "Grupo scout · postulación de nuevas patrullas",
+      "description": "Incorporación de estudiantes al grupo scout. Se realizan reuniones semanales y salidas una vez al mes.",
+      "kind": "scout",
+      "imageKey": "signup.brigada-ambiental",
+      "organizer": {
+        "id": "usr_est4",
+        "name": "Benjamín Cortés",
+        "grade": "I Medio A"
+      },
+      "closesAt": "2026-09-25T22:52:49.386Z",
+      "capacity": 24,
+      "location": "Sala 12, viernes 16:00",
+      "requirements": "Abierto a estudiantes de 8° básico a II medio.",
+      "questions": [
+        {
+          "id": "q_experiencia_scout",
+          "label": "¿Perteneciste antes a un grupo scout?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Sí",
+            "No"
+          ]
+        }
+      ],
+      "open": true,
+      "status": "approved",
+      "createdAt": "2026-08-16T22:52:49.386Z",
+      "updatedAt": "2026-08-16T22:52:49.386Z"
+    },
+    {
+      "id": "act_3",
+      "title": "Torneo interno de ajedrez",
+      "description": "Torneo por sistema suizo a cinco rondas, abierto a todos los niveles. Se juega durante los recreos y after school.",
+      "kind": "torneo",
+      "imageKey": "signup.torneo-ajedrez",
+      "organizer": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "closesAt": "2026-09-05T22:52:49.386Z",
+      "capacity": 32,
+      "location": "Biblioteca, sala anexa",
+      "requirements": "No se requiere experiencia previa.",
+      "questions": [
+        {
+          "id": "q_nivel",
+          "label": "Nivel de juego",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Principiante",
+            "Intermedio",
+            "Avanzado"
+          ]
+        }
+      ],
+      "open": true,
+      "status": "approved",
+      "createdAt": "2026-08-22T22:52:49.386Z",
+      "updatedAt": "2026-08-22T22:52:49.386Z"
+    },
+    {
+      "id": "act_4",
+      "title": "Equipo de la revista estudiantil",
+      "description": "Convocatoria para redacción, fotografía, ilustración y diseño de la próxima edición de la revista.",
+      "kind": "proyecto",
+      "imageKey": "signup.revista-estudiantil",
+      "organizer": {
+        "id": "usr_est3",
+        "name": "Antonia Salas",
+        "grade": "IV Medio B"
+      },
+      "closesAt": "2026-09-20T22:52:49.386Z",
+      "capacity": null,
+      "location": "Reuniones en sala de computación",
+      "requirements": "Compromiso con los plazos de cierre de edición.",
+      "questions": [
+        {
+          "id": "q_area",
+          "label": "¿En qué área te gustaría participar?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Redacción",
+            "Fotografía",
+            "Ilustración",
+            "Diseño y diagramación"
+          ]
+        },
+        {
+          "id": "q_portafolio",
+          "label": "Enlace a trabajos previos (opcional)",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "open": true,
+      "status": "approved",
+      "createdAt": "2026-08-24T22:52:49.386Z",
+      "updatedAt": "2026-08-24T22:52:49.386Z"
+    }
+  ],
+  "benefits": [
+    {
+      "id": "ben_1",
+      "name": "2x1 en combos",
+      "partner": "Comida rápida del centro comercial",
+      "summary": "Dos combos por el precio de uno, de lunes a jueves.",
+      "description": "Convenio conseguido por la campaña para el local de comida rápida del centro comercial. Presentando el código QR en caja, el segundo combo de igual o menor valor sale sin costo.\nAplica de lunes a jueves durante todo el año escolar y es válido tanto en el mesón como en el autoservicio.",
+      "terms": "Un canje por persona y por día. No acumulable con otras promociones ni con descuentos de la aplicación del local. Se debe presentar credencial de estudiante junto al código.",
+      "category": "Alimentación",
+      "logoImageKey": "benefit.comida-rapida",
+      "qrValue": "CAA2026-COMBO-2X1",
+      "code": "CAA2026-COMBO-2X1",
+      "validUntil": "2027-02-27T22:52:49.386Z",
+      "active": true,
+      "createdAt": "2026-08-01T22:52:49.386Z",
+      "updatedAt": "2026-08-27T22:52:49.386Z"
+    },
+    {
+      "id": "ben_2",
+      "name": "30 % en entradas de cine",
+      "partner": "Cine del barrio",
+      "summary": "Descuento en la entrada general, todos los días.",
+      "description": "Descuento del 30 % sobre el valor de la entrada general en cualquier función, incluidos estrenos y fines de semana.\nEl código se muestra en la boletería antes de comprar; no se aplica a compras ya realizadas por internet.",
+      "terms": "Válido para una entrada por canje. No aplica a funciones especiales, maratones ni salas premium. Sujeto a disponibilidad de butacas.",
+      "category": "Entretención",
+      "logoImageKey": "benefit.cine",
+      "qrValue": "CAA2026-CINE-30",
+      "code": "CAA2026-CINE-30",
+      "validUntil": "2026-12-29T22:52:49.386Z",
+      "active": true,
+      "createdAt": "2026-08-05T22:52:49.386Z",
+      "updatedAt": "2026-08-05T22:52:49.386Z"
+    },
+    {
+      "id": "ben_3",
+      "name": "20 % en útiles y cuadernos",
+      "partner": "Librería del centro",
+      "summary": "Descuento en toda la línea escolar.",
+      "description": "Descuento del 20 % en cuadernos, blocks, lápices y artículos de dibujo técnico. Pensado para el inicio de semestre y para las asignaturas con materiales propios.\nSe canjea en caja mostrando el código antes de pagar.",
+      "terms": "No aplica a libros de texto, mochilas ni tecnología. Tope de $30.000 por compra.",
+      "category": "Librería y útiles",
+      "logoImageKey": "benefit.libreria",
+      "qrValue": "CAA2026-UTILES-20",
+      "code": "CAA2026-UTILES-20",
+      "validUntil": "2026-11-29T22:52:49.386Z",
+      "active": true,
+      "createdAt": "2026-08-10T22:52:49.386Z",
+      "updatedAt": "2026-08-10T22:52:49.386Z"
+    },
+    {
+      "id": "ben_4",
+      "name": "Primera clase liberada",
+      "partner": "Gimnasio municipal",
+      "summary": "Una clase de prueba sin costo en cualquier disciplina.",
+      "description": "Acceso liberado a una primera clase de prueba en cualquiera de las disciplinas del gimnasio: acondicionamiento, spinning, artes marciales o natación.\nAl escanear el código en recepción se registra el canje y se entrega el pase del día.",
+      "terms": "Un solo canje por estudiante. Requiere autorización del apoderado para menores de 16 años y presentar certificado de salud vigente para natación.",
+      "category": "Deporte",
+      "logoImageKey": "benefit.gimnasio",
+      "qrValue": "CAA2026-GYM-TRIAL",
+      "code": "CAA2026-GYM-TRIAL",
+      "validUntil": "2026-10-30T22:52:49.386Z",
+      "active": true,
+      "createdAt": "2026-08-16T22:52:49.386Z",
+      "updatedAt": "2026-08-16T22:52:49.386Z"
+    },
+    {
+      "id": "ben_5",
+      "name": "15 % en fotocopias e impresiones",
+      "partner": "Centro de copiado frente al colegio",
+      "summary": "Descuento en impresión, anillado y empaste.",
+      "description": "Descuento del 15 % en fotocopias, impresión en blanco y negro o color, anillado y empaste de trabajos.\nEspecialmente útil para las entregas de fin de semestre y los proyectos de investigación.",
+      "terms": "Aplica desde 20 copias. No acumulable con el precio por volumen del local.",
+      "category": "Servicios",
+      "logoImageKey": "benefit.copias",
+      "qrValue": "CAA2026-COPIAS-15",
+      "code": "CAA2026-COPIAS-15",
+      "active": true,
+      "createdAt": "2026-08-22T22:52:49.386Z",
+      "updatedAt": "2026-08-22T22:52:49.386Z"
+    }
+  ],
+  "sportsResults": [
+    {
+      "id": "res_1",
+      "discipline": "futbol",
+      "level": "superior",
+      "playedAt": "2026-08-29T22:52:49.386Z",
+      "opponent": "Liceo San Andrés",
+      "competition": "Torneo interescolar · fecha 5",
+      "location": "Cancha principal",
+      "scoreFor": 3,
+      "scoreAgainst": 1,
+      "outcome": "victoria",
+      "highlights": "Goles de Matías Fuentes (2) y Diego Herrera. El equipo queda segundo en la tabla, a dos puntos del líder.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-29T22:52:49.386Z",
+      "updatedAt": "2026-08-29T22:52:49.386Z"
+    },
+    {
+      "id": "res_2",
+      "discipline": "futbol",
+      "level": "intermedia",
+      "playedAt": "2026-08-29T22:52:49.386Z",
+      "opponent": "Colegio Los Robles",
+      "competition": "Torneo interescolar · fecha 5",
+      "location": "Cancha principal",
+      "scoreFor": 1,
+      "scoreAgainst": 1,
+      "outcome": "empate",
+      "highlights": "Empate en el último minuto tras un partido muy disputado en el segundo tiempo.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-29T22:52:49.386Z",
+      "updatedAt": "2026-08-29T22:52:49.386Z"
+    },
+    {
+      "id": "res_3",
+      "discipline": "futbol",
+      "level": "infantil",
+      "playedAt": "2026-08-22T22:52:49.386Z",
+      "opponent": "Escuela Santa Elena",
+      "competition": "Copa formativa",
+      "location": "Cancha visitante",
+      "scoreFor": 0,
+      "scoreAgainst": 2,
+      "outcome": "derrota",
+      "highlights": "Buen rendimiento defensivo en el primer tiempo. La categoría cierra su primera fase.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-22T22:52:49.386Z",
+      "updatedAt": "2026-08-22T22:52:49.386Z"
+    },
+    {
+      "id": "res_4",
+      "discipline": "basquetbol",
+      "level": "superior",
+      "playedAt": "2026-08-27T22:52:49.386Z",
+      "opponent": "Instituto del Valle",
+      "competition": "Liga escolar · semifinal",
+      "location": "Gimnasio techado",
+      "scoreFor": 58,
+      "scoreAgainst": 52,
+      "outcome": "victoria",
+      "highlights": "Clasificación a la final. Máxima anotadora: Antonia Salas con 21 puntos.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-27T22:52:49.386Z",
+      "updatedAt": "2026-08-27T22:52:49.386Z"
+    },
+    {
+      "id": "res_5",
+      "discipline": "basquetbol",
+      "level": "intermedia",
+      "playedAt": "2026-08-20T22:52:49.386Z",
+      "opponent": "Colegio Los Robles",
+      "competition": "Liga escolar · fecha 4",
+      "location": "Gimnasio techado",
+      "scoreFor": 41,
+      "scoreAgainst": 47,
+      "outcome": "derrota",
+      "highlights": "Partido cerrado hasta el último cuarto. La categoría sigue en carrera por el repechaje.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-20T22:52:49.386Z",
+      "updatedAt": "2026-08-20T22:52:49.386Z"
+    },
+    {
+      "id": "res_6",
+      "discipline": "voleibol",
+      "level": "superior",
+      "playedAt": "2026-08-25T22:52:49.386Z",
+      "opponent": "Liceo San Andrés",
+      "competition": "Torneo interescolar · cuartos de final",
+      "location": "Gimnasio techado",
+      "scoreFor": 3,
+      "scoreAgainst": 0,
+      "outcome": "victoria",
+      "highlights": "Sets 25-19, 25-21 y 25-17. Avanza a semifinales sin ceder un set en toda la ronda.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-25T22:52:49.386Z",
+      "updatedAt": "2026-08-25T22:52:49.386Z"
+    },
+    {
+      "id": "res_7",
+      "discipline": "voleibol",
+      "level": "infantil",
+      "playedAt": "2026-08-18T22:52:49.386Z",
+      "opponent": "Escuela Santa Elena",
+      "competition": "Encuentro formativo",
+      "location": "Gimnasio techado",
+      "scoreFor": 2,
+      "scoreAgainst": 1,
+      "outcome": "victoria",
+      "highlights": "Primera victoria de la categoría en el año. Se destaca el trabajo en recepción.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-18T22:52:49.386Z",
+      "updatedAt": "2026-08-18T22:52:49.386Z"
+    },
+    {
+      "id": "res_8",
+      "discipline": "tenis",
+      "level": "superior",
+      "playedAt": "2026-08-23T22:52:49.386Z",
+      "opponent": "Instituto del Valle",
+      "competition": "Circuito escolar · segunda ronda",
+      "location": "Club de tenis municipal",
+      "scoreFor": 2,
+      "scoreAgainst": 1,
+      "outcome": "victoria",
+      "highlights": "Dos singles ganados y un dobles perdido. Se avanza a la tercera ronda.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-23T22:52:49.386Z",
+      "updatedAt": "2026-08-23T22:52:49.386Z"
+    },
+    {
+      "id": "res_9",
+      "discipline": "tenis",
+      "level": "intermedia",
+      "playedAt": "2026-08-16T22:52:49.386Z",
+      "opponent": "Colegio Los Robles",
+      "competition": "Circuito escolar · primera ronda",
+      "location": "Club de tenis municipal",
+      "scoreFor": 1,
+      "scoreAgainst": 2,
+      "outcome": "derrota",
+      "highlights": "Serie definida en el dobles decisivo. La categoría cierra su participación del semestre.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-16T22:52:49.386Z",
+      "updatedAt": "2026-08-16T22:52:49.386Z"
+    },
+    {
+      "id": "res_10",
+      "discipline": "atletismo",
+      "level": "superior",
+      "playedAt": "2026-08-26T22:52:49.386Z",
+      "opponent": "Encuentro regional de pista",
+      "competition": "Campeonato regional escolar",
+      "location": "Estadio municipal",
+      "scoreFor": null,
+      "scoreAgainst": null,
+      "outcome": "participacion",
+      "highlights": "Primer lugar en 400 m planos, segundo lugar en salto largo y cuarto lugar en la posta 4x100. Dos marcas personales en la jornada.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-26T22:52:49.386Z",
+      "updatedAt": "2026-08-26T22:52:49.386Z"
+    },
+    {
+      "id": "res_11",
+      "discipline": "atletismo",
+      "level": "intermedia",
+      "playedAt": "2026-08-26T22:52:49.386Z",
+      "opponent": "Encuentro regional de pista",
+      "competition": "Campeonato regional escolar",
+      "location": "Estadio municipal",
+      "scoreFor": null,
+      "scoreAgainst": null,
+      "outcome": "participacion",
+      "highlights": "Tercer lugar en 800 m planos y quinto lugar en lanzamiento de la bala.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-26T22:52:49.386Z",
+      "updatedAt": "2026-08-26T22:52:49.386Z"
+    },
+    {
+      "id": "res_12",
+      "discipline": "atletismo",
+      "level": "infantil",
+      "playedAt": "2026-08-12T22:52:49.386Z",
+      "opponent": "Encuentro comunal formativo",
+      "competition": "Encuentro comunal",
+      "location": "Pista del complejo deportivo",
+      "scoreFor": null,
+      "scoreAgainst": null,
+      "outcome": "participacion",
+      "highlights": "Participación de 14 estudiantes. Segundo lugar por equipos en la posta mixta.",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "createdAt": "2026-08-12T22:52:49.386Z",
+      "updatedAt": "2026-08-12T22:52:49.386Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "prj_1",
+      "title": "Huerto escolar",
+      "summary": "Un huerto de verdad en el patio, cuidado por los cursos de básica.",
+      "description": "El huerto partió en un rincón del patio con cuatro cajones de madera y hoy ocupa todo el sector norte. Ahí se siembran lechugas, tomates, zanahorias y hierbas.\nCada curso de básica tiene su propio cajón y se turna para regar durante la semana. Lo que se cosecha se reparte entre los cursos que trabajaron y una parte va al casino.\nEs uno de los proyectos más antiguos del colegio que sigue funcionando.",
+      "area": "Medioambiente",
+      "status": "activo",
+      "startYear": 2018,
+      "endYear": null,
+      "imageKey": "projects.huerto",
+      "ledBy": "Academia de Ciencias y cursos de básica",
+      "howToJoin": "Habla con tu profesor jefe para que tu curso pida su cajón. También puedes sumarte a los turnos de riego en los recreos largos.",
+      "createdAt": "2018-03-12T15:00:00.000Z",
+      "updatedAt": "2026-03-02T15:00:00.000Z"
+    },
+    {
+      "id": "prj_2",
+      "title": "Reciclaje por curso",
+      "summary": "Cada sala tiene su punto de reciclaje y se compite por curso.",
+      "description": "En cada sala hay tres contenedores: papel, plástico y latas. Una vez al mes se pesa lo que juntó cada curso y se publica la tabla.\nEl curso que más recicla en el año se gana una salida a terreno.\nLa idea nació de una asamblea de delegados y hoy participa el colegio completo.",
+      "area": "Medioambiente",
+      "status": "activo",
+      "startYear": 2021,
+      "endYear": null,
+      "imageKey": "projects.reciclaje",
+      "ledBy": "Brigada ambiental",
+      "howToJoin": "Ya estás dentro: tu sala tiene los contenedores. Pregunta quién es el encargado de tu curso.",
+      "createdAt": "2021-04-05T16:00:00.000Z",
+      "updatedAt": "2026-04-18T16:00:00.000Z"
+    },
+    {
+      "id": "prj_3",
+      "title": "Radio del recreo",
+      "summary": "Música y avisos por los parlantes del patio en el segundo recreo.",
+      "description": "Un grupo de alumnos arma la programación de cada semana: música pedida por los cursos, saludos de cumpleaños y los avisos del Centro de Alumnos.\nSe transmite desde la sala de computación con un micrófono y la consola del colegio.\nCualquier curso puede pedir una canción dejando el nombre en el buzón de la radio.",
+      "area": "Cultura y arte",
+      "status": "activo",
+      "startYear": 2023,
+      "endYear": null,
+      "imageKey": "projects.radio",
+      "ledBy": "Taller de comunicaciones",
+      "howToJoin": "Anda a la sala de computación en el primer recreo del lunes y pregunta por el equipo de la radio.",
+      "createdAt": "2023-05-20T16:00:00.000Z",
+      "updatedAt": "2026-05-09T16:00:00.000Z"
+    },
+    {
+      "id": "prj_4",
+      "title": "Padrinos de lectura",
+      "summary": "Alumnos grandes que leen cuentos a los más chicos una vez por semana.",
+      "description": "Los cursos de enseñanza media se emparejan con un curso de básica. Una vez a la semana, en la última hora del viernes, los grandes leen cuentos a los chicos en la biblioteca.\nCada pareja se mantiene todo el año, así que se conocen de verdad.\nEs el proyecto que más ha crecido: partió con un curso y hoy participan doce.",
+      "area": "Convivencia",
+      "status": "activo",
+      "startYear": 2019,
+      "endYear": null,
+      "imageKey": "projects.padrinos-lectura",
+      "ledBy": "Biblioteca y Centro de Alumnos",
+      "howToJoin": "Si eres de básica, tu curso ya tiene padrinos asignados. Si eres de media, avisa en la biblioteca.",
+      "createdAt": "2019-08-02T16:00:00.000Z",
+      "updatedAt": "2026-04-25T16:00:00.000Z"
+    },
+    {
+      "id": "prj_5",
+      "title": "Mural del centenario",
+      "summary": "El mural pintado entre todos los cursos para el aniversario del colegio.",
+      "description": "Durante dos meses, cada curso pintó una parte del muro que da al patio de básica. El diseño salió de un concurso interno que ganó una alumna de II Medio.\nSe usaron más de sesenta tarros de pintura y participaron cerca de cuatrocientos alumnos.\nEl mural sigue ahí y ya es parte del colegio, aunque el proyecto terminó cuando se pintó el último tramo.",
+      "area": "Cultura y arte",
+      "status": "historico",
+      "startYear": 2022,
+      "endYear": 2022,
+      "imageKey": "projects.mural",
+      "ledBy": "Departamento de Artes",
+      "createdAt": "2022-09-01T16:00:00.000Z",
+      "updatedAt": "2022-11-30T15:00:00.000Z"
+    },
+    {
+      "id": "prj_6",
+      "title": "Campaña del kilo",
+      "summary": "La colecta de alimentos que se hizo cada invierno durante seis años.",
+      "description": "Cada julio, los cursos competían por juntar la mayor cantidad de alimentos no perecibles. Lo recolectado se entregaba a una fundación del sector.\nEn su mejor año se reunieron más de dos toneladas.\nLa campaña se cerró en 2023, cuando el colegio pasó a apoyar de forma permanente a un comedor del barrio en vez de hacer una colecta anual.",
+      "area": "Acción social",
+      "status": "historico",
+      "startYear": 2017,
+      "endYear": 2023,
+      "imageKey": "projects.campana-kilo",
+      "ledBy": "Pastoral y Centro de Alumnos",
+      "createdAt": "2017-07-03T16:00:00.000Z",
+      "updatedAt": "2023-07-28T16:00:00.000Z"
+    }
+  ],
+  "communityGroups": [
+    {
+      "id": "grp_scouts",
+      "name": "Grupo Scout",
+      "shortDescription": "Formación en la vida al aire libre, servicio y trabajo en patrullas.",
+      "about": "El grupo scout reúne a estudiantes de distintos niveles en torno al método scout: patrullas, progresión personal y servicio a la comunidad.\n\nLas reuniones son semanales e incluyen juegos, técnica scout y planificación de salidas. Una vez al mes se realiza una actividad fuera del colegio.",
+      "goals": [
+        "Formar equipos de trabajo autónomos entre estudiantes de distintos niveles.",
+        "Desarrollar habilidades de vida al aire libre y primeros auxilios.",
+        "Realizar al menos un proyecto de servicio a la comunidad por semestre."
+      ],
+      "howToJoin": "Asiste a cualquier reunión de los viernes a las 16:00 en la sala 12, o postula desde la sección Inscripciones cuando se abra una nueva convocatoria.",
+      "category": "Organizaciones",
+      "coverImageKey": "community.scouts.cover",
+      "logoImageKey": "community.scouts.logo",
+      "leads": [
+        {
+          "id": "usr_est4",
+          "name": "Benjamín Cortés",
+          "grade": "I Medio A"
+        }
+      ],
+      "links": [
+        {
+          "label": "Correo del grupo",
+          "url": "mailto:scouts@verbo.cl"
+        }
+      ],
+      "meetingInfo": "Viernes 16:00 · Sala 12",
+      "status": "approved",
+      "createdAt": "2026-02-12T22:52:49.386Z",
+      "updatedAt": "2026-08-21T22:52:49.386Z"
+    },
+    {
+      "id": "grp_accion_social",
+      "name": "Área de Acción Social",
+      "shortDescription": "Voluntariados, campañas solidarias y apoyo escolar en la comuna.",
+      "about": "El área de acción social coordina las iniciativas solidarias de la enseñanza media: campañas de recolección, visitas a instituciones y apoyo escolar.\n\nEl trabajo se organiza en equipos por tipo de actividad, de modo que cada estudiante pueda participar según su disponibilidad.",
+      "goals": [
+        "Sostener al menos dos campañas solidarias por año con participación de todos los niveles.",
+        "Mantener un equipo estable de apoyo escolar para estudiantes de básica.",
+        "Vincular a la comunidad escolar con organizaciones de la comuna."
+      ],
+      "howToJoin": "Inscríbete en el voluntariado permanente desde la sección Inscripciones, o escribe al correo del área para sumarte a una campaña puntual.",
+      "category": "Solidario",
+      "coverImageKey": "community.accion-social.cover",
+      "logoImageKey": "community.accion-social.logo",
+      "leads": [
+        {
+          "id": "usr_est1",
+          "name": "Camila Rojas",
+          "grade": "III Medio A"
+        },
+        {
+          "id": "usr_admin",
+          "name": "Directiva Centro de Alumnos",
+          "grade": "IV Medio A"
+        }
+      ],
+      "links": [
+        {
+          "label": "Correo del área",
+          "url": "mailto:accionsocial@verbo.cl"
+        }
+      ],
+      "meetingInfo": "Miércoles 13:30 · Sala de pastoral",
+      "status": "approved",
+      "createdAt": "2026-02-22T22:52:49.386Z",
+      "updatedAt": "2026-08-25T22:52:49.386Z"
+    },
+    {
+      "id": "grp_barra",
+      "name": "Barra Oficial",
+      "shortDescription": "Organización de la hinchada en torneos, aniversario y encuentros deportivos.",
+      "about": "La barra oficial coordina el apoyo a las selecciones en partidos y torneos, además de preparar las presentaciones de la semana de aniversario.\n\nSe organiza en comisiones: percusión, lienzos y coreografía. No se requiere experiencia previa para participar en ninguna de ellas.",
+      "goals": [
+        "Acompañar a todas las selecciones en sus encuentros locales.",
+        "Preparar la presentación de aniversario con participación de los cuatro niveles.",
+        "Mantener un ambiente de apoyo respetuoso hacia rivales y árbitros."
+      ],
+      "howToJoin": "Súmate a cualquier ensayo de los martes en el gimnasio o escribe al correo de la barra indicando en qué comisión te interesa participar.",
+      "category": "Deportivo",
+      "coverImageKey": "community.barra.cover",
+      "logoImageKey": "community.barra.logo",
+      "leads": [
+        {
+          "id": "usr_est2",
+          "name": "Matías Fuentes",
+          "grade": "II Medio B"
+        }
+      ],
+      "links": [
+        {
+          "label": "Correo de la barra",
+          "url": "mailto:barra@verbo.cl"
+        }
+      ],
+      "meetingInfo": "Martes 16:30 · Gimnasio",
+      "status": "approved",
+      "createdAt": "2026-04-03T22:52:49.386Z",
+      "updatedAt": "2026-08-11T22:52:49.386Z"
+    },
+    {
+      "id": "grp_debate",
+      "name": "Academia de Debate",
+      "shortDescription": "Entrenamiento en argumentación y participación en torneos interescolares.",
+      "about": "La academia de debate entrena semanalmente en formato parlamentario británico y participa en torneos interescolares durante el año.\n\nLas sesiones incluyen preparación de casos, práctica de oratoria y debates internos.",
+      "goals": [
+        "Formar a estudiantes en argumentación y expresión oral.",
+        "Representar a la comunidad escolar en al menos tres torneos anuales.",
+        "Organizar un torneo interno abierto a todos los niveles."
+      ],
+      "howToJoin": "Las puertas están abiertas todo el año: asiste a una sesión de prueba los jueves a las 16:00 en la sala 8.",
+      "category": "Académico",
+      "coverImageKey": "community.academia.cover",
+      "logoImageKey": "community.academia.logo",
+      "leads": [
+        {
+          "id": "usr_est1",
+          "name": "Camila Rojas",
+          "grade": "III Medio A"
+        }
+      ],
+      "links": [
+        {
+          "label": "Correo de la academia",
+          "url": "mailto:debate@verbo.cl"
+        }
+      ],
+      "meetingInfo": "Jueves 16:00 · Sala 8",
+      "status": "approved",
+      "createdAt": "2026-04-13T22:52:49.386Z",
+      "updatedAt": "2026-08-06T22:52:49.386Z"
+    },
+    {
+      "id": "grp_pastoral",
+      "name": "Grupo de Pastoral Estudiantil",
+      "shortDescription": "Encuentros, jornadas de reflexión y acompañamiento entre pares.",
+      "about": "El grupo de pastoral organiza jornadas de reflexión, encuentros por nivel y actividades de acompañamiento entre estudiantes.\n\nEs un espacio abierto, sin requisitos de participación, coordinado junto al equipo de pastoral del colegio.",
+      "goals": [
+        "Ofrecer instancias de encuentro y reflexión para cada nivel.",
+        "Formar un equipo de acompañamiento entre pares.",
+        "Colaborar con el área de acción social en actividades conjuntas."
+      ],
+      "howToJoin": "Participa en la próxima jornada o escribe al correo del grupo para más información.",
+      "category": "Organizaciones",
+      "coverImageKey": "community.pastoral.cover",
+      "logoImageKey": "community.pastoral.logo",
+      "leads": [
+        {
+          "id": "usr_est3",
+          "name": "Antonia Salas",
+          "grade": "IV Medio B"
+        }
+      ],
+      "links": [
+        {
+          "label": "Correo del grupo",
+          "url": "mailto:pastoral@verbo.cl"
+        }
+      ],
+      "meetingInfo": "Lunes 13:30 · Capilla",
+      "status": "approved",
+      "createdAt": "2026-05-03T22:52:49.386Z",
+      "updatedAt": "2026-08-01T22:52:49.386Z"
+    }
+  ],
+  "marketplaceListings": [
+    {
+      "id": "lst_1",
+      "title": "Stickers ilustrados a pedido",
+      "description": "Diseño e impresión de stickers personalizados: mascotas, frases, logos de curso o alianza. Entrega en el colegio en tres días hábiles.",
+      "category": "Diseño e ilustración",
+      "type": "producto",
+      "priceLabel": "Desde $1.500 por plancha",
+      "imageKeys": [
+        "market.stickers"
+      ],
+      "seller": {
+        "id": "usr_est3",
+        "name": "Antonia Salas",
+        "grade": "IV Medio B"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:antonia.salas@verbo.cl"
+      },
+      "available": true,
+      "status": "approved",
+      "createdAt": "2026-08-26T22:52:49.386Z",
+      "updatedAt": "2026-08-26T22:52:49.386Z"
+    },
+    {
+      "id": "lst_2",
+      "title": "Tortas y postres por encargo",
+      "description": "Preparación de tortas, brownies y postres individuales para cumpleaños y actividades de curso. Se reciben pedidos con una semana de anticipación.",
+      "category": "Alimentos",
+      "type": "producto",
+      "priceLabel": "A convenir según tamaño",
+      "imageKeys": [
+        "market.pasteleria"
+      ],
+      "seller": {
+        "id": "usr_est5",
+        "name": "Josefa Miranda",
+        "grade": "8° Básico A"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:josefa.miranda@verbo.cl"
+      },
+      "available": true,
+      "status": "approved",
+      "createdAt": "2026-08-23T22:52:49.386Z",
+      "updatedAt": "2026-08-23T22:52:49.386Z"
+    },
+    {
+      "id": "lst_3",
+      "title": "Clases particulares de matemática",
+      "description": "Reforzamiento de matemática para 8° básico a II medio. Sesiones de 60 minutos, presenciales en biblioteca o por videollamada.",
+      "category": "Clases y tutorías",
+      "type": "servicio",
+      "priceLabel": "$5.000 por sesión",
+      "imageKeys": [
+        "market.clases-matematica"
+      ],
+      "seller": {
+        "id": "usr_est1",
+        "name": "Camila Rojas",
+        "grade": "III Medio A"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:camila.rojas@verbo.cl"
+      },
+      "available": true,
+      "status": "approved",
+      "createdAt": "2026-08-20T22:52:49.386Z",
+      "updatedAt": "2026-08-20T22:52:49.386Z"
+    },
+    {
+      "id": "lst_4",
+      "title": "Fotografía de eventos y actividades",
+      "description": "Cobertura fotográfica de partidos, presentaciones y actividades de curso. Entrega de galería editada en 48 horas.",
+      "category": "Fotografía y video",
+      "type": "servicio",
+      "priceLabel": "A convenir",
+      "imageKeys": [
+        "market.fotografia"
+      ],
+      "seller": {
+        "id": "usr_est2",
+        "name": "Matías Fuentes",
+        "grade": "II Medio B"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:matias.fuentes@verbo.cl"
+      },
+      "available": true,
+      "status": "approved",
+      "createdAt": "2026-08-17T22:52:49.386Z",
+      "updatedAt": "2026-08-17T22:52:49.386Z"
+    },
+    {
+      "id": "lst_5",
+      "title": "Pulseras artesanales tejidas",
+      "description": "Pulseras hechas a mano con los colores que elijas. Ideales para alianzas y regalos de curso.",
+      "category": "Artesanía",
+      "type": "producto",
+      "priceLabel": "$2.000 cada una",
+      "imageKeys": [
+        "market.pulseras"
+      ],
+      "seller": {
+        "id": "usr_est4",
+        "name": "Benjamín Cortés",
+        "grade": "I Medio A"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:benjamin.cortes@verbo.cl"
+      },
+      "available": true,
+      "status": "approved",
+      "createdAt": "2026-08-11T22:52:49.386Z",
+      "updatedAt": "2026-08-11T22:52:49.386Z"
+    },
+    {
+      "id": "lst_6",
+      "title": "Diseño de afiches para actividades",
+      "description": "Diseño de afiches y publicaciones para redes de cursos, academias y proyectos estudiantiles. Incluye dos rondas de correcciones.",
+      "category": "Diseño e ilustración",
+      "type": "servicio",
+      "priceLabel": "Desde $4.000",
+      "imageKeys": [
+        "market.diseno-afiches"
+      ],
+      "seller": {
+        "id": "usr_est3",
+        "name": "Antonia Salas",
+        "grade": "IV Medio B"
+      },
+      "contact": {
+        "label": "Escribir por correo",
+        "url": "mailto:antonia.salas@verbo.cl"
+      },
+      "available": true,
+      "status": "rejected",
+      "createdAt": "2026-08-31T16:52:49.386Z",
+      "updatedAt": "2026-09-01T00:25:57.797Z",
+      "moderatedBy": "usr_admin",
+      "moderatedAt": "2026-09-01T00:25:57.797Z",
+      "moderationNote": "no se"
+    }
+  ]
+}
