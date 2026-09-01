@@ -4,6 +4,7 @@ import { CalendarClock, FileQuestion, QrCode as QrIcon, ScrollText, Store } from
 import { formatDate } from '@/core/utils/date';
 import {
   AppImage,
+  Avatar,
   Badge,
   Button,
   ButtonLink,
@@ -44,7 +45,7 @@ export function BenefitDetailPage() {
           icon={FileQuestion}
           title="Beneficio no encontrado"
           description="Es posible que el convenio haya terminado o que el enlace no sea válido."
-          action={<ButtonLink to="/beneficios">Volver a beneficios</ButtonLink>}
+          action={<ButtonLink to="/colaboradores">Volver a colaboradores</ButtonLink>}
         />
       </Page>
     );
@@ -55,9 +56,13 @@ export function BenefitDetailPage() {
   return (
     <Page>
       <header className="mb-5 flex gap-4">
-        <div className="w-20 shrink-0">
-          <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
-        </div>
+        {benefit.logoImageKey ? (
+          <div className="w-20 shrink-0">
+            <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
+          </div>
+        ) : (
+          <Avatar name={benefit.partner} size="xl" className="shrink-0 rounded-2xl" />
+        )}
 
         <div className="min-w-0 flex-1">
           <p className="text-[12px] font-bold uppercase tracking-wide text-ink-3">

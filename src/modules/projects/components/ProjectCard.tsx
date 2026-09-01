@@ -6,9 +6,12 @@ import { projectYears } from '../api';
 /* ============================================================================
    TARJETA DE PROYECTO
    ----------------------------------------------------------------------------
-   Imagen grande y frase corta. El apartado lo usan sobre todo los cursos más
-   pequeños, así que la tarjeta se apoya en la foto y evita el texto denso: el
-   detalle completo está una pulsación más adentro.
+   Frase corta y, si el proyecto tiene fotografía, imagen grande arriba. El
+   apartado lo usan sobre todo los cursos más pequeños, así que la tarjeta evita
+   el texto denso: el detalle completo está una pulsación más adentro.
+
+   Sin fotografía NO se reserva el espacio de la imagen: una lista de recuadros
+   vacíos se lee peor que una lista de tarjetas compactas.
    ========================================================================== */
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -16,7 +19,9 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <CardLink to={`/proyectos/${project.id}`} flush>
-      <AppImage imageKey={project.imageKey} ratio="16/9" rounded={false} />
+      {project.imageKey ? (
+        <AppImage imageKey={project.imageKey} ratio="16/9" rounded={false} />
+      ) : null}
 
       <div className="p-4">
         <div className="mb-2 flex flex-wrap items-center gap-2">

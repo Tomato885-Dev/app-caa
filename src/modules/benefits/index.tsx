@@ -3,20 +3,23 @@ import type { AppModule } from '@/core/modules/types';
 import { BenefitDetailPage } from './BenefitDetailPage';
 import { BenefitsListPage } from './BenefitsListPage';
 
-/* Beneficios de la campaña. Los administradores cargan los convenios desde
-   Administración → Contenidos → Beneficios; el estudiante abre uno, lee de qué
-   se trata y muestra su código QR para canjearlo.
+/* Colaboradores de la campaña. Los administradores cargan cada colaborador y
+   el beneficio que entrega desde Administración → Contenidos → Colaboradores;
+   el estudiante abre uno, lee de qué se trata y muestra su código QR.
+
+   El identificador del módulo sigue siendo `benefits`: es interno, no se ve, y
+   cambiarlo obligaría a migrar el contenido ya cargado sin ganar nada.
 
    La plataforma no valida el canje ni procesa pagos: solo entrega el código,
    igual que el marketplace solo difunde y no cobra (§6.7). */
 
 export const benefitsModule: AppModule = {
   id: 'benefits',
-  title: 'Beneficios',
-  description: 'Convenios de la campaña, con código QR.',
+  title: 'Colaboradores',
+  description: 'Quiénes apoyan la campaña y qué beneficio entregan.',
   icon: Ticket,
   tone: 'accent',
-  path: '/beneficios',
+  path: '/colaboradores',
   nav: { section: 'secondary', order: 55 },
   routes: [
     { index: true, element: <BenefitsListPage /> },

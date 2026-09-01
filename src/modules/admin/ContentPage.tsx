@@ -163,7 +163,7 @@ export function ContentPage() {
           { value: 'noticias', label: 'Noticias', count: news.data?.length ?? 0 },
           { value: 'eventos', label: 'Eventos', count: events.data?.length ?? 0 },
           { value: 'inscripciones', label: 'Inscripciones', count: activities.data?.length ?? 0 },
-          { value: 'beneficios', label: 'Beneficios', count: benefits.data?.length ?? 0 },
+          { value: 'beneficios', label: 'Colaboradores', count: benefits.data?.length ?? 0 },
           { value: 'resultados', label: '365', count: results.data?.length ?? 0 },
           { value: 'proyectos', label: 'Proyectos', count: projects.data?.length ?? 0 },
         ]}

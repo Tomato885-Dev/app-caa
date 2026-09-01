@@ -1,18 +1,24 @@
 import { QrCode } from 'lucide-react';
 import type { Benefit } from '@/core/types';
-import { AppImage, Badge, CardLink } from '@/ui';
+import { AppImage, Avatar, Badge, CardLink } from '@/ui';
 import { isRedeemable } from '../api';
 
-/** Tarjeta del listado de beneficios: logo del comercio + qué ofrece. */
+/** Tarjeta del listado de colaboradores: quién es y qué beneficio entrega. */
 export function BenefitCard({ benefit }: { benefit: Benefit }) {
   const available = isRedeemable(benefit);
 
   return (
-    <CardLink to={`/beneficios/${benefit.id}`}>
+    <CardLink to={`/colaboradores/${benefit.id}`}>
       <div className="flex gap-3.5">
-        <div className="w-16 shrink-0">
-          <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
-        </div>
+        {/* Sin logotipo se muestran las iniciales, no un marcador vacío: la
+            mayoría de los colaboradores se cargan antes de tener su logo. */}
+        {benefit.logoImageKey ? (
+          <div className="w-16 shrink-0">
+            <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
+          </div>
+        ) : (
+          <Avatar name={benefit.partner} size="lg" className="shrink-0 rounded-xl" />
+        )}
 
         <div className="min-w-0 flex-1">
           <p className="truncate text-[11.5px] font-bold uppercase tracking-wide text-ink-3">

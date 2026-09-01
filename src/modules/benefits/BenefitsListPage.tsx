@@ -52,8 +52,8 @@ export function BenefitsListPage() {
   return (
     <Page>
       <PageHeader
-        title="Beneficios"
-        description="Convenios de la campaña. Abre uno y muestra su código QR para canjearlo."
+        title="Colaboradores"
+        description="Quiénes apoyan la campaña. Abre uno y muestra su código QR para usar su beneficio."
       />
 
       <div className="relative mb-3">
@@ -62,8 +62,8 @@ export function BenefitsListPage() {
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Buscar un beneficio o comercio"
-          aria-label="Buscar beneficios"
+          placeholder="Buscar un colaborador o beneficio"
+          aria-label="Buscar colaboradores"
           className="pl-10"
         />
       </div>
@@ -75,8 +75,8 @@ export function BenefitsListPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={Ticket}
-          title="Sin beneficios disponibles"
-          description="Cuando el Centro de Alumnos cierre un convenio, aparecerá aquí."
+          title="Sin colaboradores"
+          description="Cuando el Centro de Alumnos sume un colaborador, aparecerá aquí."
         />
       ) : (
         <div className="space-y-2.5">

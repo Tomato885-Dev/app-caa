@@ -46,7 +46,9 @@ export function ProjectDetailPage() {
   return (
     <Page>
       <article>
-        <AppImage imageKey={project.imageKey} ratio="16/9" className="mb-4" />
+        {project.imageKey ? (
+          <AppImage imageKey={project.imageKey} ratio="16/9" className="mb-4" />
+        ) : null}
 
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <Badge tone={activo ? 'brand' : 'neutral'}>{PROJECT_STATUS_LABEL[project.status]}</Badge>

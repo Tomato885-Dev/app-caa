@@ -1,105 +1,249 @@
 import type { Benefit } from '@/core/types';
 
 /* ============================================================================
-   BENEFICIOS DE EJEMPLO
+   COLABORADORES DE LA CAMPAÑA
    ----------------------------------------------------------------------------
-   Convenios ficticios, puestos solo para mostrar el formato. Reemplázalos por
-   los acuerdos reales de la campaña desde Administración → Contenidos →
-   Beneficios; no hace falta editar este archivo.
+   Quince espacios, uno por cada colaborador, listos para completar desde
+   Administración → Contenidos → Colaboradores. Después hay que exportar el
+   contenido para que quede guardado.
 
-   `qrValue` es lo que el comercio lee al escanear. Puede ser un código, un
-   identificador o una URL de validación.
+   QUÉ EDITAR EN CADA UNO
+     · El nombre del colaborador y qué beneficio entrega.
+     · La descripción y las condiciones de uso.
+     · `qrValue`: lo que el comercio lee al escanear. Puede ser un código, un
+       identificador o una dirección de validación. Debe ser distinto en cada
+       colaborador.
+
+   Van sin logotipo. Para agregarlos se declaran en `content/images.ts` con
+   claves que empiecen por `benefit.` y se eligen desde el mismo formulario.
    ========================================================================== */
 
-const daysAgo = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
-const inDays = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
+const iso = (day: number) => new Date(2026, 0, day, 12).toISOString();
 
 export const seedBenefits: Benefit[] = [
   {
-    id: 'ben_1',
-    name: '2x1 en combos',
-    partner: 'Comida rápida del centro comercial',
-    summary: 'Dos combos por el precio de uno, de lunes a jueves.',
+    id: 'ben_01',
+    partner: 'Colaborador 1',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
     description:
-      'Convenio conseguido por la campaña para el local de comida rápida del centro comercial. Presentando el código QR en caja, el segundo combo de igual o menor valor sale sin costo.\nAplica de lunes a jueves durante todo el año escolar y es válido tanto en el mesón como en el autoservicio.',
-    terms:
-      'Un canje por persona y por día. No acumulable con otras promociones ni con descuentos de la aplicación del local. Se debe presentar credencial de estudiante junto al código.',
-    category: 'Alimentación',
-    logoImageKey: 'benefit.comida-rapida',
-    qrValue: 'CAA2026-COMBO-2X1',
-    code: 'CAA2026-COMBO-2X1',
-    validUntil: inDays(180),
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-01',
+    code: 'CAA2026-COLAB-01',
     active: true,
-    createdAt: daysAgo(30),
-    updatedAt: daysAgo(4),
+    createdAt: iso(1),
+    updatedAt: iso(1),
   },
   {
-    id: 'ben_2',
-    name: '30 % en entradas de cine',
-    partner: 'Cine del barrio',
-    summary: 'Descuento en la entrada general, todos los días.',
+    id: 'ben_02',
+    partner: 'Colaborador 2',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
     description:
-      'Descuento del 30 % sobre el valor de la entrada general en cualquier función, incluidos estrenos y fines de semana.\nEl código se muestra en la boletería antes de comprar; no se aplica a compras ya realizadas por internet.',
-    terms:
-      'Válido para una entrada por canje. No aplica a funciones especiales, maratones ni salas premium. Sujeto a disponibilidad de butacas.',
-    category: 'Entretención',
-    logoImageKey: 'benefit.cine',
-    qrValue: 'CAA2026-CINE-30',
-    code: 'CAA2026-CINE-30',
-    validUntil: inDays(120),
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-02',
+    code: 'CAA2026-COLAB-02',
     active: true,
-    createdAt: daysAgo(26),
-    updatedAt: daysAgo(26),
+    createdAt: iso(2),
+    updatedAt: iso(2),
   },
   {
-    id: 'ben_3',
-    name: '20 % en útiles y cuadernos',
-    partner: 'Librería del centro',
-    summary: 'Descuento en toda la línea escolar.',
+    id: 'ben_03',
+    partner: 'Colaborador 3',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
     description:
-      'Descuento del 20 % en cuadernos, blocks, lápices y artículos de dibujo técnico. Pensado para el inicio de semestre y para las asignaturas con materiales propios.\nSe canjea en caja mostrando el código antes de pagar.',
-    terms: 'No aplica a libros de texto, mochilas ni tecnología. Tope de $30.000 por compra.',
-    category: 'Librería y útiles',
-    logoImageKey: 'benefit.libreria',
-    qrValue: 'CAA2026-UTILES-20',
-    code: 'CAA2026-UTILES-20',
-    validUntil: inDays(90),
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-03',
+    code: 'CAA2026-COLAB-03',
     active: true,
-    createdAt: daysAgo(21),
-    updatedAt: daysAgo(21),
+    createdAt: iso(3),
+    updatedAt: iso(3),
   },
   {
-    id: 'ben_4',
-    name: 'Primera clase liberada',
-    partner: 'Gimnasio municipal',
-    summary: 'Una clase de prueba sin costo en cualquier disciplina.',
+    id: 'ben_04',
+    partner: 'Colaborador 4',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
     description:
-      'Acceso liberado a una primera clase de prueba en cualquiera de las disciplinas del gimnasio: acondicionamiento, spinning, artes marciales o natación.\nAl escanear el código en recepción se registra el canje y se entrega el pase del día.',
-    terms:
-      'Un solo canje por estudiante. Requiere autorización del apoderado para menores de 16 años y presentar certificado de salud vigente para natación.',
-    category: 'Deporte',
-    logoImageKey: 'benefit.gimnasio',
-    qrValue: 'CAA2026-GYM-TRIAL',
-    code: 'CAA2026-GYM-TRIAL',
-    validUntil: inDays(60),
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-04',
+    code: 'CAA2026-COLAB-04',
     active: true,
-    createdAt: daysAgo(15),
-    updatedAt: daysAgo(15),
+    createdAt: iso(4),
+    updatedAt: iso(4),
   },
   {
-    id: 'ben_5',
-    name: '15 % en fotocopias e impresiones',
-    partner: 'Centro de copiado frente al colegio',
-    summary: 'Descuento en impresión, anillado y empaste.',
+    id: 'ben_05',
+    partner: 'Colaborador 5',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
     description:
-      'Descuento del 15 % en fotocopias, impresión en blanco y negro o color, anillado y empaste de trabajos.\nEspecialmente útil para las entregas de fin de semestre y los proyectos de investigación.',
-    terms: 'Aplica desde 20 copias. No acumulable con el precio por volumen del local.',
-    category: 'Servicios',
-    logoImageKey: 'benefit.copias',
-    qrValue: 'CAA2026-COPIAS-15',
-    code: 'CAA2026-COPIAS-15',
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-05',
+    code: 'CAA2026-COLAB-05',
     active: true,
-    createdAt: daysAgo(9),
-    updatedAt: daysAgo(9),
+    createdAt: iso(5),
+    updatedAt: iso(5),
+  },
+  {
+    id: 'ben_06',
+    partner: 'Colaborador 6',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-06',
+    code: 'CAA2026-COLAB-06',
+    active: true,
+    createdAt: iso(6),
+    updatedAt: iso(6),
+  },
+  {
+    id: 'ben_07',
+    partner: 'Colaborador 7',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-07',
+    code: 'CAA2026-COLAB-07',
+    active: true,
+    createdAt: iso(7),
+    updatedAt: iso(7),
+  },
+  {
+    id: 'ben_08',
+    partner: 'Colaborador 8',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-08',
+    code: 'CAA2026-COLAB-08',
+    active: true,
+    createdAt: iso(8),
+    updatedAt: iso(8),
+  },
+  {
+    id: 'ben_09',
+    partner: 'Colaborador 9',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-09',
+    code: 'CAA2026-COLAB-09',
+    active: true,
+    createdAt: iso(9),
+    updatedAt: iso(9),
+  },
+  {
+    id: 'ben_10',
+    partner: 'Colaborador 10',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-10',
+    code: 'CAA2026-COLAB-10',
+    active: true,
+    createdAt: iso(10),
+    updatedAt: iso(10),
+  },
+  {
+    id: 'ben_11',
+    partner: 'Colaborador 11',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-11',
+    code: 'CAA2026-COLAB-11',
+    active: true,
+    createdAt: iso(11),
+    updatedAt: iso(11),
+  },
+  {
+    id: 'ben_12',
+    partner: 'Colaborador 12',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-12',
+    code: 'CAA2026-COLAB-12',
+    active: true,
+    createdAt: iso(12),
+    updatedAt: iso(12),
+  },
+  {
+    id: 'ben_13',
+    partner: 'Colaborador 13',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-13',
+    code: 'CAA2026-COLAB-13',
+    active: true,
+    createdAt: iso(13),
+    updatedAt: iso(13),
+  },
+  {
+    id: 'ben_14',
+    partner: 'Colaborador 14',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-14',
+    code: 'CAA2026-COLAB-14',
+    active: true,
+    createdAt: iso(14),
+    updatedAt: iso(14),
+  },
+  {
+    id: 'ben_15',
+    partner: 'Colaborador 15',
+    name: 'Beneficio por definir',
+    summary: 'Pendiente de completar: resume el beneficio en una línea.',
+    description:
+      'Pendiente de completar.\nExplica quién es el colaborador y en qué consiste el beneficio que entrega a los estudiantes.',
+    terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
+    category: 'Otros',
+    qrValue: 'CAA2026-COLAB-15',
+    code: 'CAA2026-COLAB-15',
+    active: true,
+    createdAt: iso(15),
+    updatedAt: iso(15),
   },
 ];

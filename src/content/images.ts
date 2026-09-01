@@ -170,33 +170,14 @@ export const images: Record<string, ImageAsset> = {
   ),
 
   /* --- Proyectos del colegio ---------------------------------------------
-     Una foto por proyecto. Idealmente alumnos trabajando en él, no un montaje:
-     el apartado lo miran los cursos pequeños y la foto es lo que los engancha.
-     Al crear un proyecto nuevo desde la app, agrega aquí su clave.        */
-  'projects.huerto': pending(
-    'Alumnos de básica trabajando en el huerto escolar',
-    'public/images/proyectos/huerto.jpg',
-  ),
-  'projects.reciclaje': pending(
-    'Punto de reciclaje de una sala, con los contenedores por material',
-    'public/images/proyectos/reciclaje.jpg',
-  ),
-  'projects.radio': pending(
-    'Equipo de la radio del recreo transmitiendo',
-    'public/images/proyectos/radio.jpg',
-  ),
-  'projects.padrinos-lectura': pending(
-    'Un alumno de media leyendo un cuento a un grupo de niños en la biblioteca',
-    'public/images/proyectos/padrinos-lectura.jpg',
-  ),
-  'projects.mural': pending(
-    'El mural terminado en el patio de básica',
-    'public/images/proyectos/mural.jpg',
-  ),
-  'projects.campana-kilo': pending(
-    'Alimentos reunidos durante la campaña del kilo',
-    'public/images/proyectos/campana-kilo.jpg',
-  ),
+     Los proyectos van SIN fotografía. Si más adelante quieren agregarlas,
+     se declara aquí una entrada por proyecto con una clave que empiece por
+     `projects.` y se elige desde el formulario de administración. Ejemplo:
+
+       'projects.huerto': pending(
+         'Alumnos trabajando en el huerto escolar',
+         'public/images/proyectos/huerto.jpg',
+       ),                                                                   */
 
   /* --- Beneficios (QR) --------------------------------------------------
      Logo del comercio o institución que otorga cada beneficio. Cuadrado, con

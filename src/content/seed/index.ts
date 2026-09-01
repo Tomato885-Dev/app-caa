@@ -34,7 +34,7 @@ import { seedUsers } from './users';
    ========================================================================== */
 
 /** Versión del contenido de ejemplo. Subirla fuerza a re-sembrar. */
-const FALLBACK_VERSION = '2026-08-23.nomina-1';
+const FALLBACK_VERSION = '2026-08-31.proyectos-13-colaboradores-15';
 
 interface ContentFile {
   version?: string;

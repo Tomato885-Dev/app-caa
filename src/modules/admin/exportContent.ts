@@ -40,7 +40,7 @@ export const COLLECTION_LABEL: Record<ExportedCollection, string> = {
   news: 'Noticias',
   events: 'Eventos',
   signupActivities: 'Inscripciones',
-  benefits: 'Beneficios',
+  benefits: 'Colaboradores',
   sportsResults: 'Resultados 365',
   projects: 'Proyectos',
   communityGroups: 'Comunidad',
