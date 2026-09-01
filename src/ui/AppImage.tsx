@@ -42,6 +42,13 @@ interface AppImageProps {
    * ejemplo, las iniciales de un colaborador que aún no tiene logotipo.
    */
   fallback?: ReactNode;
+  /**
+   * Cómo encaja la imagen en su marco.
+   *   'cover'   recorta para llenarlo. Fotografías.
+   *   'contain' la muestra entera, con aire alrededor. Logotipos: un logo
+   *             recortado deja de ser reconocible, que es justo su función.
+   */
+  fit?: 'cover' | 'contain';
 }
 
 export function AppImage({
@@ -51,6 +58,7 @@ export function AppImage({
   compact,
   rounded = true,
   fallback,
+  fit = 'cover',
 }: AppImageProps) {
   const asset = getImage(imageKey);
   const shape = cn(ratioClass[ratio ?? asset?.ratio ?? '16/9'], rounded && 'rounded-xl', className);
@@ -66,7 +74,7 @@ export function AppImage({
 
   if (!asset?.src) return <>{ausente}</>;
 
-  return <LoadedImage src={asset.src} alt={asset.alt} shape={shape} ausente={ausente} />;
+  return <LoadedImage src={asset.src} alt={asset.alt} shape={shape} ausente={ausente} fit={fit} />;
 }
 
 /**
@@ -78,11 +86,13 @@ function LoadedImage({
   alt,
   shape,
   ausente,
+  fit,
 }: {
   src: string;
   alt: string;
   shape: string;
   ausente: ReactNode;
+  fit: 'cover' | 'contain';
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -94,7 +104,11 @@ function LoadedImage({
       alt={alt}
       decoding="async"
       onError={() => setFailed(true)}
-      className={cn('h-full w-full object-cover bg-surface-2', shape)}
+      className={cn(
+        'h-full w-full bg-surface-2',
+        fit === 'contain' ? 'object-contain p-1.5' : 'object-cover',
+        shape,
+      )}
     />
   );
 }

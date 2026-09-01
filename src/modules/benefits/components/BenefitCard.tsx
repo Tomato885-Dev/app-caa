@@ -18,6 +18,7 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
             imageKey={benefit.logoImageKey}
             ratio="1/1"
             compact
+            fit="contain"
             fallback={<Avatar name={benefit.partner} size="lg" className="rounded-xl" />}
           />
         </div>

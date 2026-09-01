@@ -61,6 +61,7 @@ export function BenefitDetailPage() {
             imageKey={benefit.logoImageKey}
             ratio="1/1"
             compact
+            fit="contain"
             fallback={<Avatar name={benefit.partner} size="xl" className="rounded-2xl" />}
           />
         </div>
