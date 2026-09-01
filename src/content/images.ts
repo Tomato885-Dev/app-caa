@@ -330,15 +330,34 @@ export const images: Record<string, ImageAsset> = {
  * Devuelve el descriptor de una imagen. Si la clave no está registrada,
  * genera un marcador igualmente visible para no romper la interfaz.
  */
+/**
+ * Antepone la carpeta desde la que se sirve la app.
+ *
+ * Las rutas del manifiesto se escriben desde la raíz (`/images/...`), que es
+ * lo natural de leer. Pero la app no siempre vive en la raíz: en GitHub Pages
+ * cuelga de `/nombre-del-repositorio/`, y ahí una ruta absoluta apunta fuera
+ * de la aplicación y la imagen no aparece.
+ *
+ * `BASE_URL` vale '/' en un dominio propio y '/app-caa/' en GitHub Pages, así
+ * que el mismo manifiesto sirve en los dos casos sin tocar nada.
+ */
+function resolverRuta(src: string | null): string | null {
+  if (!src) return null;
+  if (!src.startsWith('/')) return src;
+  return import.meta.env.BASE_URL.replace(/\/$/, '') + src;
+}
+
 export function getImage(key: string | undefined): ImageAsset | null {
   if (!key) return null;
-  return (
-    images[key] ?? {
-      src: null,
-      alt: '',
-      description: `Imagen sin registrar (clave: ${key})`,
-      ratio: '16/9',
-      suggestedPath: 'Registrar la clave en src/content/images.ts',
-    }
-  );
+
+  const asset = images[key];
+  if (asset) return { ...asset, src: resolverRuta(asset.src) };
+
+  return {
+    src: null,
+    alt: '',
+    description: `Imagen sin registrar (clave: ${key})`,
+    ratio: '16/9',
+    suggestedPath: 'Registrar la clave en src/content/images.ts',
+  };
 }
