@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { ImagePlus } from 'lucide-react';
 import { getImage, type ImageRatio } from '@/content/images';
 import { cn } from './cn';
@@ -6,10 +8,15 @@ import { cn } from './cn';
    IMÁGENES Y MARCADORES
    ----------------------------------------------------------------------------
    Componente único para mostrar imágenes de contenido. Si la imagen todavía no
-   existe en el manifiesto (`src: null`), dibuja un marcador inequívoco que
-   indica qué foto falta y en qué ruta debe dejarse.
+   existe, dibuja un marcador inequívoco que indica qué foto falta y en qué ruta
+   debe dejarse. Así, ningún lugar de la app queda con una imagen inventada.
 
-   Así, ningún lugar de la app queda con una imagen inventada o improvisada.
+   El marcador aparece en dos casos:
+     · La entrada del manifiesto no tiene ruta (`src: null`).
+     · La ruta está declarada pero el archivo aún no se ha copiado.
+
+   El segundo caso permite dejar la ruta anotada de antemano: basta con dejar
+   el archivo en su carpeta para que la foto aparezca, sin editar nada.
    ========================================================================== */
 
 const ratioClass: Record<ImageRatio, string> = {
@@ -29,35 +36,65 @@ interface AppImageProps {
   /** Marcador compacto: solo icono, sin texto. Para miniaturas. */
   compact?: boolean;
   rounded?: boolean;
+  /**
+   * Qué mostrar cuando la imagen no está, en vez del marcador punteado.
+   * Se usa donde una alternativa se ve mejor que un hueco reservado: por
+   * ejemplo, las iniciales de un colaborador que aún no tiene logotipo.
+   */
+  fallback?: ReactNode;
 }
 
-export function AppImage({ imageKey, className, ratio, compact, rounded = true }: AppImageProps) {
+export function AppImage({
+  imageKey,
+  className,
+  ratio,
+  compact,
+  rounded = true,
+  fallback,
+}: AppImageProps) {
   const asset = getImage(imageKey);
   const shape = cn(ratioClass[ratio ?? asset?.ratio ?? '16/9'], rounded && 'rounded-xl', className);
 
-  // Sin clave declarada: marcador genérico.
-  if (!asset) {
-    return <PlaceholderBox className={shape} compact label="Imagen pendiente" />;
-  }
-
-  if (asset.src) {
-    return (
-      <img
-        src={asset.src}
-        alt={asset.alt}
-        loading="lazy"
-        decoding="async"
-        className={cn('h-full w-full object-cover bg-surface-2', shape)}
-      />
-    );
-  }
-
-  return (
+  const ausente = fallback ?? (
     <PlaceholderBox
       className={shape}
       compact={compact}
-      label={asset.description}
-      path={asset.suggestedPath}
+      label={asset?.description ?? 'Imagen pendiente'}
+      path={asset?.suggestedPath}
+    />
+  );
+
+  if (!asset?.src) return <>{ausente}</>;
+
+  return <LoadedImage src={asset.src} alt={asset.alt} shape={shape} ausente={ausente} />;
+}
+
+/**
+ * Imagen con ruta declarada. Si el archivo no está todavía, cae al marcador
+ * en vez de dejar el icono de imagen rota del navegador.
+ */
+function LoadedImage({
+  src,
+  alt,
+  shape,
+  ausente,
+}: {
+  src: string;
+  alt: string;
+  shape: string;
+  ausente: ReactNode;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  if (failed) return <>{ausente}</>;
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      decoding="async"
+      onError={() => setFailed(true)}
+      className={cn('h-full w-full object-cover bg-surface-2', shape)}
     />
   );
 }

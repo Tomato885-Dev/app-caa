@@ -56,13 +56,14 @@ export function BenefitDetailPage() {
   return (
     <Page>
       <header className="mb-5 flex gap-4">
-        {benefit.logoImageKey ? (
-          <div className="w-20 shrink-0">
-            <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
-          </div>
-        ) : (
-          <Avatar name={benefit.partner} size="xl" className="shrink-0 rounded-2xl" />
-        )}
+        <div className="w-20 shrink-0">
+          <AppImage
+            imageKey={benefit.logoImageKey}
+            ratio="1/1"
+            compact
+            fallback={<Avatar name={benefit.partner} size="xl" className="rounded-2xl" />}
+          />
+        </div>
 
         <div className="min-w-0 flex-1">
           <p className="text-[12px] font-bold uppercase tracking-wide text-ink-3">

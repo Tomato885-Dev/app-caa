@@ -402,6 +402,35 @@ Administrador, o desactivas su cuenta.
 
 Aquí sí hay que editar **un archivo**, pero es copiar y pegar. Son dos pasos.
 
+### Los logotipos de los colaboradores son un caso aparte (más fácil)
+
+Para los 15 colaboradores **no hay que editar ningún archivo**. Las rutas ya
+están anotadas: solo deja la imagen en su carpeta con el nombre correcto.
+
+1. Abre la carpeta **`public/images/colaboradores/`**
+2. Copia ahí el logotipo con el nombre que corresponda:
+
+```
+colaborador-01.png   ← logo del "Colaborador 1"
+colaborador-02.png   ← logo del "Colaborador 2"
+...
+colaborador-15.png
+```
+
+3. Recarga la aplicación. El logo aparece solo.
+
+**Mientras no exista el archivo**, la app muestra las iniciales del colaborador
+en un cuadrito de color. No queda nada roto ni ningún hueco punteado, así que
+puedes ir poniéndolos de a uno, sin apuro.
+
+Recomendaciones: formato PNG, cuadrado, mínimo 200×200 píxeles, fondo claro o
+transparente. Si tu logo es `.jpg`, cámbiale la extensión a `.png` y funciona
+igual.
+
+Hay un recordatorio con todo esto en `public/images/colaboradores/LEEME.txt`.
+
+---
+
 ### Paso 1 — Copiar la foto a su carpeta
 
 Dentro del proyecto está la carpeta `public/images/`. Copia tu foto ahí,

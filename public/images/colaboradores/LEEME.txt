@@ -1,0 +1,24 @@
+LOGOTIPOS DE LOS COLABORADORES
+==============================
+
+Deja aquí el logotipo de cada colaborador, con estos nombres exactos:
+
+    colaborador-01.png
+    colaborador-02.png
+    colaborador-03.png
+    ...
+    colaborador-15.png
+
+El número corresponde al colaborador en la app: colaborador-01.png es el
+logotipo de "Colaborador 1", y así sucesivamente.
+
+NO hace falta editar ningún archivo de programación. Copia la imagen aquí
+con el nombre correcto y aparece sola al recargar la aplicación.
+
+RECOMENDACIONES
+- Formato PNG. Si tu logo es .jpg, cambia la extension a .png y funciona igual.
+- Cuadrado (mismo ancho que alto) y de al menos 200x200 pixeles.
+- Fondo claro o transparente: se muestra dentro de un circulo.
+
+Mientras un archivo no exista, la app muestra las iniciales del colaborador,
+que se ve bien igual. No queda nada roto.

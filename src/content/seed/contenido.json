@@ -1,6 +1,6 @@
 {
   "_leeme": "Contenido de la App CAA exportado desde el panel de administración. Guarda este archivo en src/content/seed/contenido.json para que sea el contenido oficial de la aplicación.",
-  "version": "2026-08-31.2042",
+  "version": "2026-08-31.2055",
   "exportadoEl": "2026-08-31T20:42:33.383377Z",
   "announcements": [
     {
@@ -443,7 +443,8 @@
       "code": "CAA2026-COLAB-01",
       "active": true,
       "createdAt": "2026-01-01T12:00:00.000Z",
-      "updatedAt": "2026-01-01T12:00:00.000Z"
+      "updatedAt": "2026-01-01T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-01"
     },
     {
       "id": "ben_02",
@@ -457,7 +458,8 @@
       "code": "CAA2026-COLAB-02",
       "active": true,
       "createdAt": "2026-01-02T12:00:00.000Z",
-      "updatedAt": "2026-01-02T12:00:00.000Z"
+      "updatedAt": "2026-01-02T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-02"
     },
     {
       "id": "ben_03",
@@ -471,7 +473,8 @@
       "code": "CAA2026-COLAB-03",
       "active": true,
       "createdAt": "2026-01-03T12:00:00.000Z",
-      "updatedAt": "2026-01-03T12:00:00.000Z"
+      "updatedAt": "2026-01-03T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-03"
     },
     {
       "id": "ben_04",
@@ -485,7 +488,8 @@
       "code": "CAA2026-COLAB-04",
       "active": true,
       "createdAt": "2026-01-04T12:00:00.000Z",
-      "updatedAt": "2026-01-04T12:00:00.000Z"
+      "updatedAt": "2026-01-04T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-04"
     },
     {
       "id": "ben_05",
@@ -499,7 +503,8 @@
       "code": "CAA2026-COLAB-05",
       "active": true,
       "createdAt": "2026-01-05T12:00:00.000Z",
-      "updatedAt": "2026-01-05T12:00:00.000Z"
+      "updatedAt": "2026-01-05T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-05"
     },
     {
       "id": "ben_06",
@@ -513,7 +518,8 @@
       "code": "CAA2026-COLAB-06",
       "active": true,
       "createdAt": "2026-01-06T12:00:00.000Z",
-      "updatedAt": "2026-01-06T12:00:00.000Z"
+      "updatedAt": "2026-01-06T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-06"
     },
     {
       "id": "ben_07",
@@ -527,7 +533,8 @@
       "code": "CAA2026-COLAB-07",
       "active": true,
       "createdAt": "2026-01-07T12:00:00.000Z",
-      "updatedAt": "2026-01-07T12:00:00.000Z"
+      "updatedAt": "2026-01-07T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-07"
     },
     {
       "id": "ben_08",
@@ -541,7 +548,8 @@
       "code": "CAA2026-COLAB-08",
       "active": true,
       "createdAt": "2026-01-08T12:00:00.000Z",
-      "updatedAt": "2026-01-08T12:00:00.000Z"
+      "updatedAt": "2026-01-08T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-08"
     },
     {
       "id": "ben_09",
@@ -555,7 +563,8 @@
       "code": "CAA2026-COLAB-09",
       "active": true,
       "createdAt": "2026-01-09T12:00:00.000Z",
-      "updatedAt": "2026-01-09T12:00:00.000Z"
+      "updatedAt": "2026-01-09T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-09"
     },
     {
       "id": "ben_10",
@@ -569,7 +578,8 @@
       "code": "CAA2026-COLAB-10",
       "active": true,
       "createdAt": "2026-01-10T12:00:00.000Z",
-      "updatedAt": "2026-01-10T12:00:00.000Z"
+      "updatedAt": "2026-01-10T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-10"
     },
     {
       "id": "ben_11",
@@ -583,7 +593,8 @@
       "code": "CAA2026-COLAB-11",
       "active": true,
       "createdAt": "2026-01-11T12:00:00.000Z",
-      "updatedAt": "2026-01-11T12:00:00.000Z"
+      "updatedAt": "2026-01-11T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-11"
     },
     {
       "id": "ben_12",
@@ -597,7 +608,8 @@
       "code": "CAA2026-COLAB-12",
       "active": true,
       "createdAt": "2026-01-12T12:00:00.000Z",
-      "updatedAt": "2026-01-12T12:00:00.000Z"
+      "updatedAt": "2026-01-12T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-12"
     },
     {
       "id": "ben_13",
@@ -611,7 +623,8 @@
       "code": "CAA2026-COLAB-13",
       "active": true,
       "createdAt": "2026-01-13T12:00:00.000Z",
-      "updatedAt": "2026-01-13T12:00:00.000Z"
+      "updatedAt": "2026-01-13T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-13"
     },
     {
       "id": "ben_14",
@@ -625,7 +638,8 @@
       "code": "CAA2026-COLAB-14",
       "active": true,
       "createdAt": "2026-01-14T12:00:00.000Z",
-      "updatedAt": "2026-01-14T12:00:00.000Z"
+      "updatedAt": "2026-01-14T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-14"
     },
     {
       "id": "ben_15",
@@ -639,7 +653,8 @@
       "code": "CAA2026-COLAB-15",
       "active": true,
       "createdAt": "2026-01-15T12:00:00.000Z",
-      "updatedAt": "2026-01-15T12:00:00.000Z"
+      "updatedAt": "2026-01-15T12:00:00.000Z",
+      "logoImageKey": "benefit.colaborador-15"
     }
   ],
   "sportsResults": [

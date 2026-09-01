@@ -179,34 +179,119 @@ export const images: Record<string, ImageAsset> = {
          'public/images/proyectos/huerto.jpg',
        ),                                                                   */
 
-  /* --- Beneficios (QR) --------------------------------------------------
-     Logo del comercio o institución que otorga cada beneficio. Cuadrado, con
-     fondo claro: se muestra dentro de un círculo en el listado.            */
-  'benefit.comida-rapida': pending(
-    'Logo del local de comida rápida en convenio',
-    'public/images/beneficios/comida-rapida.png',
-    '1/1',
-  ),
-  'benefit.cine': pending(
-    'Logo del cine en convenio',
-    'public/images/beneficios/cine.png',
-    '1/1',
-  ),
-  'benefit.libreria': pending(
-    'Logo de la librería en convenio',
-    'public/images/beneficios/libreria.png',
-    '1/1',
-  ),
-  'benefit.gimnasio': pending(
-    'Logo del gimnasio en convenio',
-    'public/images/beneficios/gimnasio.png',
-    '1/1',
-  ),
-  'benefit.copias': pending(
-    'Logo del centro de copiado en convenio',
-    'public/images/beneficios/copias.png',
-    '1/1',
-  ),
+  /* --- Colaboradores -----------------------------------------------------
+     Logotipo de cada colaborador de la campaña. Cuadrado, con fondo claro:
+     se muestra dentro de un círculo en el listado.
+
+     LAS RUTAS YA ESTÁN DECLARADAS. Para poner un logotipo NO hay que editar
+     este archivo: basta con dejar la imagen en `public/images/colaboradores/`
+     con el nombre que dice `suggestedPath`. Mientras el archivo no exista, la
+     app muestra las iniciales del colaborador.                              */
+  'benefit.colaborador-01': {
+    src: '/images/colaboradores/colaborador-01.png',
+    alt: 'Logotipo del colaborador 1',
+    description: 'Logotipo del colaborador 1',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-01.png',
+  },
+  'benefit.colaborador-02': {
+    src: '/images/colaboradores/colaborador-02.png',
+    alt: 'Logotipo del colaborador 2',
+    description: 'Logotipo del colaborador 2',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-02.png',
+  },
+  'benefit.colaborador-03': {
+    src: '/images/colaboradores/colaborador-03.png',
+    alt: 'Logotipo del colaborador 3',
+    description: 'Logotipo del colaborador 3',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-03.png',
+  },
+  'benefit.colaborador-04': {
+    src: '/images/colaboradores/colaborador-04.png',
+    alt: 'Logotipo del colaborador 4',
+    description: 'Logotipo del colaborador 4',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-04.png',
+  },
+  'benefit.colaborador-05': {
+    src: '/images/colaboradores/colaborador-05.png',
+    alt: 'Logotipo del colaborador 5',
+    description: 'Logotipo del colaborador 5',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-05.png',
+  },
+  'benefit.colaborador-06': {
+    src: '/images/colaboradores/colaborador-06.png',
+    alt: 'Logotipo del colaborador 6',
+    description: 'Logotipo del colaborador 6',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-06.png',
+  },
+  'benefit.colaborador-07': {
+    src: '/images/colaboradores/colaborador-07.png',
+    alt: 'Logotipo del colaborador 7',
+    description: 'Logotipo del colaborador 7',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-07.png',
+  },
+  'benefit.colaborador-08': {
+    src: '/images/colaboradores/colaborador-08.png',
+    alt: 'Logotipo del colaborador 8',
+    description: 'Logotipo del colaborador 8',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-08.png',
+  },
+  'benefit.colaborador-09': {
+    src: '/images/colaboradores/colaborador-09.png',
+    alt: 'Logotipo del colaborador 9',
+    description: 'Logotipo del colaborador 9',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-09.png',
+  },
+  'benefit.colaborador-10': {
+    src: '/images/colaboradores/colaborador-10.png',
+    alt: 'Logotipo del colaborador 10',
+    description: 'Logotipo del colaborador 10',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-10.png',
+  },
+  'benefit.colaborador-11': {
+    src: '/images/colaboradores/colaborador-11.png',
+    alt: 'Logotipo del colaborador 11',
+    description: 'Logotipo del colaborador 11',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-11.png',
+  },
+  'benefit.colaborador-12': {
+    src: '/images/colaboradores/colaborador-12.png',
+    alt: 'Logotipo del colaborador 12',
+    description: 'Logotipo del colaborador 12',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-12.png',
+  },
+  'benefit.colaborador-13': {
+    src: '/images/colaboradores/colaborador-13.png',
+    alt: 'Logotipo del colaborador 13',
+    description: 'Logotipo del colaborador 13',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-13.png',
+  },
+  'benefit.colaborador-14': {
+    src: '/images/colaboradores/colaborador-14.png',
+    alt: 'Logotipo del colaborador 14',
+    description: 'Logotipo del colaborador 14',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-14.png',
+  },
+  'benefit.colaborador-15': {
+    src: '/images/colaboradores/colaborador-15.png',
+    alt: 'Logotipo del colaborador 15',
+    description: 'Logotipo del colaborador 15',
+    ratio: '1/1',
+    suggestedPath: 'public/images/colaboradores/colaborador-15.png',
+  },
 
   /* --- Marketplace ------------------------------------------------------ */
   'market.stickers': pending(

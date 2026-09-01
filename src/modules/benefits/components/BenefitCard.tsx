@@ -10,15 +10,17 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
   return (
     <CardLink to={`/colaboradores/${benefit.id}`}>
       <div className="flex gap-3.5">
-        {/* Sin logotipo se muestran las iniciales, no un marcador vacío: la
-            mayoría de los colaboradores se cargan antes de tener su logo. */}
-        {benefit.logoImageKey ? (
-          <div className="w-16 shrink-0">
-            <AppImage imageKey={benefit.logoImageKey} ratio="1/1" compact />
-          </div>
-        ) : (
-          <Avatar name={benefit.partner} size="lg" className="shrink-0 rounded-xl" />
-        )}
+        {/* Mientras no exista el archivo del logotipo se muestran las
+            iniciales, no un hueco punteado: casi todos los colaboradores se
+            cargan antes de conseguir su logo. */}
+        <div className="w-16 shrink-0">
+          <AppImage
+            imageKey={benefit.logoImageKey}
+            ratio="1/1"
+            compact
+            fallback={<Avatar name={benefit.partner} size="lg" className="rounded-xl" />}
+          />
+        </div>
 
         <div className="min-w-0 flex-1">
           <p className="truncate text-[11.5px] font-bold uppercase tracking-wide text-ink-3">
