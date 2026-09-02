@@ -1,4 +1,4 @@
-import { CalendarClock, Pin, Users } from 'lucide-react';
+import { CalendarClock, CalendarDays, Pin, Users } from 'lucide-react';
 import { announcementPriorityTone } from '@/content/taxonomies';
 import { ANNOUNCEMENT_PRIORITY_LABEL, type Announcement } from '@/core/types';
 import { formatDate, formatRelative } from '@/core/utils/date';
@@ -36,6 +36,11 @@ export function AnnouncementCard({ item }: { item: Announcement }) {
             {esInscripcion && item.deadline ? (
               <Badge tone={cerrada ? 'neutral' : 'accent'} icon={CalendarClock}>
                 {cerrada ? 'Cerrada' : `Hasta el ${formatDate(item.deadline)}`}
+              </Badge>
+            ) : null}
+            {esInscripcion && item.activityDate ? (
+              <Badge tone="neutral" icon={CalendarDays}>
+                {formatDate(item.activityDate)}
               </Badge>
             ) : null}
             <span className="text-[12px] text-ink-3">{formatRelative(item.publishedAt)}</span>

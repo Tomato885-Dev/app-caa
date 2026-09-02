@@ -41,6 +41,8 @@ export function AnnouncementFormSheet({
     body: '',
     kind: 'general' as AnnouncementKind,
     deadline: '',
+    activityDate: '',
+    leads: '',
     priority: 'normal' as AnnouncementPriority,
     audience: announcementAudiences[0] as string,
     pinned: false,
@@ -59,6 +61,8 @@ export function AnnouncementFormSheet({
             body: editing.body,
             kind: editing.kind,
             deadline: editing.deadline ? editing.deadline.slice(0, 10) : '',
+            activityDate: editing.activityDate ? editing.activityDate.slice(0, 10) : '',
+            leads: editing.leads ?? '',
             priority: editing.priority,
             audience: editing.audience,
             pinned: editing.pinned,
@@ -78,9 +82,17 @@ export function AnnouncementFormSheet({
     const nextErrors: Record<string, string> = {};
     if (form.title.trim().length < 6) nextErrors.title = 'El título es demasiado corto.';
     if (form.body.trim().length < 20) nextErrors.body = 'Escribe el contenido del aviso.';
-    if (form.kind === 'inscripcion' && form.deadline) {
-      const cierre = new Date(`${form.deadline}T12:00:00`);
-      if (Number.isNaN(cierre.getTime())) nextErrors.deadline = 'La fecha no es válida.';
+    if (form.kind === 'inscripcion') {
+      if (form.deadline && Number.isNaN(new Date(`${form.deadline}T12:00:00`).getTime())) {
+        nextErrors.deadline = 'La fecha no es válida.';
+      }
+      if (form.activityDate && Number.isNaN(new Date(`${form.activityDate}T12:00:00`).getTime())) {
+        nextErrors.activityDate = 'La fecha no es válida.';
+      }
+      // Postular después de que la actividad ocurrió no tiene sentido.
+      if (form.deadline && form.activityDate && form.activityDate < form.deadline) {
+        nextErrors.activityDate = 'La actividad no puede ser antes de que cierren las postulaciones.';
+      }
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
@@ -95,6 +107,11 @@ export function AnnouncementFormSheet({
         form.kind === 'inscripcion' && form.deadline
           ? new Date(`${form.deadline}T12:00:00`).toISOString()
           : undefined,
+      activityDate:
+        form.kind === 'inscripcion' && form.activityDate
+          ? new Date(`${form.activityDate}T12:00:00`).toISOString()
+          : undefined,
+      leads: form.kind === 'inscripcion' && form.leads.trim() ? form.leads.trim() : undefined,
       priority: form.priority,
       audience: form.audience,
       pinned: form.pinned,
@@ -177,14 +194,39 @@ export function AnnouncementFormSheet({
         />
 
         {form.kind === 'inscripcion' ? (
-          <TextField
-            label="Hasta cuándo se puede postular (opcional)"
-            type="date"
-            error={errors.deadline}
-            value={form.deadline}
-            onChange={(event) => set('deadline', event.target.value)}
-            hint="Se muestra en la tarjeta y hace que la convocatoria aparezca sola en el calendario."
-          />
+          <>
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <TextField
+                  label="Postular hasta"
+                  type="date"
+                  error={errors.deadline}
+                  value={form.deadline}
+                  onChange={(event) => set('deadline', event.target.value)}
+                  hint="Opcional."
+                />
+              </div>
+              <div className="flex-1">
+                <TextField
+                  label="Fecha de la actividad"
+                  type="date"
+                  error={errors.activityDate}
+                  value={form.activityDate}
+                  onChange={(event) => set('activityDate', event.target.value)}
+                  hint="Opcional."
+                />
+              </div>
+            </div>
+
+            <TextField
+              label="Jefes del proyecto (opcional)"
+              value={form.leads}
+              onChange={(event) => set('leads', event.target.value)}
+              maxLength={140}
+              placeholder="María Pérez (IV Medio A) y Juan Soto (III Medio B)"
+              hint="Quién está a cargo. Aparece en el comunicado para que sepan a quién acudir."
+            />
+          </>
         ) : null}
 
         <SelectField

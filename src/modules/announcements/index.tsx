@@ -18,25 +18,52 @@ import { AnnouncementsPage } from './AnnouncementsPage';
    ella. Siendo lo mismo, se publican y se leen en el mismo lugar.
    ========================================================================== */
 
-/** Los cierres de convocatoria aparecen solos en el calendario mensual. */
+/**
+ * Las convocatorias aparecen solas en el calendario mensual, y pueden aportar
+ * hasta dos días distintos: cuándo cierran las postulaciones y cuándo se hace
+ * la actividad. Son fechas diferentes y las dos importan, así que se marcan
+ * por separado en vez de elegir una.
+ */
 const inscriptionsCalendar: CalendarSource = {
   id: 'inscriptions',
-  label: 'Cierre de inscripciones',
+  label: 'Inscripciones',
   tone: 'accent',
   icon: ClipboardList,
-  fetch: async () =>
-    (await db.announcements.list())
-      .filter((item) => item.kind === 'inscripcion' && Boolean(item.deadline))
-      .map((item) => ({
-        id: item.id,
-        date: item.deadline as string,
-        title: `Cierran las inscripciones: ${item.title}`,
-        detail: item.audience,
-        // La fecha límite es del día completo, no de una hora concreta.
-        allDay: true,
-        href: `/comunicados/${item.id}`,
-        sourceId: 'inscriptions',
-      })),
+  fetch: async () => {
+    const items = (await db.announcements.list()).filter(
+      (item) => item.kind === 'inscripcion',
+    );
+
+    return items.flatMap((item) => [
+      ...(item.deadline
+        ? [
+            {
+              id: `${item.id}-cierre`,
+              date: item.deadline,
+              title: `Cierran las inscripciones: ${item.title}`,
+              detail: item.audience,
+              // Una fecha límite es del día completo, no de una hora concreta.
+              allDay: true,
+              href: `/comunicados/${item.id}`,
+              sourceId: 'inscriptions',
+            },
+          ]
+        : []),
+      ...(item.activityDate
+        ? [
+            {
+              id: `${item.id}-actividad`,
+              date: item.activityDate,
+              title: item.title,
+              detail: item.leads ?? item.audience,
+              allDay: true,
+              href: `/comunicados/${item.id}`,
+              sourceId: 'inscriptions',
+            },
+          ]
+        : []),
+    ]);
+  },
 };
 
 export const announcementsModule: AppModule = {

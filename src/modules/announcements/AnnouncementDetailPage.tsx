@@ -1,5 +1,13 @@
 import { useParams } from 'react-router-dom';
-import { CalendarClock, ClipboardList, FileQuestion, Pin, Users } from 'lucide-react';
+import {
+  CalendarClock,
+  CalendarDays,
+  ClipboardList,
+  FileQuestion,
+  Pin,
+  UserCog,
+  Users,
+} from 'lucide-react';
 import { announcementPriorityTone } from '@/content/taxonomies';
 import { ANNOUNCEMENT_PRIORITY_LABEL } from '@/core/types';
 import { formatDate, formatTime } from '@/core/utils/date';
@@ -116,6 +124,16 @@ export function AnnouncementDetailPage() {
               label="Último día para postular"
               value={formatDate(item.deadline)}
             />
+          ) : null}
+          {item.kind === 'inscripcion' && item.activityDate ? (
+            <MetaRow
+              icon={CalendarDays}
+              label="Fecha de la actividad"
+              value={formatDate(item.activityDate)}
+            />
+          ) : null}
+          {item.kind === 'inscripcion' && item.leads ? (
+            <MetaRow icon={UserCog} label="Jefes del proyecto" value={item.leads} />
           ) : null}
           <MetaRow
             icon={CalendarClock}

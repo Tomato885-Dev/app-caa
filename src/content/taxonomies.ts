@@ -23,13 +23,17 @@ export const newsCategories = [
   'Acción social',
 ] as const;
 
-/** Categorías de eventos (§6.3). */
+/* Categorías de eventos (§6.3).
+   "Social" reemplaza a la antigua "Solidario": cubre lo mismo y además los
+   proyectos y las actividades de pastoral, que no tenían dónde entrar. No
+   había ningún evento usando "Solidario", así que el cambio no deja nada
+   descolgado. */
 export const eventCategories = [
   'Institucional',
   'Deportivo',
   'Cultural',
   'Académico',
-  'Solidario',
+  'Social',
   'Recreativo',
 ] as const;
 

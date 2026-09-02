@@ -187,6 +187,17 @@ export interface Announcement extends BaseEntity {
    * Cuando está, la convocatoria aparece sola en el calendario mensual.
    */
   deadline?: string;
+  /**
+   * Cuándo se hace la actividad, si ya está definida. Es distinto del plazo
+   * para postular: se puede postular hasta el 12 y la actividad ser el 20.
+   */
+  activityDate?: string;
+  /**
+   * Quién está a cargo: los jefes del proyecto, tal como se les conoce en el
+   * colegio. Texto libre, porque pueden ser uno, varios, un curso o un
+   * profesor, y estructurarlo obligaría a un formulario que nadie llenaría.
+   */
+  leads?: string;
   author: AuthorRef;
   publishedAt: string;
 }
