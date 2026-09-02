@@ -7,13 +7,16 @@ import { usePendingCount } from '@/core/moderation/useModerationQueue';
 import { approvedOnly, canModerate } from '@/core/moderation/visibility';
 import { getVisibleModules } from '@/core/modules/registry';
 import { AnnouncementCard } from '@/modules/announcements/components/AnnouncementCard';
-import { sortAnnouncements, useAnnouncementList } from '@/modules/announcements/api';
+import {
+  isClosed,
+  sortAnnouncements,
+  sortInscriptions,
+  useAnnouncementList,
+} from '@/modules/announcements/api';
 import { EventHighlightCard } from '@/modules/events/components/EventCard';
 import { upcoming, useEventList } from '@/modules/events/api';
 import { NewsFeatureCard, NewsRowCard } from '@/modules/news/components/NewsCard';
 import { sortNews, useNewsList } from '@/modules/news/api';
-import { ActivityCard } from '@/modules/signups/components/ActivityCard';
-import { isOpen, useActivityList, useRegistrations } from '@/modules/signups/api';
 import {
   Card,
   CardListSkeleton,
@@ -48,20 +51,29 @@ export function HomePage() {
   const announcements = useAnnouncementList();
   const news = useNewsList();
   const events = useEventList();
-  const activities = useActivityList();
-  const { data: registrationData } = useRegistrations();
 
   // Los comunicados fijados van primero: son los avisos vigentes del día.
   const latestAnnouncements = useMemo(
-    () => sortAnnouncements(announcements.data ?? []).slice(0, 2),
+    () =>
+      sortAnnouncements(
+        (announcements.data ?? []).filter((item) => item.kind !== 'inscripcion'),
+      ).slice(0, 2),
+    [announcements.data],
+  );
+
+  /* ...y abajo las convocatorias que siguen abiertas, primero las que cierran
+     antes. Una convocatoria vencida ya no sirve de nada en la portada. */
+  const openInscriptions = useMemo(
+    () =>
+      sortInscriptions(
+        (announcements.data ?? []).filter(
+          (item) => item.kind === 'inscripcion' && !isClosed(item),
+        ),
+      ).slice(0, 3),
     [announcements.data],
   );
   const featuredNews = useMemo(() => sortNews(approvedOnly(news.data ?? [])).slice(0, 4), [news.data]);
   const nextEvents = useMemo(() => upcoming(approvedOnly(events.data ?? [])).slice(0, 6), [events.data]);
-  const openActivities = useMemo(
-    () => approvedOnly(activities.data ?? []).filter(isOpen).slice(0, 3),
-    [activities.data],
-  );
 
   // Accesos directos: todos los módulos navegables menos Inicio y el perfil.
   const shortcuts = getVisibleModules(role).filter(
@@ -185,27 +197,25 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Convocatorias con inscripción abierta */}
+      {/* Convocatorias abiertas: son comunicados de tipo inscripción */}
       <section>
         <SectionHeader
           title="Inscripciones abiertas"
-          description="Participa en las actividades disponibles."
-          to="/inscripciones"
+          description="Convocatorias vigentes del Centro de Alumnos."
+          to="/comunicados"
         />
-        {activities.isLoading ? (
+        {announcements.isLoading ? (
           <CardListSkeleton count={2} />
-        ) : openActivities.length === 0 ? (
+        ) : openInscriptions.length === 0 ? (
           <Card>
-            <p className="text-[13.5px] text-ink-2">No hay convocatorias abiertas en este momento.</p>
+            <p className="text-[13.5px] text-ink-2">
+              No hay convocatorias abiertas en este momento.
+            </p>
           </Card>
         ) : (
-          <div className="space-y-3">
-            {openActivities.map((activity) => (
-              <ActivityCard
-                key={activity.id}
-                activity={activity}
-                registrations={registrationData ?? []}
-              />
+          <div className="space-y-2.5">
+            {openInscriptions.map((item) => (
+              <AnnouncementCard key={item.id} item={item} />
             ))}
           </div>
         )}

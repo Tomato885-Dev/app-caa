@@ -15,8 +15,8 @@ import type { BaseEntity } from '@/core/types';
 
    QUÉ NO SE EXPORTA
    • `users`        se genera desde la nómina (`src/content/roster.ts`).
-   • `registrations` y `reports` son datos de operación, no contenido: quiénes
-     se inscribieron y qué se reportó no corresponde congelarlos en el arranque.
+   • `reports` son datos de operación, no contenido: lo que la comunidad
+     reportó no corresponde congelarlo en el arranque.
    ========================================================================== */
 
 /** Colecciones que forman el contenido editorial del Centro de Alumnos. */
@@ -24,7 +24,6 @@ export const EXPORTED_COLLECTIONS = [
   'announcements',
   'news',
   'events',
-  'signupActivities',
   'benefits',
   'sportsResults',
   'projects',
@@ -37,7 +36,6 @@ export const COLLECTION_LABEL: Record<ExportedCollection, string> = {
   announcements: 'Comunicados',
   news: 'Noticias',
   events: 'Eventos',
-  signupActivities: 'Inscripciones',
   benefits: 'Colaboradores',
   sportsResults: 'Resultados 365',
   projects: 'Proyectos',
@@ -47,7 +45,6 @@ const repositories: Record<ExportedCollection, Repository<BaseEntity>> = {
   announcements: db.announcements as Repository<BaseEntity>,
   news: db.news as Repository<BaseEntity>,
   events: db.events as Repository<BaseEntity>,
-  signupActivities: db.signupActivities as Repository<BaseEntity>,
   benefits: db.benefits as Repository<BaseEntity>,
   sportsResults: db.sportsResults as Repository<BaseEntity>,
   projects: db.projects as Repository<BaseEntity>,

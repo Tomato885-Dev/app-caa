@@ -4,7 +4,6 @@ import { seedEvents } from './events';
 import { seedNews } from './news';
 import { seedReports } from './reports';
 import { seedProjects } from './projects';
-import { seedRegistrations, seedSignupActivities } from './signups';
 import { seedSportsResults } from './sports';
 import { seedUsers } from './users';
 
@@ -40,7 +39,6 @@ interface ContentFile {
   announcements?: unknown[];
   news?: unknown[];
   events?: unknown[];
-  signupActivities?: unknown[];
   benefits?: unknown[];
   sportsResults?: unknown[];
   projects?: unknown[];
@@ -78,8 +76,6 @@ export const seedData = {
 
   news: pick(own?.news, seedNews),
   events: pick(own?.events, seedEvents),
-  signupActivities: pick(own?.signupActivities, seedSignupActivities),
-  registrations: demoOperations ?? seedRegistrations,
   announcements: pick(own?.announcements, seedAnnouncements),
   benefits: pick(own?.benefits, seedBenefits),
   sportsResults: pick(own?.sportsResults, seedSportsResults),

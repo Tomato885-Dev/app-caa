@@ -167,7 +167,7 @@ y crea la contraseña del Centro de Alumnos. De ahí en adelante entras por
 **Iniciar sesión** con ese correo y esa clave.
 
 Solo la cuenta de **Administrador** puede publicar contenidos: comunicados,
-noticias, eventos, inscripciones, beneficios y resultados de las selecciones.
+noticias, comunicados, eventos, colaboradores, proyectos y resultados del 365.
 Las otras dos cuentas de prueba son:
 
 | Cuenta | Correo | Qué puede hacer |
@@ -189,7 +189,8 @@ gusto. Hay **dos tipos de cambio** y se guardan de forma distinta.
 
 ### Tipo 1 — El contenido (lo que cambiarás todos los días)
 
-Noticias, comunicados, eventos, inscripciones, beneficios y resultados del 365.
+Noticias, comunicados (incluidas las inscripciones), eventos, colaboradores,
+proyectos y resultados del 365.
 Todo eso se publica y se edita **desde la app**, en Administración →
 **Contenidos**. No hay que tocar ningún archivo.
 
@@ -270,7 +271,10 @@ contenido que hubieras cargado sin exportar.
 2. Abre el menú **Más** (abajo a la derecha en el celular) → **Administración**.
 3. Toca **Contenidos**.
 4. Arriba verás seis pestañas, que se deslizan hacia el lado:
-   **Comunicados · Noticias · Eventos · Inscripciones · Beneficios · 365**.
+   **Comunicados · Noticias · Eventos · Colaboradores · 365 · Proyectos**.
+
+   Las inscripciones ya no son una pestaña aparte: se publican como comunicados
+   de tipo *Inscripción*, eligiendo ese tipo al principio del formulario.
 5. Botón **Crear** para una nueva, o el ícono del lápiz ✏️ para editar una
    existente. El basurero 🗑️ la elimina.
 
@@ -303,7 +307,9 @@ contenido que hubieras cargado sin exportar.
 **Inscripción (convocatoria)**
 - Título, tipo de actividad, descripción, fecha de cierre y cupos.
 - Si dejas los cupos vacíos, no hay límite.
-- La casilla *Recibir inscripciones* abre o cierra la convocatoria.
+- Una convocatoria se publica eligiendo el tipo *Inscripción* en el formulario
+  de comunicados. La app NO gestiona la inscripción: explica en el texto a quién
+  hay que hablarle para participar.
 
 **Beneficio** — los convenios de la campaña
 - *Nombre del beneficio* — lo que gana el estudiante: «2x1 en combos».
@@ -440,7 +446,6 @@ en la subcarpeta que corresponda:
 ```
 public/images/noticias/       ← fotos de noticias
 public/images/eventos/        ← fotos de eventos
-public/images/inscripciones/  ← fotos de convocatorias
 public/images/comunidad/      ← fotos de organizaciones
 public/images/beneficios/     ← logos de los comercios en convenio
 public/images/brand/          ← portada de la pantalla de acceso
@@ -533,7 +538,7 @@ Nunca borres las comillas, las comas ni los corchetes.
   la ruta en `src` empiece por `/images/` (sin `public`).
 - **El calendario está vacío** → el calendario solo muestra eventos publicados y
   convocatorias abiertas. Revisa que el evento tenga fecha de inicio y que la
-  convocatoria siga marcada como *Recibir inscripciones*.
+  convocatoria tenga fecha de cierre y esta no haya pasado.
 - **El QR sale gris o no se lee** → sube el brillo del celular. El código se
   dibuja siempre oscuro sobre blanco, incluso con la app en modo oscuro, porque
   al revés los lectores no lo toman.

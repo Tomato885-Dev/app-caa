@@ -98,7 +98,6 @@ export const seedEvents: EventItem[] = [
     contactName: 'Grupo scout',
     contactEmail: 'scouts@verbo.cl',
     organizer: author('usr_est4'),
-    signupActivityId: 'act_2',
     status: 'approved',
     createdAt: daysAgo(6),
     updatedAt: daysAgo(6),

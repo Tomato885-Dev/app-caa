@@ -1,6 +1,6 @@
 {
   "_leeme": "Contenido de la App CAA exportado desde el panel de administración. Guarda este archivo en src/content/seed/contenido.json para que sea el contenido oficial de la aplicación.",
-  "version": "2026-09-02.1808",
+  "version": "2026-09-02.1834",
   "exportadoEl": "2026-09-01T01:50:20.992Z",
   "announcements": [
     {
@@ -17,7 +17,8 @@
       },
       "publishedAt": "2026-08-31T18:52:49.386Z",
       "createdAt": "2026-08-31T18:52:49.386Z",
-      "updatedAt": "2026-09-01T00:29:36.739Z"
+      "updatedAt": "2026-09-01T00:29:36.739Z",
+      "kind": "general"
     },
     {
       "id": "com_2",
@@ -33,7 +34,8 @@
       },
       "publishedAt": "2026-08-31T02:52:49.386Z",
       "createdAt": "2026-08-31T02:52:49.386Z",
-      "updatedAt": "2026-08-31T02:52:49.386Z"
+      "updatedAt": "2026-08-31T02:52:49.386Z",
+      "kind": "general"
     },
     {
       "id": "com_3",
@@ -49,7 +51,8 @@
       },
       "publishedAt": "2026-08-29T22:52:49.386Z",
       "createdAt": "2026-08-29T22:52:49.386Z",
-      "updatedAt": "2026-08-29T22:52:49.386Z"
+      "updatedAt": "2026-08-29T22:52:49.386Z",
+      "kind": "general"
     },
     {
       "id": "com_4",
@@ -65,7 +68,8 @@
       },
       "publishedAt": "2026-08-27T22:52:49.386Z",
       "createdAt": "2026-08-27T22:52:49.386Z",
-      "updatedAt": "2026-08-27T22:52:49.386Z"
+      "updatedAt": "2026-08-27T22:52:49.386Z",
+      "kind": "general"
     },
     {
       "id": "com_5",
@@ -81,7 +85,80 @@
       },
       "publishedAt": "2026-08-25T22:52:49.386Z",
       "createdAt": "2026-08-25T22:52:49.386Z",
-      "updatedAt": "2026-08-25T22:52:49.386Z"
+      "updatedAt": "2026-08-25T22:52:49.386Z",
+      "kind": "general"
+    },
+    {
+      "id": "com_act_1",
+      "title": "Voluntariado de acción social",
+      "body": "Equipo permanente que organiza visitas, colectas y apoyo escolar en instituciones de la comuna. Se trabaja en turnos de sábado por medio.\nDónde: Punto de encuentro: portería principal",
+      "kind": "inscripcion",
+      "priority": "normal",
+      "audience": "Toda la comunidad",
+      "pinned": false,
+      "deadline": "2026-09-12T22:52:49.386Z",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-13T22:52:49.386Z",
+      "createdAt": "2026-08-13T22:52:49.386Z",
+      "updatedAt": "2026-08-29T22:52:49.386Z"
+    },
+    {
+      "id": "com_act_2",
+      "title": "Grupo scout · postulación de nuevas patrullas",
+      "body": "Incorporación de estudiantes al grupo scout. Se realizan reuniones semanales y salidas una vez al mes.\nDónde: Sala 12, viernes 16:00",
+      "kind": "inscripcion",
+      "priority": "normal",
+      "audience": "Toda la comunidad",
+      "pinned": false,
+      "deadline": "2026-09-25T22:52:49.386Z",
+      "author": {
+        "id": "usr_est4",
+        "name": "Benjamín Cortés",
+        "grade": "I Medio A"
+      },
+      "publishedAt": "2026-08-16T22:52:49.386Z",
+      "createdAt": "2026-08-16T22:52:49.386Z",
+      "updatedAt": "2026-08-16T22:52:49.386Z"
+    },
+    {
+      "id": "com_act_3",
+      "title": "Torneo interno de ajedrez",
+      "body": "Torneo por sistema suizo a cinco rondas, abierto a todos los niveles. Se juega durante los recreos y after school.\nDónde: Biblioteca, sala anexa",
+      "kind": "inscripcion",
+      "priority": "normal",
+      "audience": "Toda la comunidad",
+      "pinned": false,
+      "deadline": "2026-09-05T22:52:49.386Z",
+      "author": {
+        "id": "usr_admin",
+        "name": "Directiva Centro de Alumnos",
+        "grade": "IV Medio A"
+      },
+      "publishedAt": "2026-08-22T22:52:49.386Z",
+      "createdAt": "2026-08-22T22:52:49.386Z",
+      "updatedAt": "2026-08-22T22:52:49.386Z"
+    },
+    {
+      "id": "com_act_4",
+      "title": "Equipo de la revista estudiantil",
+      "body": "Convocatoria para redacción, fotografía, ilustración y diseño de la próxima edición de la revista.\nDónde: Reuniones en sala de computación",
+      "kind": "inscripcion",
+      "priority": "normal",
+      "audience": "Toda la comunidad",
+      "pinned": false,
+      "deadline": "2026-09-20T22:52:49.386Z",
+      "author": {
+        "id": "usr_est3",
+        "name": "Antonia Salas",
+        "grade": "IV Medio B"
+      },
+      "publishedAt": "2026-08-24T22:52:49.386Z",
+      "createdAt": "2026-08-24T22:52:49.386Z",
+      "updatedAt": "2026-08-24T22:52:49.386Z"
     }
   ],
   "news": [
@@ -282,152 +359,6 @@
       "status": "approved",
       "createdAt": "2026-08-25T22:52:49.386Z",
       "updatedAt": "2026-08-25T22:52:49.386Z"
-    }
-  ],
-  "signupActivities": [
-    {
-      "id": "act_1",
-      "title": "Voluntariado de acción social",
-      "description": "Equipo permanente que organiza visitas, colectas y apoyo escolar en instituciones de la comuna. Se trabaja en turnos de sábado por medio.",
-      "kind": "accion_social",
-      "imageKey": "signup.accion-social",
-      "organizer": {
-        "id": "usr_admin",
-        "name": "Directiva Centro de Alumnos",
-        "grade": "IV Medio A"
-      },
-      "closesAt": "2026-09-12T22:52:49.386Z",
-      "capacity": 40,
-      "location": "Punto de encuentro: portería principal",
-      "requirements": "Autorización del apoderado. Disponibilidad de al menos dos sábados al mes.",
-      "questions": [
-        {
-          "id": "q_disponibilidad",
-          "label": "¿Qué sábados tienes disponibilidad?",
-          "type": "select",
-          "required": true,
-          "options": [
-            "Primer y tercer sábado",
-            "Segundo y cuarto sábado",
-            "Todos los sábados"
-          ]
-        },
-        {
-          "id": "q_experiencia",
-          "label": "¿Has participado antes en voluntariados? Cuéntanos brevemente.",
-          "type": "textarea",
-          "required": false
-        }
-      ],
-      "open": true,
-      "status": "approved",
-      "createdAt": "2026-08-13T22:52:49.386Z",
-      "updatedAt": "2026-08-29T22:52:49.386Z"
-    },
-    {
-      "id": "act_2",
-      "title": "Grupo scout · postulación de nuevas patrullas",
-      "description": "Incorporación de estudiantes al grupo scout. Se realizan reuniones semanales y salidas una vez al mes.",
-      "kind": "scout",
-      "imageKey": "signup.brigada-ambiental",
-      "organizer": {
-        "id": "usr_est4",
-        "name": "Benjamín Cortés",
-        "grade": "I Medio A"
-      },
-      "closesAt": "2026-09-25T22:52:49.386Z",
-      "capacity": 24,
-      "location": "Sala 12, viernes 16:00",
-      "requirements": "Abierto a estudiantes de 8° básico a II medio.",
-      "questions": [
-        {
-          "id": "q_experiencia_scout",
-          "label": "¿Perteneciste antes a un grupo scout?",
-          "type": "select",
-          "required": true,
-          "options": [
-            "Sí",
-            "No"
-          ]
-        }
-      ],
-      "open": true,
-      "status": "approved",
-      "createdAt": "2026-08-16T22:52:49.386Z",
-      "updatedAt": "2026-08-16T22:52:49.386Z"
-    },
-    {
-      "id": "act_3",
-      "title": "Torneo interno de ajedrez",
-      "description": "Torneo por sistema suizo a cinco rondas, abierto a todos los niveles. Se juega durante los recreos y after school.",
-      "kind": "torneo",
-      "imageKey": "signup.torneo-ajedrez",
-      "organizer": {
-        "id": "usr_admin",
-        "name": "Directiva Centro de Alumnos",
-        "grade": "IV Medio A"
-      },
-      "closesAt": "2026-09-05T22:52:49.386Z",
-      "capacity": 32,
-      "location": "Biblioteca, sala anexa",
-      "requirements": "No se requiere experiencia previa.",
-      "questions": [
-        {
-          "id": "q_nivel",
-          "label": "Nivel de juego",
-          "type": "select",
-          "required": true,
-          "options": [
-            "Principiante",
-            "Intermedio",
-            "Avanzado"
-          ]
-        }
-      ],
-      "open": true,
-      "status": "approved",
-      "createdAt": "2026-08-22T22:52:49.386Z",
-      "updatedAt": "2026-08-22T22:52:49.386Z"
-    },
-    {
-      "id": "act_4",
-      "title": "Equipo de la revista estudiantil",
-      "description": "Convocatoria para redacción, fotografía, ilustración y diseño de la próxima edición de la revista.",
-      "kind": "proyecto",
-      "imageKey": "signup.revista-estudiantil",
-      "organizer": {
-        "id": "usr_est3",
-        "name": "Antonia Salas",
-        "grade": "IV Medio B"
-      },
-      "closesAt": "2026-09-20T22:52:49.386Z",
-      "capacity": null,
-      "location": "Reuniones en sala de computación",
-      "requirements": "Compromiso con los plazos de cierre de edición.",
-      "questions": [
-        {
-          "id": "q_area",
-          "label": "¿En qué área te gustaría participar?",
-          "type": "select",
-          "required": true,
-          "options": [
-            "Redacción",
-            "Fotografía",
-            "Ilustración",
-            "Diseño y diagramación"
-          ]
-        },
-        {
-          "id": "q_portafolio",
-          "label": "Enlace a trabajos previos (opcional)",
-          "type": "text",
-          "required": false
-        }
-      ],
-      "open": true,
-      "status": "approved",
-      "createdAt": "2026-08-24T22:52:49.386Z",
-      "updatedAt": "2026-08-24T22:52:49.386Z"
     }
   ],
   "benefits": [

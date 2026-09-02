@@ -1,56 +1,97 @@
 import { useMemo, useState } from 'react';
-import { Megaphone, Search } from 'lucide-react';
+import { ClipboardList, Megaphone, Search } from 'lucide-react';
 import { announcementPriorities } from '@/content/taxonomies';
+import type { AnnouncementKind } from '@/core/types';
 import { matchesSearch } from '@/core/utils/text';
-import { CardListSkeleton, EmptyState, FilterChips, Input, Page, PageHeader } from '@/ui';
-import { sortAnnouncements, useAnnouncementList } from './api';
+import {
+  CardListSkeleton,
+  EmptyState,
+  FilterChips,
+  Input,
+  Page,
+  PageHeader,
+  SegmentedTabs,
+} from '@/ui';
+import { sortAnnouncements, sortInscriptions, useAnnouncementList } from './api';
 import { AnnouncementCard } from './components/AnnouncementCard';
 
 /* ============================================================================
-   COMUNICADOS DEL CENTRO DE ALUMNOS
+   COMUNICADOS
    ----------------------------------------------------------------------------
-   Avisos oficiales del día a día, en orden cronológico. Publican solo los
-   administradores desde Administración → Contenidos, igual que las noticias.
+   Una sola pantalla con dos vistas, no dos secciones:
+
+     · Comunicados   los avisos del día a día, con su filtro de prioridad.
+     · Inscripciones las convocatorias abiertas, ordenadas por fecha de cierre.
+
+   Se reparten con un selector arriba porque son la misma clase de contenido
+   —un aviso oficial— leído con dos intenciones distintas: "qué pasó" y "a qué
+   me puedo sumar".
+
+   El filtro de prioridad solo aparece en los comunicados: en una convocatoria
+   lo que ordena es cuándo cierra, no cuán urgente es.
    ========================================================================== */
 
 const ALL = 'todos';
 
 export function AnnouncementsPage() {
   const { data, isLoading } = useAnnouncementList();
+  const [kind, setKind] = useState<AnnouncementKind>('general');
   const [priority, setPriority] = useState(ALL);
   const [query, setQuery] = useState('');
 
-  const items = useMemo(() => sortAnnouncements(data ?? []), [data]);
+  const items = useMemo(() => data ?? [], [data]);
+
+  const generales = useMemo(
+    () => sortAnnouncements(items.filter((item) => item.kind !== 'inscripcion')),
+    [items],
+  );
+  const inscripciones = useMemo(
+    () => sortInscriptions(items.filter((item) => item.kind === 'inscripcion')),
+    [items],
+  );
+
+  const enInscripciones = kind === 'inscripcion';
+  const lista = enInscripciones ? inscripciones : generales;
 
   const filtered = useMemo(
     () =>
-      items.filter(
+      lista.filter(
         (item) =>
-          (priority === ALL || item.priority === priority) &&
+          (enInscripciones || priority === ALL || item.priority === priority) &&
           matchesSearch(query, item.title, item.body, item.audience),
       ),
-    [items, priority, query],
+    [lista, enInscripciones, priority, query],
   );
 
-  const options = useMemo(
+  const priorityOptions = useMemo(
     () => [
-      { value: ALL, label: 'Todos', count: items.length },
+      { value: ALL, label: 'Todos', count: generales.length },
       ...announcementPriorities
         .map((option) => ({
           value: option.value,
           label: option.label,
-          count: items.filter((item) => item.priority === option.value).length,
+          count: generales.filter((item) => item.priority === option.value).length,
         }))
         .filter((option) => option.count > 0),
     ],
-    [items],
+    [generales],
   );
 
   return (
     <Page>
       <PageHeader
         title="Comunicados"
-        description="Avisos oficiales del Centro de Alumnos, día a día."
+        description="Avisos oficiales del Centro de Alumnos y convocatorias abiertas."
+      />
+
+      <SegmentedTabs
+        className="mb-4"
+        value={kind}
+        onChange={(value) => setKind(value as AnnouncementKind)}
+        options={[
+          { value: 'general', label: `Comunicados (${generales.length})` },
+          { value: 'inscripcion', label: `Inscripciones (${inscripciones.length})` },
+        ]}
       />
 
       <div className="relative mb-3">
@@ -59,21 +100,32 @@ export function AnnouncementsPage() {
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Buscar en comunicados"
-          aria-label="Buscar en comunicados"
+          placeholder={enInscripciones ? 'Buscar una convocatoria' : 'Buscar en comunicados'}
+          aria-label={enInscripciones ? 'Buscar convocatorias' : 'Buscar en comunicados'}
           className="pl-10"
         />
       </div>
 
-      <FilterChips options={options} value={priority} onChange={setPriority} className="mb-5" />
+      {enInscripciones ? null : (
+        <FilterChips
+          options={priorityOptions}
+          value={priority}
+          onChange={setPriority}
+          className="mb-5"
+        />
+      )}
 
       {isLoading ? (
         <CardListSkeleton />
       ) : filtered.length === 0 ? (
         <EmptyState
-          icon={Megaphone}
-          title="Sin comunicados"
-          description="Cuando el Centro de Alumnos publique un aviso, aparecerá aquí."
+          icon={enInscripciones ? ClipboardList : Megaphone}
+          title={enInscripciones ? 'Sin convocatorias abiertas' : 'Sin comunicados'}
+          description={
+            enInscripciones
+              ? 'Cuando el Centro de Alumnos abra una inscripción, aparecerá aquí.'
+              : 'Cuando el Centro de Alumnos publique un aviso, aparecerá aquí.'
+          }
         />
       ) : (
         <div className="space-y-2.5">

@@ -6,9 +6,7 @@ import type {
   ID,
   NewsPost,
   Project,
-  Registration,
   Report,
-  SignupActivity,
   SportsResult,
   User,
 } from '@/core/types';
@@ -39,8 +37,6 @@ export interface DataProvider {
   users: Repository<User>;
   news: Repository<NewsPost>;
   events: Repository<EventItem>;
-  signupActivities: Repository<SignupActivity>;
-  registrations: Repository<Registration>;
   announcements: Repository<Announcement>;
   benefits: Repository<Benefit>;
   sportsResults: Repository<SportsResult>;
@@ -56,8 +52,6 @@ export const COLLECTIONS = [
   'users',
   'news',
   'events',
-  'signupActivities',
-  'registrations',
   'announcements',
   'benefits',
   'sportsResults',

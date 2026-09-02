@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { CalendarDays, ClipboardList, Clock, FileQuestion, Mail, MapPin, User } from 'lucide-react';
 import { formatDate, formatTime } from '@/core/utils/date';
 import {
@@ -90,21 +90,6 @@ export function EventDetailPage() {
       <h2 className="mb-2 text-[15px] font-bold text-ink">Sobre la actividad</h2>
       <Prose text={event.description} />
 
-      {/* Puente entre módulos: si el evento tiene inscripción, se enlaza (§6.4). */}
-      {event.signupActivityId ? (
-        <Card className="mt-6 border-brand-200 bg-brand-50 dark:border-brand-700 dark:bg-brand-950">
-          <p className="text-[14px] font-semibold text-ink">Este evento requiere inscripción</p>
-          <p className="mt-1 text-[13px] leading-relaxed text-ink-2">
-            Los cupos se gestionan desde la sección de inscripciones.
-          </p>
-          <Link
-            to={`/inscripciones/${event.signupActivityId}`}
-            className="mt-3 inline-flex text-[13.5px] font-bold text-brand-600 dark:text-brand-300"
-          >
-            Ir a la inscripción →
-          </Link>
-        </Card>
-      ) : null}
     </Page>
   );
 }

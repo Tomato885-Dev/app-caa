@@ -152,7 +152,6 @@ export const appConfig: AppConfig = {
     'news',
     'calendar',
     'events',
-    'signups',
     'sports',
     'benefits',
     'projects',

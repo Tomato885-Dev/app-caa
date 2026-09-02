@@ -142,50 +142,6 @@ export interface EventItem extends BaseEntity, Moderatable {
   contactName?: string;
   contactEmail?: string;
   organizer: AuthorRef;
-  /** Enlaza el evento con una actividad con inscripción abierta. */
-  signupActivityId?: ID;
-}
-
-/* --- Inscripciones (§6.4) --------------------------------------------------- */
-
-export type SignupActivityKind =
-  | 'accion_social'
-  | 'scout'
-  | 'torneo'
-  | 'proyecto'
-  | 'centro_alumnos'
-  | 'otro';
-
-export interface SignupActivity extends BaseEntity, Moderatable {
-  title: string;
-  description: string;
-  kind: SignupActivityKind;
-  imageKey?: string;
-  organizer: AuthorRef;
-  /** Fecha límite de inscripción, ISO 8601. */
-  closesAt: string;
-  /** Cupos totales. `null` = sin límite. */
-  capacity: number | null;
-  location?: string;
-  requirements?: string;
-  /** Preguntas adicionales del formulario de inscripción. */
-  questions: SignupQuestion[];
-  open: boolean;
-}
-
-export interface SignupQuestion {
-  id: ID;
-  label: string;
-  type: 'text' | 'textarea' | 'select';
-  required: boolean;
-  options?: string[];
-}
-
-export interface Registration extends BaseEntity {
-  activityId: ID;
-  user: AuthorRef;
-  answers: Record<string, string>;
-  state: 'confirmed' | 'waitlist' | 'cancelled';
 }
 
 /* --- Comunicados del Centro de Alumnos -------------------------------------
@@ -201,14 +157,36 @@ export const ANNOUNCEMENT_PRIORITY_LABEL: Record<AnnouncementPriority, string> =
   urgente: 'Urgente',
 };
 
+/**
+ * Qué clase de comunicado es.
+ *   'general'     el aviso del día a día.
+ *   'inscripcion' anuncia una convocatoria abierta.
+ *
+ * Las inscripciones NO se gestionan dentro de la aplicación: el colegio no lo
+ * autoriza. El comunicado informa de la convocatoria y explica en su texto
+ * cómo participar ("habla con tu profesor jefe", "formulario en secretaría").
+ */
+export type AnnouncementKind = 'general' | 'inscripcion';
+
+export const ANNOUNCEMENT_KIND_LABEL: Record<AnnouncementKind, string> = {
+  general: 'Comunicado',
+  inscripcion: 'Inscripción',
+};
+
 export interface Announcement extends BaseEntity {
   title: string;
   body: string;
+  kind: AnnouncementKind;
   priority: AnnouncementPriority;
   /** A quién está dirigido: "Toda la comunidad", "III y IV Medio"… */
   audience: string;
   /** Lo mantiene arriba del listado mientras siga vigente. */
   pinned: boolean;
+  /**
+   * Último día para postular. Solo en los de tipo 'inscripcion' y opcional.
+   * Cuando está, la convocatoria aparece sola en el calendario mensual.
+   */
+  deadline?: string;
   author: AuthorRef;
   publishedAt: string;
 }
@@ -284,8 +262,7 @@ export interface SportsResult extends BaseEntity {
 /** Identifica el tipo de contenido reportado o moderado. */
 export type ContentKind =
   | 'news'
-  | 'event'
-  | 'signupActivity';
+  | 'event';
 
 export interface Report extends BaseEntity {
   contentKind: ContentKind;

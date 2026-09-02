@@ -23,7 +23,6 @@ import {
 const kindLabel: Record<ContentKind, string> = {
   news: 'Noticia',
   event: 'Evento',
-  signupActivity: 'Inscripción',
 };
 
 /** Ruta al contenido reportado dentro de su módulo. */
@@ -33,8 +32,6 @@ function hrefFor(report: Report): string | null {
       return `/noticias/${report.contentId}`;
     case 'event':
       return `/eventos/${report.contentId}`;
-    case 'signupActivity':
-      return `/inscripciones/${report.contentId}`;
     default:
       return null;
   }

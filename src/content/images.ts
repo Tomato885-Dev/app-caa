@@ -104,24 +104,6 @@ export const images: Record<string, ImageAsset> = {
     'public/images/eventos/jornada-scout.jpg',
   ),
 
-  /* --- Inscripciones ---------------------------------------------------- */
-  'signup.accion-social': pending(
-    'Foto de voluntariado o trabajo de acción social',
-    'public/images/inscripciones/accion-social.jpg',
-  ),
-  'signup.torneo-ajedrez': pending(
-    'Foto del club o torneo de ajedrez',
-    'public/images/inscripciones/ajedrez.jpg',
-  ),
-  'signup.brigada-ambiental': pending(
-    'Foto de la brigada ambiental en actividad',
-    'public/images/inscripciones/brigada-ambiental.jpg',
-  ),
-  'signup.revista-estudiantil': pending(
-    'Foto del equipo de la revista estudiantil trabajando',
-    'public/images/inscripciones/revista.jpg',
-  ),
-
   /* --- Proyectos del colegio ---------------------------------------------
      Los proyectos van SIN fotografía. Si más adelante quieren agregarlas,
      se declara aquí una entrada por proyecto con una clave que empiece por

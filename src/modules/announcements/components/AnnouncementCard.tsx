@@ -1,16 +1,22 @@
-import { Pin, Users } from 'lucide-react';
+import { CalendarClock, Pin, Users } from 'lucide-react';
 import { announcementPriorityTone } from '@/content/taxonomies';
 import { ANNOUNCEMENT_PRIORITY_LABEL, type Announcement } from '@/core/types';
-import { formatRelative } from '@/core/utils/date';
+import { formatDate, formatRelative } from '@/core/utils/date';
 import { excerpt } from '@/core/utils/text';
 import { Badge, CardLink, cn, toneSolid } from '@/ui';
+import { isClosed } from '../api';
 
 /**
  * Tarjeta de comunicado. Lleva una barra de color a la izquierda con el tono
  * de su prioridad: se distinguen de un vistazo al recorrer el listado.
+ *
+ * En los de inscripción, lo primero que se muestra es hasta cuándo hay plazo,
+ * porque es el dato que decide si vale la pena seguir leyendo.
  */
 export function AnnouncementCard({ item }: { item: Announcement }) {
   const tone = announcementPriorityTone[item.priority];
+  const esInscripcion = item.kind === 'inscripcion';
+  const cerrada = esInscripcion && isClosed(item);
 
   return (
     <CardLink to={`/comunicados/${item.id}`} flush>
@@ -25,6 +31,11 @@ export function AnnouncementCard({ item }: { item: Announcement }) {
             {item.pinned ? (
               <Badge tone="neutral" icon={Pin}>
                 Fijado
+              </Badge>
+            ) : null}
+            {esInscripcion && item.deadline ? (
+              <Badge tone={cerrada ? 'neutral' : 'accent'} icon={CalendarClock}>
+                {cerrada ? 'Cerrada' : `Hasta el ${formatDate(item.deadline)}`}
               </Badge>
             ) : null}
             <span className="text-[12px] text-ink-3">{formatRelative(item.publishedAt)}</span>

@@ -10,7 +10,6 @@ import {
   type EventItem,
   type NewsPost,
   type Project,
-  type SignupActivity,
   type SportsResult,
 } from '@/core/types';
 import { formatDate } from '@/core/utils/date';
@@ -23,7 +22,6 @@ import { sortBenefits, useBenefitList, useDeleteBenefit } from '@/modules/benefi
 import { useDeleteEvent, useEventList } from '@/modules/events/api';
 import { useDeleteNews, useNewsList, sortNews } from '@/modules/news/api';
 import { sortProjects, useDeleteProject, useProjectList, projectYears } from '@/modules/projects/api';
-import { useActivityList, useDeleteActivity } from '@/modules/signups/api';
 import { sortResults, useDeleteSportsResult, useSportsResults } from '@/modules/sports/api';
 import {
   Button,
@@ -36,7 +34,6 @@ import {
   PageHeader,
   useToast,
 } from '@/ui';
-import { ActivityFormSheet } from './components/ActivityFormSheet';
 import { AnnouncementFormSheet } from './components/AnnouncementFormSheet';
 import { BenefitFormSheet } from './components/BenefitFormSheet';
 import { EventFormSheet } from './components/EventFormSheet';
@@ -59,7 +56,6 @@ type Tab =
   | 'comunicados'
   | 'noticias'
   | 'eventos'
-  | 'inscripciones'
   | 'beneficios'
   | 'resultados'
   | 'proyectos';
@@ -72,7 +68,6 @@ export function ContentPage() {
   const announcements = useAnnouncementList();
   const news = useNewsList();
   const events = useEventList();
-  const activities = useActivityList();
   const benefits = useBenefitList();
   const results = useSportsResults();
   const projects = useProjectList();
@@ -80,7 +75,6 @@ export function ContentPage() {
   const deleteAnnouncement = useDeleteAnnouncement();
   const deleteNews = useDeleteNews();
   const deleteEvent = useDeleteEvent();
-  const deleteActivity = useDeleteActivity();
   const deleteBenefit = useDeleteBenefit();
   const deleteResult = useDeleteSportsResult();
   const deleteProject = useDeleteProject();
@@ -97,10 +91,6 @@ export function ContentPage() {
     open: false,
     editing: null,
   });
-  const [activityForm, setActivityForm] = useState<{
-    open: boolean;
-    editing: SignupActivity | null;
-  }>({ open: false, editing: null });
   const [benefitForm, setBenefitForm] = useState<{ open: boolean; editing: Benefit | null }>({
     open: false,
     editing: null,
@@ -120,7 +110,6 @@ export function ContentPage() {
     comunicados: announcements,
     noticias: news,
     eventos: events,
-    inscripciones: activities,
     beneficios: benefits,
     resultados: results,
     proyectos: projects,
@@ -133,7 +122,6 @@ export function ContentPage() {
     if (tab === 'comunicados') setAnnouncementForm({ open: true, editing: null });
     if (tab === 'noticias') setNewsForm({ open: true, editing: null });
     if (tab === 'eventos') setEventForm({ open: true, editing: null });
-    if (tab === 'inscripciones') setActivityForm({ open: true, editing: null });
     if (tab === 'beneficios') setBenefitForm({ open: true, editing: null });
     if (tab === 'resultados') setResultForm({ open: true, editing: null });
     if (tab === 'proyectos') setProjectForm({ open: true, editing: null });
@@ -162,7 +150,6 @@ export function ContentPage() {
           { value: 'comunicados', label: 'Comunicados', count: announcements.data?.length ?? 0 },
           { value: 'noticias', label: 'Noticias', count: news.data?.length ?? 0 },
           { value: 'eventos', label: 'Eventos', count: events.data?.length ?? 0 },
-          { value: 'inscripciones', label: 'Inscripciones', count: activities.data?.length ?? 0 },
           { value: 'beneficios', label: 'Colaboradores', count: benefits.data?.length ?? 0 },
           { value: 'resultados', label: '365', count: results.data?.length ?? 0 },
           { value: 'proyectos', label: 'Proyectos', count: projects.data?.length ?? 0 },
@@ -226,23 +213,6 @@ export function ContentPage() {
               />
             ))}
 
-          {tab === 'inscripciones' &&
-            (activities.data ?? []).map((activity) => (
-              <ContentRow
-                key={activity.id}
-                title={activity.title}
-                meta={`${activity.open ? 'Abierta' : 'Cerrada'} · cierra el ${formatDate(activity.closesAt)} · ${
-                  activity.capacity === null ? 'sin límite' : `${activity.capacity} cupos`
-                }`}
-                onEdit={() => setActivityForm({ open: true, editing: activity })}
-                onDelete={() => {
-                  if (!confirmDelete(activity.title)) return;
-                  deleteActivity.mutate(activity.id, {
-                    onSuccess: () => notify('Convocatoria eliminada.', 'info'),
-                  });
-                }}
-              />
-            ))}
 
           {tab === 'beneficios' &&
             sortBenefits(benefits.data ?? []).map((benefit) => (
@@ -320,12 +290,6 @@ export function ContentPage() {
         editing={eventForm.editing}
         user={user}
         onClose={() => setEventForm({ open: false, editing: null })}
-      />
-      <ActivityFormSheet
-        open={activityForm.open}
-        editing={activityForm.editing}
-        user={user}
-        onClose={() => setActivityForm({ open: false, editing: null })}
       />
       <BenefitFormSheet
         open={benefitForm.open}

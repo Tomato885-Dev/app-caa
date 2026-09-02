@@ -1,7 +1,6 @@
 import type {
   AnnouncementPriority,
   MatchOutcome,
-  SignupActivityKind,
   SportDiscipline,
   SportLevel,
 } from '@/core/types';
@@ -43,24 +42,6 @@ export const projectAreas = [
   'Ciencia y tecnología',
   'Convivencia',
 ] as const;
-
-/** Tipos de actividad con inscripción (§6.4). */
-export const signupKinds: { value: SignupActivityKind; label: string; tone: Tone }[] = [
-  { value: 'accion_social', label: 'Acción social', tone: 'success' },
-  { value: 'scout', label: 'Grupo scout', tone: 'info' },
-  { value: 'torneo', label: 'Torneos', tone: 'accent' },
-  { value: 'proyecto', label: 'Proyectos', tone: 'brand' },
-  { value: 'centro_alumnos', label: 'Centro de Alumnos', tone: 'warning' },
-  { value: 'otro', label: 'Otras', tone: 'neutral' },
-];
-
-export const signupKindLabel: Record<SignupActivityKind, string> = Object.fromEntries(
-  signupKinds.map((kind) => [kind.value, kind.label]),
-) as Record<SignupActivityKind, string>;
-
-export const signupKindTone: Record<SignupActivityKind, Tone> = Object.fromEntries(
-  signupKinds.map((kind) => [kind.value, kind.tone]),
-) as Record<SignupActivityKind, Tone>;
 
 /* --- Comunicados del Centro de Alumnos --------------------------------------
    Prioridad del aviso. Solo `urgente` e `importante` se destacan visualmente:

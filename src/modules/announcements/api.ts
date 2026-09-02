@@ -36,3 +36,25 @@ export function useUpdateAnnouncement() {
 export function useDeleteAnnouncement() {
   return useDataMutation((id: ID) => db.announcements.remove(id), ['announcements']);
 }
+
+/**
+ * Los comunicados de inscripción se ordenan por su fecha de cierre: lo que
+ * está a punto de vencer es lo que importa ver primero. Los que no la
+ * declaran van al final, por fecha de publicación.
+ */
+export function sortInscriptions(items: Announcement[]): Announcement[] {
+  return [...items].sort((a, b) => {
+    if (a.deadline && b.deadline) {
+      return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+    }
+    if (a.deadline) return -1;
+    if (b.deadline) return 1;
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  });
+}
+
+/** ¿La convocatoria ya cerró? Sin fecha declarada se considera abierta. */
+export function isClosed(item: Announcement): boolean {
+  if (!item.deadline) return false;
+  return new Date(item.deadline).getTime() < Date.now();
+}

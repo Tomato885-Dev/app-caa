@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { CalendarClock, FileQuestion, Pin, Users } from 'lucide-react';
+import { CalendarClock, ClipboardList, FileQuestion, Pin, Users } from 'lucide-react';
 import { announcementPriorityTone } from '@/content/taxonomies';
 import { ANNOUNCEMENT_PRIORITY_LABEL } from '@/core/types';
 import { formatDate, formatTime } from '@/core/utils/date';
@@ -14,7 +14,7 @@ import {
   Prose,
   Skeleton,
 } from '@/ui';
-import { useAnnouncement } from './api';
+import { isClosed, useAnnouncement } from './api';
 
 export function AnnouncementDetailPage() {
   const { id } = useParams();
@@ -47,6 +47,11 @@ export function AnnouncementDetailPage() {
     <Page>
       <article>
         <div className="mb-3 flex flex-wrap items-center gap-2">
+          {item.kind === 'inscripcion' ? (
+            <Badge tone="accent" icon={ClipboardList}>
+              Inscripción
+            </Badge>
+          ) : null}
           {item.priority !== 'normal' ? (
             <Badge tone={announcementPriorityTone[item.priority]}>
               {ANNOUNCEMENT_PRIORITY_LABEL[item.priority]}
@@ -73,10 +78,45 @@ export function AnnouncementDetailPage() {
           </div>
         </div>
 
+        {/* El plazo va antes del texto: es lo que decide si conviene leerlo. */}
+        {item.kind === 'inscripcion' && item.deadline ? (
+          <div
+            className={
+              'mb-5 rounded-card border p-4 ' +
+              (isClosed(item)
+                ? 'border-line bg-surface-2'
+                : 'border-brand-200 bg-brand-50 dark:border-brand-500 dark:bg-brand-950')
+            }
+          >
+            <p
+              className={
+                'text-[14px] font-bold ' +
+                (isClosed(item) ? 'text-ink-2' : 'text-brand-700 dark:text-brand-300')
+              }
+            >
+              {isClosed(item)
+                ? `Las postulaciones cerraron el ${formatDate(item.deadline)}`
+                : `Puedes postular hasta el ${formatDate(item.deadline)}`}
+            </p>
+            {isClosed(item) ? null : (
+              <p className="mt-1 text-[13px] leading-relaxed text-brand-700 dark:text-brand-300">
+                Revisa más abajo cómo participar.
+              </p>
+            )}
+          </div>
+        ) : null}
+
         <Prose text={item.body} className="mb-6" />
 
         <Card>
           <MetaRow icon={Users} label="Dirigido a" value={item.audience} />
+          {item.kind === 'inscripcion' && item.deadline ? (
+            <MetaRow
+              icon={ClipboardList}
+              label="Último día para postular"
+              value={formatDate(item.deadline)}
+            />
+          ) : null}
           <MetaRow
             icon={CalendarClock}
             label="Publicado"

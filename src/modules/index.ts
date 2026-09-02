@@ -9,7 +9,6 @@ import { homeModule } from './home';
 import { newsModule } from './news';
 import { profileModule } from './profile';
 import { projectsModule } from './projects';
-import { signupsModule } from './signups';
 import { sportsModule } from './sports';
 
 /* ============================================================================
@@ -31,7 +30,6 @@ export const appModules: AppModule[] = [
   newsModule,
   calendarModule,
   eventsModule,
-  signupsModule,
   sportsModule,
   benefitsModule,
   projectsModule,
