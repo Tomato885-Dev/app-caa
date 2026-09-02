@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import {
+  Check,
   KeyRound,
   LogOut,
+  Phone,
   Moon,
   RotateCcw,
   Sun,
@@ -17,6 +19,7 @@ import {
   Badge,
   Button,
   Card,
+  Input,
   Page,
   SectionHeader,
   SegmentedTabs,
@@ -24,8 +27,9 @@ import {
 } from '@/ui';
 import { ChangePasswordSheet } from './components/ChangePasswordSheet';
 
-/* Perfil de usuario (§6.8): nombre, curso, correo institucional, fotografía
-   opcional y publicaciones realizadas dentro de la plataforma. */
+/* Perfil de usuario (§6.8): identidad de la cuenta, teléfono de contacto,
+   apariencia y seguridad. El nombre, el curso y el correo los define la
+   nómina del establecimiento y no se editan desde aquí. */
 
 export function ProfilePage() {
   const { user, signOut } = useAuth();
@@ -75,6 +79,9 @@ export function ProfilePage() {
           <p className="mt-4 text-[13.5px] leading-relaxed text-ink-2">{user.bio}</p>
         ) : null}
       </Card>
+
+      {/* Teléfono de contacto */}
+      <PhoneSection phone={user.phone} />
 
       {/* Preferencias */}
       <section className="mb-6">
@@ -150,5 +157,72 @@ export function ProfilePage() {
         user={user}
       />
     </Page>
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   TELÉFONO DE CONTACTO
+   Único dato del perfil que decide el propio estudiante. Es opcional, se puede
+   borrar en cualquier momento, y el texto dice sin rodeos dónde va a aparecer:
+   quien lo escribe tiene que saber que lo verá toda la comunidad.
+   -------------------------------------------------------------------------- */
+
+function PhoneSection({ phone }: { phone?: string }) {
+  const { updateProfile } = useAuth();
+  const notify = useToast();
+
+  const [value, setValue] = useState(phone ?? '');
+  const [saving, setSaving] = useState(false);
+
+  const guardado = (phone ?? '').trim();
+  const cambiado = value.trim() !== guardado;
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const limpio = value.trim();
+      await updateProfile({ phone: limpio || undefined });
+      notify(limpio ? 'Teléfono guardado.' : 'Teléfono eliminado.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <section className="mb-6">
+      <SectionHeader title="Teléfono" />
+      <Card>
+        <div className="flex items-center gap-2">
+          <Phone size={17} className="shrink-0 text-ink-3" />
+          <Input
+            type="tel"
+            inputMode="tel"
+            aria-label="Tu teléfono de contacto"
+            placeholder="+56 9 1234 5678"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            className="flex-1"
+          />
+        </div>
+
+        <p className="mt-2.5 text-[12.5px] leading-relaxed text-ink-2">
+          Es opcional. Si lo dejas, aparecerá junto a tu nombre en la{' '}
+          <span className="font-semibold text-ink">base de contactos</span>, donde puede verlo
+          cualquier persona de la comunidad. Puedes borrarlo cuando quieras.
+        </p>
+
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={Check}
+          onClick={() => void handleSave()}
+          loading={saving}
+          disabled={!cambiado}
+          className="mt-3 w-full"
+        >
+          {value.trim() ? 'Guardar teléfono' : guardado ? 'Quitar mi teléfono' : 'Guardar teléfono'}
+        </Button>
+      </Card>
+    </section>
   );
 }
