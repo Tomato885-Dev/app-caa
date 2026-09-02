@@ -1,18 +1,46 @@
-import { useMemo, useState } from 'react';
-import { Newspaper, Search } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { ChevronDown, Newspaper, Search } from 'lucide-react';
 import { newsCategories } from '@/content/taxonomies';
 import { approvedOnly } from '@/core/moderation/visibility';
 import { matchesSearch } from '@/core/utils/text';
-import { CardListSkeleton, EmptyState, FilterChips, Input, Page, PageHeader } from '@/ui';
+import {
+  Button,
+  CardListSkeleton,
+  EmptyState,
+  FilterChips,
+  Input,
+  Page,
+  PageHeader,
+} from '@/ui';
 import { sortNews, useNewsList } from './api';
 import { NewsFeatureCard, NewsRowCard } from './components/NewsCard';
 
+/* ============================================================================
+   NOTICIAS
+   ----------------------------------------------------------------------------
+   El listado crece sin techo: en un año se acumulan decenas de publicaciones.
+   Por eso no se pintan todas de golpe, sino de tanda en tanda con un botón
+   "Mostrar más".
+
+   Se prefiere el botón al desplazamiento infinito: en un teléfono con datos
+   móviles, cargar solo cuando alguien lo pide es más rápido y deja llegar al
+   final de la página, donde el desplazamiento infinito nunca termina.
+   ========================================================================== */
+
 const ALL = 'todas';
+
+/** Cuántas se muestran de entrada y cuántas suma cada "Mostrar más". */
+const PAGE_SIZE = 8;
 
 export function NewsListPage() {
   const { data, isLoading } = useNewsList();
   const [category, setCategory] = useState(ALL);
   const [query, setQuery] = useState('');
+  const [visible, setVisible] = useState(PAGE_SIZE);
+
+  // Al filtrar o buscar se vuelve a empezar: seguir en la tanda 4 de una lista
+  // que acaba de cambiar dejaría al lector en un punto que ya no existe.
+  useEffect(() => setVisible(PAGE_SIZE), [category, query]);
 
   const posts = useMemo(() => sortNews(approvedOnly(data ?? [])), [data]);
 
@@ -40,7 +68,9 @@ export function NewsListPage() {
     [posts],
   );
 
-  const [lead, ...rest] = filtered;
+  const shown = filtered.slice(0, visible);
+  const [lead, ...rest] = shown;
+  const restantes = filtered.length - shown.length;
 
   return (
     <Page>
@@ -61,7 +91,15 @@ export function NewsListPage() {
         />
       </div>
 
-      <FilterChips options={options} value={category} onChange={setCategory} className="mb-5" />
+      <FilterChips options={options} value={category} onChange={setCategory} className="mb-3" />
+
+      {/* Cuántas hay en total: sitúa antes de empezar a bajar. */}
+      {!isLoading && filtered.length > 0 ? (
+        <p className="mb-4 text-[12.5px] text-ink-3">
+          {filtered.length === 1 ? '1 noticia' : `${filtered.length} noticias`}
+          {filtered.length > shown.length ? ` · mostrando ${shown.length}` : ''}
+        </p>
+      ) : null}
 
       {isLoading ? (
         <CardListSkeleton />
@@ -72,12 +110,25 @@ export function NewsListPage() {
           description="No hay publicaciones que coincidan con tu búsqueda o filtro."
         />
       ) : (
-        <div className="space-y-3">
-          {lead ? <NewsFeatureCard post={lead} /> : null}
-          {rest.map((post) => (
-            <NewsRowCard key={post.id} post={post} />
-          ))}
-        </div>
+        <>
+          <div className="space-y-3">
+            {lead ? <NewsFeatureCard post={lead} /> : null}
+            {rest.map((post) => (
+              <NewsRowCard key={post.id} post={post} />
+            ))}
+          </div>
+
+          {restantes > 0 ? (
+            <Button
+              variant="secondary"
+              icon={ChevronDown}
+              onClick={() => setVisible((current) => current + PAGE_SIZE)}
+              className="mt-4 w-full"
+            >
+              Mostrar {Math.min(PAGE_SIZE, restantes)} más
+            </Button>
+          ) : null}
+        </>
       )}
     </Page>
   );
