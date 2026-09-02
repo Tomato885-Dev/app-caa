@@ -31,6 +31,8 @@ yarn-error.log*
 # Si falta, la app arranca con la nómina de demostración (roster.demo.ts).
 # ============================================================================
 src/content/roster.ts
+# Mismo motivo: el volcado de la nomina para la base de datos.
+supabase/03-nomina.sql
 
 # NOTA: `src/content/seed/contenido.json` SÍ se versiona a propósito.
 # Es el contenido oficial del Centro de Alumnos (noticias, comunicados,
