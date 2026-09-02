@@ -133,7 +133,7 @@ formulario de administración la recogen solos.
 
 `src/content/seed/` contiene los datos con los que arranca la app, un archivo por módulo:
 `users.ts`, `announcements.ts`, `news.ts`, `events.ts`, `signups.ts`, `community.ts`,
-`marketplace.ts`, `benefits.ts` y `sports.ts`.
+`projects.ts`, `benefits.ts` y `sports.ts`.
 
 **Después de editar cualquiera de ellos, sube la versión** en `src/content/seed/index.ts`:
 
@@ -227,7 +227,6 @@ describen. Los más visibles:
 | --- | --- |
 | Título y bajada de cada sección | `PageHeader` de la página correspondiente |
 | Nombre y descripción en menús | Campos `title` y `description` del `AppModule` |
-| Aviso del marketplace | `modules/marketplace/MarketplaceListPage.tsx` |
 | Texto de la pantalla de acceso | `app/pages/LoginPage.tsx` |
 | Bloque "Acerca de" | `modules/profile/ProfilePage.tsx` |
 

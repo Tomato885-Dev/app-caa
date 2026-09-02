@@ -383,7 +383,8 @@ lo encuentra ahí, aunque tenga teléfono cargado.
 
 ### Revisar lo que publican los estudiantes
 
-Cuando alguien publica en el Marketplace, queda **oculto** hasta que lo apruebes.
+Hoy no hay ningun modulo donde publiquen los estudiantes, asi que esta cola se
+mantiene vacia. La herramienta queda lista por si mas adelante se habilita uno.
 
 **Administración → Cola de revisión** → botones **Aprobar**, **Pedir cambios** o
 **Rechazar**. Si rechazas o pides cambios, debes escribir un comentario: el
@@ -441,7 +442,6 @@ public/images/noticias/       ← fotos de noticias
 public/images/eventos/        ← fotos de eventos
 public/images/inscripciones/  ← fotos de convocatorias
 public/images/comunidad/      ← fotos de organizaciones
-public/images/marketplace/    ← fotos de productos
 public/images/beneficios/     ← logos de los comercios en convenio
 public/images/brand/          ← portada de la pantalla de acceso
 ```
@@ -513,7 +513,7 @@ Reemplaza estos dos archivos, conservando los mismos nombres:
 | Nombre del centro de alumnos, año, cursos | `src/config/app.config.ts` |
 | Correo permitido para entrar | `src/config/app.config.ts` |
 | Quiénes pueden acceder (nómina) | `src/content/roster.ts` |
-| Categorías de noticias, eventos, marketplace, beneficios | `src/content/taxonomies.ts` |
+| Categorías de noticias, eventos, proyectos, colaboradores | `src/content/taxonomies.ts` |
 | Disciplinas y categorías de las selecciones (365) | `src/content/taxonomies.ts` |
 | A quién se dirigen los comunicados | `src/content/taxonomies.ts` |
 | Colores de la app | `src/styles/theme.css` |

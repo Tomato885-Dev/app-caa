@@ -11,7 +11,7 @@ import { Button, Field, Select, Sheet, TextField, useToast } from '@/ui';
    REPORTE DE CONTENIDO
    ----------------------------------------------------------------------------
    Cualquier estudiante puede reportar una publicación; los reportes llegan al
-   panel de moderación (§8.2). Se usa desde el marketplace y queda
+   panel de moderación (§8.2). Queda
    disponible para módulos futuros sin cambios.
    ========================================================================== */
 

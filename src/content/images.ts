@@ -122,53 +122,6 @@ export const images: Record<string, ImageAsset> = {
     'public/images/inscripciones/revista.jpg',
   ),
 
-  /* --- Comunidad -------------------------------------------------------- */
-  'community.scouts.cover': pending(
-    'Portada del grupo scout: campamento o formación',
-    'public/images/comunidad/scouts-portada.jpg',
-  ),
-  'community.scouts.logo': pending(
-    'Insignia o logo del grupo scout',
-    'public/images/comunidad/scouts-logo.png',
-    '1/1',
-  ),
-  'community.accion-social.cover': pending(
-    'Portada del área de acción social',
-    'public/images/comunidad/accion-social-portada.jpg',
-  ),
-  'community.accion-social.logo': pending(
-    'Logo del área de acción social',
-    'public/images/comunidad/accion-social-logo.png',
-    '1/1',
-  ),
-  'community.barra.cover': pending(
-    'Portada de la barra oficial: hinchada en un partido',
-    'public/images/comunidad/barra-portada.jpg',
-  ),
-  'community.barra.logo': pending(
-    'Logo de la barra oficial',
-    'public/images/comunidad/barra-logo.png',
-    '1/1',
-  ),
-  'community.academia.cover': pending(
-    'Portada de la academia de debate',
-    'public/images/comunidad/debate-portada.jpg',
-  ),
-  'community.academia.logo': pending(
-    'Logo de la academia de debate',
-    'public/images/comunidad/debate-logo.png',
-    '1/1',
-  ),
-  'community.pastoral.cover': pending(
-    'Portada del grupo de pastoral o voluntariado',
-    'public/images/comunidad/pastoral-portada.jpg',
-  ),
-  'community.pastoral.logo': pending(
-    'Logo del grupo de pastoral',
-    'public/images/comunidad/pastoral-logo.png',
-    '1/1',
-  ),
-
   /* --- Proyectos del colegio ---------------------------------------------
      Los proyectos van SIN fotografía. Si más adelante quieren agregarlas,
      se declara aquí una entrada por proyecto con una clave que empiece por
@@ -293,37 +246,6 @@ export const images: Record<string, ImageAsset> = {
     suggestedPath: 'public/images/colaboradores/colaborador-15.png',
   },
 
-  /* --- Marketplace ------------------------------------------------------ */
-  'market.stickers': pending(
-    'Foto del producto: stickers ilustrados',
-    'public/images/marketplace/stickers.jpg',
-    '1/1',
-  ),
-  'market.pasteleria': pending(
-    'Foto del producto: tortas y postres por encargo',
-    'public/images/marketplace/pasteleria.jpg',
-    '1/1',
-  ),
-  'market.clases-matematica': pending(
-    'Foto del servicio: clases particulares',
-    'public/images/marketplace/clases.jpg',
-    '1/1',
-  ),
-  'market.fotografia': pending(
-    'Foto del servicio: fotografía de eventos',
-    'public/images/marketplace/fotografia.jpg',
-    '1/1',
-  ),
-  'market.pulseras': pending(
-    'Foto del producto: pulseras artesanales',
-    'public/images/marketplace/pulseras.jpg',
-    '1/1',
-  ),
-  'market.diseno-afiches': pending(
-    'Foto del servicio: diseño de afiches',
-    'public/images/marketplace/diseno.jpg',
-    '1/1',
-  ),
 };
 
 /**

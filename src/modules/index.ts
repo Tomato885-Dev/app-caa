@@ -3,11 +3,9 @@ import { adminModule } from './admin';
 import { announcementsModule } from './announcements';
 import { benefitsModule } from './benefits';
 import { calendarModule } from './calendar';
-import { communityModule } from './community';
 import { directoryModule } from './directory';
 import { eventsModule } from './events';
 import { homeModule } from './home';
-import { marketplaceModule } from './marketplace';
 import { newsModule } from './news';
 import { profileModule } from './profile';
 import { projectsModule } from './projects';
@@ -37,8 +35,6 @@ export const appModules: AppModule[] = [
   sportsModule,
   benefitsModule,
   projectsModule,
-  communityModule,
-  marketplaceModule,
   directoryModule,
   profileModule,
   adminModule,

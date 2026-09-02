@@ -62,26 +62,6 @@ export const signupKindTone: Record<SignupActivityKind, Tone> = Object.fromEntri
   signupKinds.map((kind) => [kind.value, kind.tone]),
 ) as Record<SignupActivityKind, Tone>;
 
-/** Categorías de organizaciones y actividades permanentes (§6.6). */
-export const communityCategories = [
-  'Organizaciones',
-  'Deportivo',
-  'Solidario',
-  'Cultural',
-  'Académico',
-] as const;
-
-/** Categorías del marketplace estudiantil (§6.7). */
-export const marketplaceCategories = [
-  'Alimentos',
-  'Diseño e ilustración',
-  'Clases y tutorías',
-  'Fotografía y video',
-  'Artesanía',
-  'Tecnología',
-  'Otros',
-] as const;
-
 /* --- Comunicados del Centro de Alumnos --------------------------------------
    Prioridad del aviso. Solo `urgente` e `importante` se destacan visualmente:
    si todo resalta, nada resalta.                                             */

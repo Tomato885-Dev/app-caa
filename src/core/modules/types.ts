@@ -35,9 +35,9 @@ export interface ModerationItem {
  */
 export interface ModerationSource {
   kind: ContentKind;
-  /** Etiqueta en singular, p. ej. "Publicación del marketplace". */
+  /** Etiqueta en singular, p. ej. "Noticia". */
   label: string;
-  /** Etiqueta en plural para filtros, p. ej. "Marketplace". */
+  /** Etiqueta en plural para filtros, p. ej. "Noticias". */
   pluralLabel: string;
   /** Devuelve todos los elementos moderables de este tipo. */
   fetchAll: () => Promise<ModerationItem[]>;

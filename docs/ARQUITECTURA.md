@@ -127,15 +127,15 @@ Los módulos la aplican con `visibleTo(items, user)` o `approvedOnly(items)`.
 
 ```ts
 {
-  kind: 'marketplaceListing',
-  label: 'Publicación del marketplace',
-  pluralLabel: 'Marketplace',
+  kind: 'news',
+  label: 'Noticia',
+  pluralLabel: 'Noticias',
   fetchAll: () => …,   // normaliza sus datos a ModerationItem
   decide: ({ id, status, note, moderatorId }) => …,
 }
 ```
 
-El panel de administración lee `getModerationSources()` y no sabe nada del marketplace. Un módulo
+El panel de administración lee `getModerationSources()` y no sabe nada de cada módulo. Uno
 futuro con contenido de estudiantes entra a la cola declarando su fuente.
 
 Las decisiones posibles son las tres del documento: aprobar, rechazar o solicitar cambios, con
@@ -178,7 +178,7 @@ evento. Cuando aparezca un tipo de contenido con fecha propia, se resuelve decla
 | Archivo | Qué controla |
 | --- | --- |
 | `config/app.config.ts` | Identidad, dominios de correo, cursos, módulos activos, moderación |
-| `content/taxonomies.ts` | Categorías de noticias, eventos, comunidad, marketplace y beneficios; prioridades de comunicados; disciplinas y categorías de las selecciones |
+| `content/taxonomies.ts` | Categorías de noticias, eventos, proyectos y colaboradores; prioridades de comunicados; disciplinas y categorías de las selecciones |
 | `content/images.ts` | Manifiesto de imágenes y sus marcadores |
 | `content/seed/*` | Contenido inicial de cada módulo |
 | `styles/theme.css` | Colores, radios y sombras |

@@ -28,8 +28,6 @@ export const EXPORTED_COLLECTIONS = [
   'benefits',
   'sportsResults',
   'projects',
-  'communityGroups',
-  'marketplaceListings',
 ] as const;
 
 export type ExportedCollection = (typeof EXPORTED_COLLECTIONS)[number];
@@ -43,8 +41,6 @@ export const COLLECTION_LABEL: Record<ExportedCollection, string> = {
   benefits: 'Colaboradores',
   sportsResults: 'Resultados 365',
   projects: 'Proyectos',
-  communityGroups: 'Comunidad',
-  marketplaceListings: 'Marketplace',
 };
 
 const repositories: Record<ExportedCollection, Repository<BaseEntity>> = {
@@ -55,8 +51,6 @@ const repositories: Record<ExportedCollection, Repository<BaseEntity>> = {
   benefits: db.benefits as Repository<BaseEntity>,
   sportsResults: db.sportsResults as Repository<BaseEntity>,
   projects: db.projects as Repository<BaseEntity>,
-  communityGroups: db.communityGroups as Repository<BaseEntity>,
-  marketplaceListings: db.marketplaceListings as Repository<BaseEntity>,
 };
 
 export type ExportCounts = Record<ExportedCollection, number>;

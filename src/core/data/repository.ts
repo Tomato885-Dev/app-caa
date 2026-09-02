@@ -2,10 +2,8 @@ import type {
   Announcement,
   BaseEntity,
   Benefit,
-  CommunityGroup,
   EventItem,
   ID,
-  MarketplaceListing,
   NewsPost,
   Project,
   Registration,
@@ -43,8 +41,6 @@ export interface DataProvider {
   events: Repository<EventItem>;
   signupActivities: Repository<SignupActivity>;
   registrations: Repository<Registration>;
-  communityGroups: Repository<CommunityGroup>;
-  marketplaceListings: Repository<MarketplaceListing>;
   announcements: Repository<Announcement>;
   benefits: Repository<Benefit>;
   sportsResults: Repository<SportsResult>;
@@ -62,8 +58,6 @@ export const COLLECTIONS = [
   'events',
   'signupActivities',
   'registrations',
-  'communityGroups',
-  'marketplaceListings',
   'announcements',
   'benefits',
   'sportsResults',

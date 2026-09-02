@@ -156,8 +156,6 @@ export const appConfig: AppConfig = {
     'sports',
     'benefits',
     'projects',
-    'community',
-    'marketplace',
     'directory',
     'profile',
     'admin',

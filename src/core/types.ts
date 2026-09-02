@@ -188,51 +188,6 @@ export interface Registration extends BaseEntity {
   state: 'confirmed' | 'waitlist' | 'cancelled';
 }
 
-/* --- Comunidad y actividades permanentes (§6.6) ----------------------------- */
-
-export interface CommunityGroup extends BaseEntity, Moderatable {
-  name: string;
-  shortDescription: string;
-  about: string;
-  /** Objetivos de la organización (§6.6). */
-  goals: string[];
-  /** Cómo participar (§6.6). */
-  howToJoin: string;
-  category: string;
-  coverImageKey?: string;
-  logoImageKey?: string;
-  /** Responsables (§6.6). */
-  leads: AuthorRef[];
-  /** Enlaces de contacto (§6.6). */
-  links: ContactLink[];
-  meetingInfo?: string;
-}
-
-export interface ContactLink {
-  label: string;
-  /** mailto:, https:// o tel: */
-  url: string;
-}
-
-/* --- Marketplace (§6.7) ----------------------------------------------------- */
-
-export interface MarketplaceListing extends BaseEntity, Moderatable {
-  title: string;
-  description: string;
-  category: string;
-  type: 'producto' | 'servicio';
-  /**
-   * Precio referencial en texto ("$3.000", "A convenir").
-   * La plataforma NO procesa pagos (§6.7 y §7.2): es solo difusión.
-   */
-  priceLabel: string;
-  imageKeys: string[];
-  seller: AuthorRef;
-  /** Medio de contacto externo elegido por quien publica. */
-  contact: ContactLink;
-  available: boolean;
-}
-
 /* --- Comunicados del Centro de Alumnos -------------------------------------
    Información breve del día a día. A diferencia de las noticias (§6.2), que
    son piezas editoriales con imagen y bajada, un comunicado es un aviso corto
@@ -330,9 +285,7 @@ export interface SportsResult extends BaseEntity {
 export type ContentKind =
   | 'news'
   | 'event'
-  | 'signupActivity'
-  | 'communityGroup'
-  | 'marketplaceListing';
+  | 'signupActivity';
 
 export interface Report extends BaseEntity {
   contentKind: ContentKind;

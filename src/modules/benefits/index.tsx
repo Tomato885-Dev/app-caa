@@ -10,8 +10,8 @@ import { BenefitsListPage } from './BenefitsListPage';
    El identificador del módulo sigue siendo `benefits`: es interno, no se ve, y
    cambiarlo obligaría a migrar el contenido ya cargado sin ganar nada.
 
-   La plataforma no valida el canje ni procesa pagos: solo entrega el código,
-   igual que el marketplace solo difunde y no cobra (§6.7). */
+   La plataforma no valida el canje ni procesa pagos: solo entrega el código
+   para que el colaborador lo lea. */
 
 export const benefitsModule: AppModule = {
   id: 'benefits',

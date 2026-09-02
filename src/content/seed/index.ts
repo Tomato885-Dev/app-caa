@@ -1,9 +1,8 @@
 import { seedAnnouncements } from './announcements';
 import { seedBenefits } from './benefits';
-import { seedCommunityGroups } from './community';
 import { seedEvents } from './events';
-import { seedMarketplaceListings, seedReports } from './marketplace';
 import { seedNews } from './news';
+import { seedReports } from './reports';
 import { seedProjects } from './projects';
 import { seedRegistrations, seedSignupActivities } from './signups';
 import { seedSportsResults } from './sports';
@@ -45,8 +44,6 @@ interface ContentFile {
   benefits?: unknown[];
   sportsResults?: unknown[];
   projects?: unknown[];
-  communityGroups?: unknown[];
-  marketplaceListings?: unknown[];
 }
 
 /*
@@ -83,8 +80,6 @@ export const seedData = {
   events: pick(own?.events, seedEvents),
   signupActivities: pick(own?.signupActivities, seedSignupActivities),
   registrations: demoOperations ?? seedRegistrations,
-  communityGroups: pick(own?.communityGroups, seedCommunityGroups),
-  marketplaceListings: pick(own?.marketplaceListings, seedMarketplaceListings),
   announcements: pick(own?.announcements, seedAnnouncements),
   benefits: pick(own?.benefits, seedBenefits),
   sportsResults: pick(own?.sportsResults, seedSportsResults),

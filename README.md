@@ -2,7 +2,8 @@
 
 Aplicación para centros de estudiantes: centraliza comunicados, noticias, un calendario mensual,
 eventos, inscripciones, resultados de las selecciones, beneficios con código QR, organizaciones de
-la comunidad, un marketplace estudiantil y una base de contactos, con acceso por correo
+los proyectos del colegio, los colaboradores de la campaña y una base de contactos,
+con acceso por correo
 institucional, roles diferenciados y moderación previa de todo el contenido de estudiantes.
 
 Está construida como **PWA mobile-first**: un solo código para Android, iOS y escritorio,
@@ -63,7 +64,7 @@ src/
 ├─ shared/            Piezas transversales usadas por varios módulos
 ├─ modules/           Un directorio por apartado de la app
 │  ├─ home/  announcements/  news/  calendar/  events/  signups/
-│  ├─ sports/  benefits/  community/  marketplace/  directory/
+│  ├─ sports/  benefits/  projects/  directory/
 │  └─ profile/  admin/
 ├─ app/               Chasis: providers, router, layout, tema, páginas públicas
 └─ styles/theme.css   Tokens de diseño (colores, radios, sombras)
@@ -148,8 +149,7 @@ Lo mismo aplica al acceso: la verificación real de identidad institucional se c
 | §6.2 Noticias | `modules/news` — publicación exclusiva de administradores |
 | §6.3 Eventos | `modules/events` — calendario con fecha, horario, ubicación, requisitos y contacto |
 | §6.4 Inscripciones | `modules/signups` — cupos, lista de espera y formulario configurable por convocatoria |
-| §6.6 Comunidad | `modules/community` — objetivos, responsables, forma de participar y contacto |
-| §6.7 Marketplace | `modules/marketplace` — solo difusión, sin pagos dentro de la plataforma |
+| Proyectos | `modules/projects` — iniciativas del colegio, vigentes e históricas |
 | §6.8 Perfil | `modules/profile` — datos, inscripciones y publicaciones propias con su estado |
 | §7 Seguridad y moderación | `core/auth`, `core/moderation`, `shared/ReportSheet` |
 | §8 Administración y gobernanza | `modules/admin` — cola de revisión, reportes, contenidos y cuentas |

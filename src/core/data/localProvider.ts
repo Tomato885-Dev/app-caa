@@ -187,8 +187,6 @@ export const localProvider: DataProvider = {
   events: new LocalRepository('events', 'evt'),
   signupActivities: new LocalRepository('signupActivities', 'act'),
   registrations: new LocalRepository('registrations', 'reg'),
-  communityGroups: new LocalRepository('communityGroups', 'grp'),
-  marketplaceListings: new LocalRepository('marketplaceListings', 'lst'),
   announcements: new LocalRepository('announcements', 'com'),
   benefits: new LocalRepository('benefits', 'ben'),
   sportsResults: new LocalRepository('sportsResults', 'res'),

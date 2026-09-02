@@ -24,8 +24,6 @@ const kindLabel: Record<ContentKind, string> = {
   news: 'Noticia',
   event: 'Evento',
   signupActivity: 'Inscripción',
-  communityGroup: 'Espacio de comunidad',
-  marketplaceListing: 'Marketplace',
 };
 
 /** Ruta al contenido reportado dentro de su módulo. */
@@ -37,10 +35,6 @@ function hrefFor(report: Report): string | null {
       return `/eventos/${report.contentId}`;
     case 'signupActivity':
       return `/inscripciones/${report.contentId}`;
-    case 'communityGroup':
-      return `/comunidad/${report.contentId}`;
-    case 'marketplaceListing':
-      return `/marketplace/${report.contentId}`;
     default:
       return null;
   }
