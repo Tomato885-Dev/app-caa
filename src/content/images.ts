@@ -47,11 +47,13 @@ export const images: Record<string, ImageAsset> = {
     ratio: '3/2',
     suggestedPath: 'public/icons/logo.png',
   },
-  'auth.hero': pending(
-    'Foto de portada de la pantalla de acceso: comunidad estudiantil, patio o actividad masiva',
-    'public/images/brand/acceso-portada.jpg',
-    '4/3',
-  ),
+  'auth.hero': {
+    src: '/images/brand/acceso-portada.jpg',
+    alt: 'Capilla del colegio: el crucifijo de madera bajo el artesonado de cobre, entre los dos vitrales',
+    description: 'Foto de portada de la pantalla de acceso',
+    ratio: '4/3',
+    suggestedPath: 'public/images/brand/acceso-portada.jpg',
+  },
 
   /* --- Inicio ----------------------------------------------------------- */
   'home.banner': pending(
