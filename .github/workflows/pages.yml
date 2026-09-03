@@ -42,6 +42,21 @@ jobs:
           VITE_DEMO_ROSTER: 'true'
           # La app se sirve desde /nombre-del-repositorio/
           BASE_PATH: /${{ github.event.repository.name }}/
+          # Conexión con Supabase.
+          #
+          # MIENTRAS ESTÉN VACÍOS, lo publicado es una DEMOSTRACIÓN: datos en el
+          # navegador de cada visitante y cuentas de prueba a un clic. Es lo que
+          # conviene para enseñarle la app a alguien sin darle una cuenta.
+          #
+          # AL DEFINIRLOS en Settings → Secrets, lo publicado pasa a ser la
+          # aplicación REAL: contenido compartido y acceso solo con cuenta de la
+          # nómina. Las cuentas de demostración desaparecen solas.
+          #
+          # La clave `anon` es pública a propósito: viaja dentro de la página en
+          # cualquier caso. Lo que protege los datos son las reglas de acceso de
+          # la base de datos, comprobadas ya: sin sesión no se lee nada.
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build
 
       - name: Preparar navegación interna
