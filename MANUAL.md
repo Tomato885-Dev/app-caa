@@ -181,6 +181,43 @@ No hace falta borrarlo de la nómina: entra como Administrador a
 **Cuentas y permisos** y usa **Desactivar**. Deja de poder entrar de inmediato y
 desaparece de la base de contactos.
 
+### Abrir el registro por partes
+
+Estar en la nómina y poder crear cuenta **hoy** son cosas distintas. La columna
+`habilitado` decide la segunda, y sirve para que el equipo trabaje tranquilo
+antes de que entre el resto del colegio.
+
+El archivo **`supabase/05-lanzamiento.sql`** tiene las dos órdenes escritas:
+
+| Cuándo | Qué se corre |
+| --- | --- |
+| Antes de publicar | **Parte A** — deja habilitados solo los correos de tu equipo |
+| El día del lanzamiento | **Parte B** — una línea, y quedan los 694 |
+
+Quien queda en espera no pierde nada: sigue en la nómina con su nombre y su
+curso, solo que aún no puede activar su cuenta. Y a quien **ya** activó no le
+afecta, porque su cuenta ya existe.
+
+> Ese archivo termina con correos de compañeros escritos dentro, así que está
+> en `.gitignore` igual que la nómina. No lo subas a GitHub.
+
+### Cuánta gente ha activado su cuenta
+
+Entra como Administrador a **Cuentas y permisos**. Arriba de todo aparece
+cuántos entraron de cuántos habilitados, en qué cursos falta gente, y cuándo
+fue la última activación.
+
+No hay que llevar ninguna lista aparte: con el servidor, una cuenta existe
+únicamente si su dueño se registró y verificó su correo. Cada perfil de esa
+lista **es** una activación.
+
+El botón **Descargar** entrega un archivo `.csv` que se abre en Excel, con el
+resumen por curso y el detalle de quién activó y cuándo. Sirve para mostrar el
+avance en una reunión.
+
+> ⚠️ Ese archivo lleva nombres y correos de menores. Guárdalo donde guardas la
+> nómina y no lo mandes por correo ni por WhatsApp.
+
 ---
 
 ## 3. Entrar como administrador

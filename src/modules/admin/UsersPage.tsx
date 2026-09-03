@@ -3,9 +3,10 @@ import { EyeOff, KeyRound, Phone, Search, UserCog } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { clearPassword, hasPassword } from '@/core/auth/credentials';
 import { clearVerification, isVerified } from '@/core/auth/verification';
-import { db } from '@/core/data';
+import { db, usingServer } from '@/core/data';
 import { useCollection, useDataMutation } from '@/core/hooks/useData';
 import { ROLE_LABEL, type ID, type Role, type User } from '@/core/types';
+import { formatRelative } from '@/core/utils/date';
 import { matchesSearch } from '@/core/utils/text';
 import {
   Avatar,
@@ -20,6 +21,12 @@ import {
   Select,
   useToast,
 } from '@/ui';
+import {
+  buildActivationSummary,
+  downloadActivationReport,
+  type ActivationSummary,
+} from './activaciones';
+import { ActivationSummaryCard } from './components/ActivationSummaryCard';
 
 /* Cuentas y permisos (§8). Define quién administra, quién modera y quién
    participa como estudiante. */
@@ -29,11 +36,14 @@ export function UsersPage() {
   const notify = useToast();
   const { data, isLoading } = useCollection('users', db.users);
   const [query, setQuery] = useState('');
-  /* Quiénes ya crearon su contraseña y quiénes comprobaron su correo. Ambas
-     cosas viven fuera de `db` (no son contenido), así que React Query no las
-     refresca: se leen aparte. */
+  /* Quiénes ya crearon su contraseña y quiénes comprobaron su correo.
+     Solo tiene sentido preguntarlo SIN servidor, que es cuando esas dos cosas
+     viven en este navegador. Con servidor, un perfil existe únicamente si su
+     dueño se registró y verificó su correo: preguntar aquí daría "sin activar"
+     para todos, que es justo lo contrario de la verdad. */
   const [activatedIds, setActivatedIds] = useState<Set<ID>>(() => new Set());
   const [verifiedIds, setVerifiedIds] = useState<Set<ID>>(() => new Set());
+  const [summary, setSummary] = useState<ActivationSummary | null>(null);
 
   const updateUser = useDataMutation(
     ({ id, patch }: { id: ID; patch: Partial<User> }) => db.users.update(id, patch),
@@ -50,9 +60,32 @@ export function UsersPage() {
 
   useEffect(() => {
     const rows = data ?? [];
+    if (usingServer) {
+      setActivatedIds(new Set(rows.map((entry) => entry.id)));
+      setVerifiedIds(new Set(rows.map((entry) => entry.id)));
+      return;
+    }
     setActivatedIds(new Set(rows.filter((entry) => hasPassword(entry.id)).map((entry) => entry.id)));
     setVerifiedIds(new Set(rows.filter((entry) => isVerified(entry.id)).map((entry) => entry.id)));
   }, [data]);
+
+  /* Quiénes cuentan como activados. Con servidor son todos los perfiles; sin
+     servidor, los que crearon contraseña en este navegador. */
+  const activatedAccounts = useMemo(
+    () => (data ?? []).filter((entry) => activatedIds.has(entry.id)),
+    [data, activatedIds],
+  );
+
+  useEffect(() => {
+    if (!data) return;
+    let vigente = true;
+    void buildActivationSummary(data, activatedAccounts).then((result) => {
+      if (vigente) setSummary(result);
+    });
+    return () => {
+      vigente = false;
+    };
+  }, [data, activatedAccounts]);
 
   const changeRole = (target: User, role: Role) => {
     updateUser.mutate(
@@ -110,6 +143,16 @@ export function UsersPage() {
         title="Cuentas y permisos"
         description="Administra los perfiles de acceso y los datos de contacto de la comunidad."
       />
+
+      {summary ? (
+        <ActivationSummaryCard
+          summary={summary}
+          onDownload={() => {
+            const nombre = downloadActivationReport(activatedAccounts, summary);
+            notify('Se descargó ' + nombre + '.', 'info');
+          }}
+        />
+      ) : null}
 
       <div className="relative mb-5">
         <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
@@ -197,13 +240,20 @@ export function UsersPage() {
 
                   <div className="mt-2 flex items-center justify-between gap-2">
                     <p className="text-[11.5px] text-ink-3">
-                      {!activated
-                        ? 'Todavía no ha creado su contraseña.'
-                        : verified
-                          ? 'Contraseña creada y correo verificado.'
-                          : 'Contraseña creada, falta verificar el correo.'}
+                      {usingServer
+                        ? 'Activó su cuenta ' + formatRelative(entry.createdAt) + '.'
+                        : !activated
+                          ? 'Todavía no ha creado su contraseña.'
+                          : verified
+                            ? 'Contraseña creada y correo verificado.'
+                            : 'Contraseña creada, falta verificar el correo.'}
                     </p>
-                    {activated ? (
+                    {/* Restablecer solo existe SIN servidor, que es cuando la
+                        contraseña vive en este navegador y no hay forma de
+                        recuperarla por correo. Con servidor, quien la olvide
+                        usa "Olvidé mi contraseña" y se la resuelve Supabase;
+                        dejar el botón aquí prometería algo que no haría. */}
+                    {!usingServer && activated ? (
                       <Button
                         size="sm"
                         variant="ghost"

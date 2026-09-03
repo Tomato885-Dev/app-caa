@@ -33,6 +33,8 @@ yarn-error.log*
 src/content/roster.ts
 # Mismo motivo: el volcado de la nomina para la base de datos.
 supabase/03-nomina.sql
+# Y el archivo donde se escriben los correos del equipo que entra primero.
+supabase/05-lanzamiento.sql
 
 # NOTA: `src/content/seed/contenido.json` SÍ se versiona a propósito.
 # Es el contenido oficial del Centro de Alumnos (noticias, comunicados,
