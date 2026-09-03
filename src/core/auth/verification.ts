@@ -110,9 +110,18 @@ function equals(a: string, b: string): boolean {
   return diff === 0;
 }
 
-/** Deja solo los dígitos: la gente pega el código con espacios o guiones. */
+/**
+ * Deja solo los dígitos: la gente pega el código con espacios o guiones.
+ *
+ * NO se recorta a seis. El código de este archivo tiene seis, pero cuando lo
+ * genera el servidor su largo es configurable, y recortarlo lo invalidaría sin
+ * que nada lo delatara: el error diría "código incorrecto" para un código que
+ * la persona copió bien.
+ */
+export const CODE_MIN_LENGTH = CODE_LENGTH;
+
 export function normalizeCode(input: string): string {
-  return input.replace(/\D/g, '').slice(0, CODE_LENGTH);
+  return input.replace(/\D/g, '').slice(0, 12);
 }
 
 /* --- Estado verificado ------------------------------------------------------ */

@@ -63,11 +63,15 @@ export async function confirmarCodigo(
   const { error } = await client.auth.verifyOtp({ email, token: code, type: 'signup' });
   if (!error) return;
 
-  if (/expired/i.test(error.message)) {
-    throw new Error('El código venció. Pide uno nuevo.');
-  }
-  if (/invalid/i.test(error.message)) {
-    throw new Error('Código incorrecto. Revísalo y vuelve a intentar.');
+  /* El servidor devuelve el MISMO mensaje para un código equivocado y para uno
+     vencido ("Token has expired or is invalid"), así que separarlos aquí sería
+     inventar una precisión que no tenemos: diría "venció" ante un código mal
+     copiado y mandaría a pedir otro sin necesidad. */
+  if (/expired|invalid/i.test(error.message)) {
+    throw new Error(
+      'Ese código no sirve: puede estar mal copiado o haber vencido. ' +
+        'Revísalo, y si no resulta pide uno nuevo.',
+    );
   }
   throw new Error(`No fue posible comprobar el código: ${error.message}`);
 }

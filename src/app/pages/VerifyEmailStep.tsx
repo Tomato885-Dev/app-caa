@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MailCheck, RefreshCw, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { AuthError, useAuth, type PendingVerification } from '@/core/auth/AuthContext';
-import { normalizeCode, secondsUntilResend } from '@/core/auth/verification';
+import { CODE_MIN_LENGTH, normalizeCode, secondsUntilResend } from '@/core/auth/verification';
 import { Button, Field } from '@/ui';
 
 /* ============================================================================
@@ -37,8 +37,8 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
   }, [pending.id, pending.devCode, pending.sent]);
 
   const handleSubmit = async () => {
-    if (code.length < 6) {
-      setError('El código tiene 6 dígitos.');
+    if (code.length < CODE_MIN_LENGTH) {
+      setError(`El código tiene al menos ${CODE_MIN_LENGTH} dígitos.`);
       return;
     }
     setError('');
@@ -148,7 +148,7 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
           size="lg"
           icon={ShieldCheck}
           loading={submitting}
-          disabled={code.length < 6}
+          disabled={code.length < CODE_MIN_LENGTH}
           className="w-full"
         >
           Verificar y entrar
