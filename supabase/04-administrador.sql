@@ -56,12 +56,12 @@ $$;
 
 -- 3. Quién administra ---------------------------------------------------------
 
+-- El nombre y el curso los pone la nomina oficial (03-nomina.sql); aqui solo
+-- se decide el rol, para que volver a ejecutar este archivo no pise los datos
+-- que entrego el colegio.
 insert into public.nomina (correo, nombre, curso, rol_inicial) values
-  ('mateoburgosa@verbo.cl', 'Mateo Burgos', 'IV Medio A', 'admin')
-  on conflict (correo) do update
-    set rol_inicial = 'admin',
-        nombre = excluded.nombre,
-        curso = excluded.curso;
+  ('mateoburgosa@verbo.cl', 'Burgos Alfaro Mateo Pablo', 'III Medio B', 'admin')
+  on conflict (correo) do update set rol_inicial = 'admin';
 
 -- La cuenta oficial del Centro de Alumnos, para cuando exista el correo.
 update public.nomina set rol_inicial = 'admin'

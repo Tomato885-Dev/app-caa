@@ -30,7 +30,7 @@ traspasarlo cuando corresponda, o la aplicación queda atada a una persona.
 | Qué | Dónde se cambia | Por qué importa |
 | --- | --- | --- |
 | Dueño del proyecto de Supabase | Supabase → Settings → General | Si esa persona se va, nadie más administra la app |
-| Remitente de los correos | Supabase → Authentication → Emails → SMTP | Es lo que ven los 400 alumnos al recibir su código |
+| Remitente de los correos | Supabase → Authentication → Emails → SMTP | Es lo que ven los 694 alumnos al recibir su código |
 
 Ninguno de los dos obliga a rehacer nada: son cambios de configuración.
 
@@ -151,18 +151,29 @@ La nómina está en **`src/content/roster.ts`**. Cada estudiante es una línea:
 { name: 'Apellido Apellido Nombre', email: 'correo@verbo.cl', grade: '8° Básico A' },
 ```
 
-Para sumar III y IV Medio (o a alguien que faltó):
+Están los 694 alumnos del colegio, de 8° Básico a IV Medio. Para agregar a
+alguien que faltó, o para el cambio de año:
 
-1. Copia una línea, pégala al final del bloque que corresponda y cambia los tres
-   datos. Respeta las comillas y la coma del final.
+1. Copia una línea, pégala en el bloque del curso que corresponda y cambia los
+   tres datos. Respeta las comillas y la coma del final.
 2. Si el curso es nuevo, agrégalo también a la lista `grades` de
    `src/config/app.config.ts`, escrito **exactamente igual**.
-3. Sube el `version` en `src/content/seed/index.ts` (por ejemplo, de
-   `2026-08-23.nomina-1` a `2026-08-23.nomina-2`).
+3. Agrega esa misma persona a la base de datos. En Supabase → **SQL Editor**:
 
-> ⚠️ El paso 3 vuelve a crear las cuentas **y borra el contenido que hayas
-> cargado desde la app en ese navegador**. Haz los cambios de nómina antes de
-> ponerte a cargar noticias, beneficios y eventos.
+   ```sql
+   insert into public.nomina (correo, nombre, curso) values
+     ('correo@verbo.cl', 'Apellido Apellido Nombre', '8° Básico A')
+     on conflict (correo) do update
+       set nombre = excluded.nombre, curso = excluded.curso, habilitado = true;
+   ```
+
+**El paso 3 es el que manda.** Con el servidor conectado, quien decide si
+alguien puede crear cuenta es la tabla `nomina` de Supabase; `roster.ts` es el
+original en limpio y el que se usa cuando se trabaja sin servidor. Que los dos
+digan lo mismo evita sorpresas más adelante.
+
+Agregar gente a la nómina **ya no borra nada**: el contenido publicado y la
+nómina son cosas separadas desde que existe el servidor.
 
 ### Sacar a alguien
 

@@ -117,7 +117,7 @@ export const appConfig: AppConfig = {
    * (`src/content/roster.ts`); los filtros de la base de contactos se generan
    * desde aquí y ocultan solos los cursos sin estudiantes.
    *
-   * III y IV Medio quedan declarados a la espera de sus nóminas.
+   * Los 24 cursos del colegio, de 8° Básico a IV Medio, todos con nómina.
    */
   grades: [
     '8° Básico A',
