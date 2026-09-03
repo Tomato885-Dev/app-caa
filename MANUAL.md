@@ -21,6 +21,24 @@ colores) sí son permanentes y los verá todo el mundo.
 
 ---
 
+## ⏳ Pendiente: pasar las cuentas al Centro de Alumnos
+
+El servidor se montó con una cuenta personal porque la directiva todavía no
+asumía y no existía el correo institucional. **Funciona igual**, pero hay que
+traspasarlo cuando corresponda, o la aplicación queda atada a una persona.
+
+| Qué | Dónde se cambia | Por qué importa |
+| --- | --- | --- |
+| Dueño del proyecto de Supabase | Supabase → Settings → General | Si esa persona se va, nadie más administra la app |
+| Remitente de los correos | Supabase → Authentication → Emails → SMTP | Es lo que ven los 400 alumnos al recibir su código |
+
+Ninguno de los dos obliga a rehacer nada: son cambios de configuración.
+
+**Hazlo apenas exista el correo institucional del Centro de Alumnos.** Cuanto
+más tiempo pase, más cuentas y contraseñas dependerán de un correo personal.
+
+---
+
 ## 1. Encender la aplicación
 
 Abre una terminal en la carpeta del proyecto y escribe:
