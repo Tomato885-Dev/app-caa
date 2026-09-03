@@ -4,6 +4,7 @@ import { KeyRound, LogIn, ShieldCheck, UserPlus } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { demoAccounts, seedUsers } from '@/content/seed/users';
 import { AuthError, useAuth } from '@/core/auth/AuthContext';
+import { usingServer } from '@/core/data';
 import { ROLE_LABEL } from '@/core/types';
 import {
   Avatar,
@@ -171,7 +172,7 @@ export function LoginPage() {
       </div>
 
       {/* Acceso rápido de demostración; se desactiva en appConfig. */}
-      {appConfig.auth.enableDemoAccounts ? (
+      {appConfig.auth.enableDemoAccounts && !usingServer ? (
         <section className="mt-7">
           <p className="mb-1 text-[11.5px] font-bold uppercase tracking-wider text-ink-3">
             Cuentas de demostración

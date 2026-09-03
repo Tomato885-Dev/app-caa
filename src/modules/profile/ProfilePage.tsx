@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
-import { db } from '@/core/data';
+import { db, usingServer } from '@/core/data';
 import { ROLE_LABEL } from '@/core/types';
 import { useTheme, type ThemePreference } from '@/app/theme/ThemeContext';
 import {
@@ -143,9 +143,13 @@ export function ProfilePage() {
       </Card>
 
       <div className="space-y-2">
-        <Button variant="secondary" icon={RotateCcw} onClick={handleReset} className="w-full">
-          Restaurar contenido de ejemplo
-        </Button>
+        {/* Con servidor el contenido es compartido: restaurarlo se lo borraría
+            a toda la comunidad, así que la opción no se ofrece. */}
+        {usingServer ? null : (
+          <Button variant="secondary" icon={RotateCcw} onClick={handleReset} className="w-full">
+            Restaurar contenido de ejemplo
+          </Button>
+        )}
         <Button variant="ghost" icon={LogOut} onClick={signOut} className="w-full">
           Cerrar sesión
         </Button>

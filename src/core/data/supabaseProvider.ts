@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import type { BaseEntity, ID } from '@/core/types';
+import type { BaseEntity, ID, Role, User } from '@/core/types';
 import {
   COLLECTIONS,
   type CollectionName,
@@ -129,6 +129,103 @@ class SupabaseRepository<T extends BaseEntity> implements Repository<T> {
   }
 }
 
+/* ----------------------------------------------------------------------------
+   CUENTAS
+   Las cuentas NO son contenido: viven en su propia tabla `perfiles`, ligada al
+   sistema de cuentas de Supabase. Por eso `users` no pasa por la tabla común.
+
+   La traducción de nombres ocurre aquí y en ningún otro sitio: la base de
+   datos habla en español y en columnas; el resto de la aplicación sigue
+   hablando de `User` como siempre.
+   -------------------------------------------------------------------------- */
+
+interface FilaPerfil {
+  id: string;
+  correo: string;
+  nombre: string;
+  curso: string;
+  rol: Role;
+  telefono: string | null;
+  oculto: boolean;
+  activo: boolean;
+  creado_en: string;
+  editado_en: string;
+}
+
+function aUsuario(fila: FilaPerfil): User {
+  return {
+    id: fila.id,
+    email: fila.correo,
+    name: fila.nombre,
+    grade: fila.curso,
+    role: fila.rol,
+    active: fila.activo,
+    phone: fila.telefono ?? undefined,
+    hideFromDirectory: fila.oculto,
+    createdAt: fila.creado_en,
+    updatedAt: fila.editado_en,
+  };
+}
+
+function aColumnas(patch: Partial<User>): Record<string, unknown> {
+  const fila: Record<string, unknown> = { editado_en: new Date().toISOString() };
+  if (patch.name !== undefined) fila.nombre = patch.name;
+  if (patch.grade !== undefined) fila.curso = patch.grade;
+  if (patch.role !== undefined) fila.rol = patch.role;
+  if (patch.active !== undefined) fila.activo = patch.active;
+  if (patch.phone !== undefined) fila.telefono = patch.phone ?? null;
+  if (patch.hideFromDirectory !== undefined) fila.oculto = patch.hideFromDirectory;
+  return fila;
+}
+
+class PerfilesRepository implements Repository<User> {
+  constructor(private readonly client: SupabaseClient) {}
+
+  async list(): Promise<User[]> {
+    const { data, error } = await this.client.from('perfiles').select('*');
+    if (error) throw new Error(`No se pudieron leer las cuentas: ${error.message}`);
+    return (data ?? []).map((fila) => aUsuario(fila as FilaPerfil));
+  }
+
+  async get(id: ID): Promise<User | null> {
+    const { data, error } = await this.client
+      .from('perfiles')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw new Error(`No se pudo leer la cuenta ${id}: ${error.message}`);
+    return data ? aUsuario(data as FilaPerfil) : null;
+  }
+
+  /**
+   * Las cuentas no se crean desde aquí: nacen cuando alguien se registra y la
+   * base de datos les arma el perfil desde la nómina.
+   */
+  async create(): Promise<User> {
+    throw new Error(
+      'Las cuentas se crean cuando la persona se registra, no desde la administración.',
+    );
+  }
+
+  async update(id: ID, patch: Partial<User>): Promise<User> {
+    const { data, error } = await this.client
+      .from('perfiles')
+      .update(aColumnas(patch))
+      .eq('id', id)
+      .select('*')
+      .maybeSingle();
+
+    if (error) throw new Error(`No se pudo actualizar la cuenta: ${error.message}`);
+    if (!data) throw new Error(`No se encontró la cuenta ${id}.`);
+    return aUsuario(data as FilaPerfil);
+  }
+
+  /** Desactivar, no borrar: se conserva la autoría de lo ya publicado. */
+  async remove(id: ID): Promise<void> {
+    await this.update(id, { active: false });
+  }
+}
+
 const PREFIJOS: Record<CollectionName, string> = {
   users: 'usr',
   news: 'new',
@@ -147,6 +244,8 @@ export function createSupabaseProvider(client: SupabaseClient): DataProvider {
 
   return {
     ...repos,
+    // Las cuentas tienen su propia tabla; el resto sí es contenido.
+    users: new PerfilesRepository(client),
     /**
      * Con base de datos NO existe "restaurar el contenido de ejemplo": el
      * contenido es compartido y borrarlo se lo borraría a toda la comunidad.

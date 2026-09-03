@@ -1,11 +1,21 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { appConfig } from '@/config/app.config';
-import { db } from '@/core/data';
+import { db, supabase, usingServer } from '@/core/data';
 import { ROLE_ORDER, type ID, type Role, type User } from '@/core/types';
 import { hasPassword, setPassword, verifyPassword } from './credentials';
 import { MailError, mailerIsConfigured, sendVerificationCode } from './mailer';
 import { checkPassword } from './passwordPolicy';
+import {
+  cambiarContrasena,
+  confirmarCodigo,
+  entrar,
+  estaEnLaNomina,
+  perfilActual,
+  reenviarCodigo,
+  registrar,
+  salir,
+} from './supabaseAuth';
 import {
   CODE_TTL_MINUTES,
   checkCode,
@@ -32,6 +42,15 @@ import {
    `register()` no crea cuentas nuevas: solo le pone contraseña a una cuenta
    que ya existe en la nómina. Nadie puede darse de alta por su cuenta, que es
    justamente lo que pidió el Centro de Alumnos.
+
+   DOS MODOS, LA MISMA INTERFAZ
+   Con servidor configurado, todo esto lo resuelve Supabase: la contraseña la
+   guarda él, el código llega por correo de verdad y la sesión vale en
+   cualquier dispositivo. Sin servidor, sigue funcionando en el navegador como
+   hasta ahora, que es lo que usa la demostración pública.
+
+   El resto de la aplicación no distingue: las pantallas de acceso, el registro
+   y las guardias de ruta son exactamente las mismas en los dos casos.
 
    LA VERIFICACIÓN PENDIENTE VIVE EN MEMORIA
    Entre "escribí mi contraseña" y "escribí el código" la cuenta queda en
@@ -152,6 +171,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
 
     async function restore() {
+      // Con servidor, la sesión la mantiene Supabase y vale en cualquier
+      // dispositivo; no hay nada que recordar en este navegador.
+      if (usingServer && supabase) {
+        try {
+          const perfil = await perfilActual(supabase);
+          if (!cancelled) setUser(perfil?.active ? perfil : null);
+        } catch {
+          if (!cancelled) setUser(null);
+        }
+        if (!cancelled) setLoading(false);
+        return;
+      }
+
       const storedId = localStorage.getItem(SESSION_KEY);
       if (storedId) {
         const found = await db.users.get(storedId);
@@ -212,6 +244,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback<AuthContextValue['signIn']>(
     async (email, password) => {
+      const value = normalizeEmail(email);
+
+      if (usingServer && supabase) {
+        if (!isInstitutionalEmail(value)) {
+          throw new AuthError(`Debes usar tu correo institucional (${domainsText()}).`);
+        }
+        if (!password) throw new AuthError('Escribe tu contraseña.');
+
+        try {
+          await entrar(supabase, value, password);
+        } catch (caught) {
+          throw new AuthError((caught as Error).message);
+        }
+
+        const perfil = await perfilActual(supabase);
+        if (!perfil) {
+          await salir(supabase);
+          throw new AuthError(
+            'Ese correo no figura en la nómina habilitada. Si crees que es un error, avísale al Centro de Alumnos.',
+          );
+        }
+        if (!perfil.active) {
+          await salir(supabase);
+          throw new AuthError('Esta cuenta está desactivada. Contacta a la administración.');
+        }
+        setUser(perfil);
+        return perfil;
+      }
+
       const account = await findEnabledAccount(email);
 
       // La cuenta existe pero nadie la ha activado todavía.
@@ -240,6 +301,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const lookupAccount = useCallback<AuthContextValue['lookupAccount']>(async (email) => {
+    const value = normalizeEmail(email);
+
+    if (usingServer && supabase) {
+      if (!isInstitutionalEmail(value)) {
+        throw new AuthError(`Debes usar tu correo institucional (${domainsText()}).`);
+      }
+      if (!(await estaEnLaNomina(supabase, value))) {
+        throw new AuthError(
+          'Ese correo no figura en la nómina habilitada. Si crees que es un error, avísale al Centro de Alumnos.',
+        );
+      }
+      // El nombre y el curso los pone el servidor al confirmarse la cuenta:
+      // preguntarlos aquí obligaría a exponer la nómina.
+      return { id: value, name: '', grade: '', email: value };
+    }
+
     const account = await findEnabledAccount(email);
 
     if (hasPassword(account.id)) {
@@ -250,6 +327,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = useCallback<AuthContextValue['register']>(
     async (email, password) => {
+      const value = normalizeEmail(email);
+
+      if (usingServer && supabase) {
+        const check = checkPassword(password, value);
+        if (!check.valid) throw new AuthError(check.error);
+
+        try {
+          await registrar(supabase, value, password);
+        } catch (caught) {
+          throw new AuthError((caught as Error).message);
+        }
+
+        const pendiente: PendingVerification = {
+          id: value,
+          name: '',
+          grade: '',
+          email: value,
+          sent: true,
+          expiresInMinutes: 60,
+        };
+        setPending(pendiente);
+        return null;
+      }
+
       const account = await findEnabledAccount(email);
 
       if (hasPassword(account.id)) {
@@ -275,6 +376,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (code) => {
       if (!pending) {
         throw new AuthError('La verificación expiró. Vuelve a escribir tu contraseña.');
+      }
+
+      if (usingServer && supabase) {
+        try {
+          await confirmarCodigo(supabase, pending.email, code);
+        } catch (caught) {
+          throw new AuthError((caught as Error).message);
+        }
+
+        const perfil = await perfilActual(supabase);
+        if (!perfil) {
+          await salir(supabase);
+          throw new AuthError('Tu cuenta no quedó habilitada. Avísale al Centro de Alumnos.');
+        }
+        setPending(null);
+        setUser(perfil);
+        return perfil;
       }
 
       const result = await checkCode(pending.id, code);
@@ -307,6 +425,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new AuthError('La verificación expiró. Vuelve a escribir tu contraseña.');
     }
 
+    if (usingServer && supabase) {
+      try {
+        await reenviarCodigo(supabase, pending.email);
+      } catch (caught) {
+        throw new AuthError((caught as Error).message);
+      }
+      return pending;
+    }
+
     const wait = secondsUntilResend(pending.id);
     if (wait > 0) {
       throw new AuthError(`Espera ${wait} segundos antes de pedir otro código.`);
@@ -322,7 +449,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInAsDemo = useCallback<AuthContextValue['signInAsDemo']>(
     async (userId) => {
-      if (!appConfig.auth.enableDemoAccounts) {
+      if (!appConfig.auth.enableDemoAccounts || usingServer) {
         throw new AuthError('El acceso de demostración está desactivado.');
       }
       const account = await db.users.get(userId);
@@ -333,6 +460,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(() => {
+    if (usingServer && supabase) void salir(supabase);
     localStorage.removeItem(SESSION_KEY);
     setPending(null);
     setUser(null);
@@ -350,6 +478,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const changePassword = useCallback<AuthContextValue['changePassword']>(
     async (currentPassword, newPassword) => {
       if (!user) throw new AuthError('No hay una sesión activa.');
+
+      if (usingServer && supabase) {
+        const check = checkPassword(newPassword, user.email);
+        if (!check.valid) throw new AuthError(check.error);
+
+        // Se comprueba la actual entrando con ella: Supabase no expone un
+        // "¿es esta tu contraseña?", y así nadie cambia la clave de una sesión
+        // que dejó abierta en un computador prestado.
+        try {
+          await entrar(supabase, user.email, currentPassword);
+        } catch {
+          throw new AuthError('La contraseña actual no es correcta.');
+        }
+
+        try {
+          await cambiarContrasena(supabase, newPassword);
+        } catch (caught) {
+          throw new AuthError((caught as Error).message);
+        }
+        return;
+      }
 
       // Una cuenta abierta con el acceso de demostración no tiene clave previa.
       if (hasPassword(user.id) && !(await verifyPassword(user.id, currentPassword))) {
