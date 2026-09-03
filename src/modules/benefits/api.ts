@@ -20,14 +20,27 @@ export function isRedeemable(benefit: Benefit): boolean {
   return benefit.active && (!benefit.validUntil || !isPast(benefit.validUntil));
 }
 
-/** Canjeables primero, y dentro de cada grupo por orden alfabético. */
+/**
+ * Por orden alfabético del colaborador: Açaí, Burger King, y así.
+ *
+ * Se ordena por `partner` —quién da el beneficio— y no por `name` —en qué
+ * consiste—, porque quien busca en esta lista viene con el comercio en la
+ * cabeza, no con el descuento. Es una guía de colaboradores.
+ *
+ * Los no disponibles NO se mandan al final. Con quince tarjetas que caben casi
+ * en una pantalla, moverlas rompería el abecedario justo cuando sirve para
+ * encontrar algo; que un convenio esté vencido ya lo dice su distintivo.
+ *
+ * `localeCompare` en español con `sensitivity: 'base'` hace que los acentos y
+ * las mayúsculas no alteren el orden: "Açaí" queda junto a "Acai".
+ */
 export function sortBenefits(items: Benefit[]): Benefit[] {
-  return [...items].sort((a, b) => {
-    const availableA = isRedeemable(a);
-    const availableB = isRedeemable(b);
-    if (availableA !== availableB) return availableA ? -1 : 1;
-    return a.name.localeCompare(b.name);
-  });
+  const comparar = (a: string, b: string) =>
+    a.trim().localeCompare(b.trim(), 'es', { sensitivity: 'base' });
+
+  return [...items].sort(
+    (a, b) => comparar(a.partner, b.partner) || comparar(a.name, b.name),
+  );
 }
 
 export function useCreateBenefit() {
