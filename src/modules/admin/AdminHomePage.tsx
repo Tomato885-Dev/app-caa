@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { usingOwnContent } from '@/content/seed';
+import { usingServer } from '@/core/data';
 import { db } from '@/core/data';
 import { useCollection } from '@/core/hooks/useData';
 import { useModerationQueue } from '@/core/moderation/useModerationQueue';
@@ -202,14 +203,21 @@ function ExportCard({
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[14.5px] font-bold text-ink">Exportar contenido</h2>
-            <Badge tone={usingOwnContent ? 'brand' : 'neutral'}>
-              {usingOwnContent ? 'Contenido propio' : 'Contenido de ejemplo'}
+            <h2 className="text-[14.5px] font-bold text-ink">
+              {usingServer ? 'Copia de seguridad' : 'Exportar contenido'}
+            </h2>
+            <Badge tone={usingServer || usingOwnContent ? 'brand' : 'neutral'}>
+              {usingServer
+                ? 'Servidor conectado'
+                : usingOwnContent
+                  ? 'Contenido propio'
+                  : 'Contenido de ejemplo'}
             </Badge>
           </div>
           <p className="mt-1 text-[12.5px] leading-relaxed text-ink-2">
-            Guarda todo lo que has publicado en un archivo del proyecto, para que deje de depender
-            de este navegador y sea lo que vean todos al abrir la aplicación.
+            {usingServer
+              ? 'Lo que publicas ya se guarda en el servidor y lo ve toda la comunidad al instante: no hay que exportar nada. Este botón descarga una copia de respaldo, por si algún día quieres tenerla guardada aparte.'
+              : 'Guarda todo lo que has publicado en un archivo del proyecto, para que deje de depender de este navegador y sea lo que vean todos al abrir la aplicación.'}
           </p>
         </div>
       </div>
@@ -245,7 +253,7 @@ function ExportCard({
         onClick={onExport}
         className="mt-3.5 w-full"
       >
-        Exportar contenido
+        {usingServer ? 'Descargar copia de seguridad' : 'Exportar contenido'}
       </Button>
 
       {exported ? (
@@ -260,9 +268,15 @@ function ExportCard({
             ))}
           </ul>
           <p className="mt-3 border-t border-line pt-3 text-[12.5px] leading-relaxed text-ink-2">
-            Ahora guarda ese archivo en la carpeta{' '}
-            <span className="font-bold text-ink">src/content/seed/</span> del proyecto,
-            reemplazando el que haya. Con eso queda grabado.
+            {usingServer ? (
+              'Guarda el archivo donde quieras. Es solo un respaldo: el contenido vivo está en el servidor.'
+            ) : (
+              <>
+                Ahora guarda ese archivo en la carpeta{' '}
+                <span className="font-bold text-ink">src/content/seed/</span> del proyecto,
+                reemplazando el que haya. Con eso queda grabado.
+              </>
+            )}
           </p>
         </div>
       ) : null}
