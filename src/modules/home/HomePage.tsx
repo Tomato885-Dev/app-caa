@@ -6,6 +6,7 @@ import { useAuth } from '@/core/auth/AuthContext';
 import { usePendingCount } from '@/core/moderation/useModerationQueue';
 import { approvedOnly, canModerate } from '@/core/moderation/visibility';
 import { getVisibleModules } from '@/core/modules/registry';
+import { nombreDePila } from '@/core/utils/nombres';
 import { AnnouncementCard } from '@/modules/announcements/components/AnnouncementCard';
 import {
   isClosed,
@@ -87,7 +88,7 @@ export function HomePage() {
       <header className="mb-5">
         <p className="text-[13px] font-medium text-ink-3">{greeting()},</p>
         <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-ink">
-          {user?.name.split(' ')[0] ?? appConfig.organization.shortName}
+          {user ? nombreDePila(user.name, user.email) : appConfig.organization.shortName}
         </h1>
         <p className="mt-1 text-[13.5px] text-ink-2">
           Esto es lo que está pasando en la comunidad.
