@@ -30,7 +30,7 @@ import { VerifyEmailStep } from './VerifyEmailStep';
    ========================================================================== */
 
 export function LoginPage() {
-  const { user, loading, pending, signIn, signInAsDemo } = useAuth();
+  const { user, loading, pending, signIn, signInAsDemo, canRecoverPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -128,24 +128,36 @@ export function LoginPage() {
         </Button>
       </form>
 
-      {/* Sin servidor de correo no hay recuperación automática: se explica en
-          vez de ofrecer un enlace que no llevaría a ninguna parte. */}
+      {/* Con servidor se recupera sola, por correo. Sin servidor no hay a dónde
+          escribir, así que se explica en vez de ofrecer un enlace que no
+          llevaría a ninguna parte. */}
       <div className="mt-3 text-center">
-        <button
-          type="button"
-          onClick={() => setShowHelp((current) => !current)}
-          aria-expanded={showHelp}
-          className="text-[13px] font-semibold text-brand-600 underline-offset-2 hover:underline dark:text-brand-300"
-        >
-          Olvidé mi contraseña
-        </button>
-        {showHelp ? (
-          <p className="mt-2 rounded-field border border-line bg-surface-2 px-3.5 py-3 text-left text-[12.5px] leading-relaxed text-ink-2">
-            Escríbele al Centro de Alumnos para que restablezca tu cuenta desde el panel de
-            administración. Luego podrás crear una contraseña nueva en{' '}
-            <span className="font-semibold text-ink">Activar mi cuenta</span>.
-          </p>
-        ) : null}
+        {canRecoverPassword ? (
+          <Link
+            to="/recuperar"
+            className="text-[13px] font-semibold text-brand-600 underline-offset-2 hover:underline dark:text-brand-300"
+          >
+            Olvidé mi contraseña
+          </Link>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => setShowHelp((current) => !current)}
+              aria-expanded={showHelp}
+              className="text-[13px] font-semibold text-brand-600 underline-offset-2 hover:underline dark:text-brand-300"
+            >
+              Olvidé mi contraseña
+            </button>
+            {showHelp ? (
+              <p className="mt-2 rounded-field border border-line bg-surface-2 px-3.5 py-3 text-left text-[12.5px] leading-relaxed text-ink-2">
+                Escríbele al Centro de Alumnos para que restablezca tu cuenta desde el panel de
+                administración. Luego podrás crear una contraseña nueva en{' '}
+                <span className="font-semibold text-ink">Activar mi cuenta</span>.
+              </p>
+            ) : null}
+          </>
+        )}
       </div>
 
       {/* Puerta al registro: la primera vez nadie tiene contraseña todavía. */}

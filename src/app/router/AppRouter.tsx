@@ -7,6 +7,7 @@ import { appModules } from '@/modules';
 import { AppShell } from '@/app/layout/AppShell';
 import { LoginPage } from '@/app/pages/LoginPage';
 import { NotFoundPage } from '@/app/pages/NotFoundPage';
+import { RecoverPasswordPage } from '@/app/pages/RecoverPasswordPage';
 import { RegisterPage } from '@/app/pages/RegisterPage';
 
 /* ============================================================================
@@ -38,6 +39,7 @@ const basename = import.meta.env.BASE_URL;
 const router = createBrowserRouter([
   { path: '/acceso', element: <LoginPage /> },
   { path: '/registro', element: <RegisterPage /> },
+  { path: '/recuperar', element: <RecoverPasswordPage /> },
   {
     element: <RequireAuth />,
     children: [

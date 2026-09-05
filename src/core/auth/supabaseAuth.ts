@@ -31,26 +31,53 @@ export async function estaEnLaNomina(
   return data === true;
 }
 
+/** Qué pasó al intentar registrarse. */
+export type ResultadoRegistro = 'creada' | 'reenviada';
+
 /**
  * Crea la cuenta y pide el envío del código de verificación.
  * El perfil lo arma la propia base de datos al confirmarse, tomando el nombre
  * y el curso de la nómina: no se los pedimos al estudiante ni se los creemos.
+ *
+ * SI LA CUENTA YA EXISTE PERO NUNCA SE CONFIRMÓ
+ * Devuelve 'reenviada' después de mandar un código nuevo, en vez de fallar.
+ * Quien escribió su contraseña y no alcanzó a poner el código —se le venció,
+ * cerró la pestaña, el correo cayó en spam— vuelve a "Activar mi cuenta" y se
+ * encuentra con que su cuenta "ya existe" y no puede seguir. Quedaba encerrado
+ * sin haber hecho nada malo, y solo salía de ahí borrándole la cuenta a mano.
+ *
+ * Solo se avisa de que hay que iniciar sesión cuando la cuenta está de verdad
+ * confirmada, que es el único caso en que ese consejo sirve.
  */
 export async function registrar(
   client: SupabaseClient,
   email: string,
   password: string,
-): Promise<void> {
+): Promise<ResultadoRegistro> {
   const { error } = await client.auth.signUp({ email, password });
-  if (!error) return;
+  if (!error) return 'creada';
 
   // Supabase responde en inglés; se traduce lo que el estudiante puede causar.
-  if (/already registered|already exists/i.test(error.message)) {
-    throw new Error('Esta cuenta ya está activada. Inicia sesión con tu contraseña.');
-  }
   if (/password/i.test(error.message)) {
     throw new Error('Esa contraseña no cumple los requisitos mínimos.');
   }
+
+  if (/already registered|already exists/i.test(error.message)) {
+    /* Pedir otro código es a la vez la pregunta y la solución: solo funciona
+       si la cuenta existe y está sin confirmar, que es justo cuando queremos
+       dejarla continuar. */
+    const { error: fallo } = await client.auth.resend({ type: 'signup', email });
+    if (!fallo) return 'reenviada';
+
+    if (/already confirmed|already been confirmed/i.test(fallo.message)) {
+      throw new Error('Esta cuenta ya está activada. Inicia sesión con tu contraseña.');
+    }
+    if (/security purposes|rate limit|too many/i.test(fallo.message)) {
+      throw new Error('Espera un minuto antes de volver a intentarlo.');
+    }
+    throw new Error('Esta cuenta ya está activada. Inicia sesión con tu contraseña.');
+  }
+
   throw new Error(`No fue posible crear la cuenta: ${error.message}`);
 }
 
@@ -107,6 +134,51 @@ export async function entrar(
 
 export async function salir(client: SupabaseClient): Promise<void> {
   await client.auth.signOut();
+}
+
+/* ----------------------------------------------------------------------------
+   RECUPERAR LA CONTRASEÑA
+   ----------------------------------------------------------------------------
+   Mismo camino que activar la cuenta: llega un código al correo, se escribe, y
+   recién ahí se elige la contraseña nueva. Se eligió el código y no el enlace
+   porque el enlace obliga a volver desde el correo al navegador correcto, y en
+   el teléfono eso termina abriendo otra aplicación a medio camino.
+
+   NO revela si el correo existe. Pedir un código para una cuenta inexistente
+   responde igual que para una real: de lo contrario, cualquiera podría usar
+   esta pantalla para averiguar quién tiene cuenta.
+   -------------------------------------------------------------------------- */
+
+/** Manda un código de recuperación al correo. */
+export async function pedirRecuperacion(client: SupabaseClient, email: string): Promise<void> {
+  const { error } = await client.auth.resetPasswordForEmail(email);
+  if (!error) return;
+
+  if (/security purposes|rate limit|too many/i.test(error.message)) {
+    throw new Error('Espera un minuto antes de pedir otro código.');
+  }
+  throw new Error(`No fue posible enviar el código: ${error.message}`);
+}
+
+/**
+ * Comprueba el código de recuperación. Al acertar deja la sesión abierta, que
+ * es lo que permite cambiar la contraseña en el paso siguiente.
+ */
+export async function confirmarRecuperacion(
+  client: SupabaseClient,
+  email: string,
+  code: string,
+): Promise<void> {
+  const { error } = await client.auth.verifyOtp({ email, token: code, type: 'recovery' });
+  if (!error) return;
+
+  if (/expired|invalid/i.test(error.message)) {
+    throw new Error(
+      'Ese código no sirve: puede estar mal copiado o haber vencido. ' +
+        'Revísalo, y si no resulta pide uno nuevo.',
+    );
+  }
+  throw new Error(`No fue posible comprobar el código: ${error.message}`);
 }
 
 export async function cambiarContrasena(

@@ -9,6 +9,12 @@ import type { User } from '@/core/types';
    existe únicamente si su dueño se registró, escribió el código que le llegó
    al correo y entró. Es decir, cada perfil ES una activación, con su fecha.
 
+   Eso vale porque el perfil se crea al CONFIRMAR el correo, no al empezar el
+   registro (`supabase/06-perfil-al-confirmar.sql`). Antes se creaba al empezar,
+   y este panel contaba de más: daba por activados a quienes solo habían
+   escrito su contraseña. Si alguien vuelve a tocar ese disparador, esta cuenta
+   deja de significar lo que dice.
+
    Este archivo solo hace dos cosas con esa información:
      · contarla por curso, para saber cómo va la llegada a cada generación, y
      · convertirla en un archivo que se pueda abrir en Excel y mostrar en una

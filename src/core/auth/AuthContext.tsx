@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { appConfig } from '@/config/app.config';
 import { db, supabase, usingServer } from '@/core/data';
@@ -15,6 +15,9 @@ import {
   reenviarCodigo,
   registrar,
   salir,
+  type ResultadoRegistro,
+  pedirRecuperacion,
+  confirmarRecuperacion,
 } from './supabaseAuth';
 import {
   CODE_TTL_MINUTES,
@@ -113,6 +116,12 @@ interface AuthContextValue {
   ) => Promise<void>;
   /** Cambia la contraseña de la sesión activa, verificando la anterior. */
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+  /** Pide un código para recuperar la contraseña olvidada. */
+  requestPasswordReset: (email: string) => Promise<void>;
+  /** Comprueba ese código y deja puesta la contraseña nueva. */
+  confirmPasswordReset: (email: string, code: string, newPassword: string) => Promise<User>;
+  /** ¿Se puede recuperar la contraseña sola? Sin servidor, no hay correo. */
+  canRecoverPassword: boolean;
   /** ¿La sesión alcanza al menos este rol? */
   hasRole: (minimum: Role) => boolean;
 }
@@ -165,6 +174,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState<PendingVerification | null>(null);
+  /* Contraseña recién elegida que el servidor todavía no aceptó, porque la
+     cuenta ya existía sin confirmar. Se aplica al comprobar el código. Solo en
+     memoria: nunca se guarda ni sale de esta pestaña. */
+  const claveSinAplicar = useRef<string | null>(null);
 
   // Restaura la sesión guardada y refresca el perfil desde la fuente de datos.
   useEffect(() => {
@@ -333,11 +346,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const check = checkPassword(password, value);
         if (!check.valid) throw new AuthError(check.error);
 
+        let resultado: ResultadoRegistro;
         try {
-          await registrar(supabase, value, password);
+          resultado = await registrar(supabase, value, password);
         } catch (caught) {
           throw new AuthError((caught as Error).message);
         }
+
+        /* Si la cuenta ya existía sin confirmar, el servidor solo reenvió el
+           código: la contraseña que la persona acaba de escribir NO quedó
+           puesta. Se guarda para aplicarla en cuanto el código la identifique.
+           Si no se hiciera, entraría esta vez y mañana no podría, porque
+           seguiría valiendo la contraseña del intento anterior.
+
+           Vive en una referencia y no en `pending` a propósito: `pending` lo
+           lee la interfaz, y una contraseña no tiene nada que hacer ahí. */
+        claveSinAplicar.current = resultado === 'reenviada' ? password : null;
 
         const pendiente: PendingVerification = {
           id: value,
@@ -383,6 +407,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           await confirmarCodigo(supabase, pending.email, code);
         } catch (caught) {
           throw new AuthError((caught as Error).message);
+        }
+
+        // Ahora sí hay sesión, que es lo que hacía falta para poder cambiarla.
+        if (claveSinAplicar.current) {
+          try {
+            await cambiarContrasena(supabase, claveSinAplicar.current);
+          } catch {
+            /* Entró igual, y esa es la parte que importa. Se calla porque la
+               contraseña vieja sigue sirviendo: decirle "no se pudo cambiar tu
+               contraseña" a alguien que acaba de entrar solo asusta. */
+          }
+          claveSinAplicar.current = null;
         }
 
         const perfil = await perfilActual(supabase);
@@ -513,6 +549,71 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [user],
   );
 
+  /* ------------------------------------------------------------------------
+     CONTRASEÑA OLVIDADA
+     ------------------------------------------------------------------------
+     Solo existe con servidor: hace falta un correo de verdad para mandar el
+     código. Sin servidor la contraseña vive en un navegador y no hay a dónde
+     escribir, así que la pantalla ofrece otra salida en vez de un botón que
+     no haría nada.
+     ---------------------------------------------------------------------- */
+
+  const requestPasswordReset = useCallback<AuthContextValue['requestPasswordReset']>(
+    async (email) => {
+      if (!usingServer || !supabase) {
+        throw new AuthError('La recuperación por correo no está disponible.');
+      }
+      const value = normalizeEmail(email);
+      if (!isInstitutionalEmail(value)) {
+        throw new AuthError(`Debes usar tu correo institucional (${domainsText()}).`);
+      }
+      try {
+        await pedirRecuperacion(supabase, value);
+      } catch (caught) {
+        throw new AuthError((caught as Error).message);
+      }
+    },
+    [],
+  );
+
+  const confirmPasswordReset = useCallback<AuthContextValue['confirmPasswordReset']>(
+    async (email, code, newPassword) => {
+      if (!usingServer || !supabase) {
+        throw new AuthError('La recuperación por correo no está disponible.');
+      }
+      const value = normalizeEmail(email);
+
+      const check = checkPassword(newPassword, value);
+      if (!check.valid) throw new AuthError(check.error);
+
+      // El código abre la sesión; recién con ella se puede cambiar la clave.
+      try {
+        await confirmarRecuperacion(supabase, value, code);
+      } catch (caught) {
+        throw new AuthError((caught as Error).message);
+      }
+
+      try {
+        await cambiarContrasena(supabase, newPassword);
+      } catch (caught) {
+        /* La sesión quedó abierta pero con la contraseña vieja. Se cierra para
+           no dejar a alguien dentro creyendo que la cambió. */
+        await salir(supabase);
+        throw new AuthError((caught as Error).message);
+      }
+
+      const perfil = await perfilActual(supabase);
+      if (!perfil) {
+        await salir(supabase);
+        throw new AuthError('Tu cuenta no está habilitada. Avísale al Centro de Alumnos.');
+      }
+      setPending(null);
+      setUser(perfil);
+      return perfil;
+    },
+    [],
+  );
+
   const hasRole = useCallback(
     (minimum: Role) => (user ? ROLE_ORDER[user.role] >= ROLE_ORDER[minimum] : false),
     [user],
@@ -534,6 +635,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       updateProfile,
       changePassword,
+      requestPasswordReset,
+      confirmPasswordReset,
+      canRecoverPassword: usingServer,
       hasRole,
     }),
     [
@@ -550,6 +654,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signOut,
       updateProfile,
       changePassword,
+      requestPasswordReset,
+      confirmPasswordReset,
       hasRole,
     ],
   );

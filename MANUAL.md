@@ -103,30 +103,6 @@ entre con su correo y contraseña, la app retoma sola el paso del código.
 > empiecen a usar la app**: cualquiera vería el código de la cuenta que esté
 > activando. Cómo encenderlo está en `docs/servidor-de-correo/README.md`.
 
-### Si alguien olvida su contraseña
-
-No hay correo de recuperación, así que lo resuelven ustedes:
-
-1. Entra como Administrador a **Cuentas y permisos**.
-2. Busca a la persona. Debajo de su tarjeta dice en qué estado está.
-3. Pulsa **Restablecer**.
-
-La persona vuelve a quedar como el primer día —sin contraseña y sin verificar— y
-entra otra vez por **Activar mi cuenta**.
-
-En esa misma pantalla, las etiquetas te dicen quién es quién:
-
-| Etiqueta | Significa |
-| --- | --- |
-| **Sin activar** | Todavía no ha creado su contraseña |
-| **Sin verificar** | Creó la contraseña pero no escribió el código |
-| *(sin etiqueta)* | Cuenta lista y funcionando |
-
-> ⚠️ **Ojo mientras no haya servidor:** la contraseña se guarda en el
-> dispositivo donde se creó. Si un alumno activa su cuenta en el computador y
-> después abre la app en el teléfono, tendrá que activarla de nuevo ahí. Esto se
-> arregla solo cuando la app tenga servidor.
-
 ### ⚠️ La nómina no se sube a internet
 
 `src/content/roster.ts` tiene nombres y correos de menores de edad, así que
@@ -180,6 +156,31 @@ nómina son cosas separadas desde que existe el servidor.
 No hace falta borrarlo de la nómina: entra como Administrador a
 **Cuentas y permisos** y usa **Desactivar**. Deja de poder entrar de inmediato y
 desaparece de la base de contactos.
+
+### Si alguien olvida su contraseña
+
+La recupera solo, desde **Olvidé mi contraseña** en la pantalla de acceso:
+escribe su correo, le llega un código, y con ese código elige una contraseña
+nueva. No hay que hacer nada desde la administración.
+
+> ⚠️ **Requiere una configuración en Supabase.** En
+> **Authentication → Emails → Templates → Reset Password**, la plantilla tiene
+> que incluir `{{ .Token }}`, igual que la de confirmación. Si no, el correo
+> llega con un enlace en vez de un código y la pantalla no sirve.
+
+La administración **no puede** cambiarle la contraseña a nadie, y eso es a
+propósito: Supabase la guarda cifrada y nadie la ve, ni siquiera tú. Si
+alguien se queda fuera del todo, la salida es desactivar su cuenta en
+**Cuentas y permisos** y pedirle que la active de nuevo.
+
+### Si alguien se quedó a medias al registrarse
+
+Pasa cuando escribe su contraseña y no alcanza a poner el código: se le vence,
+cierra la pestaña, o el correo cae en spam y lo ve al día siguiente.
+
+**No hay que hacer nada.** Que vuelva a **Activar mi cuenta** con su mismo
+correo: la aplicación reconoce que empezó y le manda un código nuevo. La
+contraseña que escriba esa segunda vez es la que queda.
 
 ### Abrir el registro por partes
 
