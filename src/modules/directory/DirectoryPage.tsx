@@ -24,11 +24,14 @@ import { listedInDirectory, telHref, useDirectory } from './api';
    mismas cuentas que administra el panel de administración, de modo que no hay
    dos listas de datos personales que mantener sincronizadas.
 
-   Aparece quien tenga la cuenta activa. El filtro para quedar fuera existe en
-   los datos y se sigue respetando, pero HOY NADIE PUEDE ACTIVARLO: la casilla
-   vivía en "Editar perfil", que se quitó por decisión del Centro de Alumnos.
-   Queda anotado porque es una decisión sobre datos de menores, no un detalle
-   de interfaz.
+   Aparece TODA la comunidad con cuenta activa. Nadie puede quedarse fuera del
+   buscador: el Centro de Alumnos decidió que la base de contactos es completa
+   o no sirve, y esa decisión está tomada, no pendiente.
+
+   El campo `oculto` de `perfiles` sigue existiendo y el filtro se sigue
+   aplicando. Se conserva a propósito: si algún día una familia pide que su
+   hijo no aparezca, la administración puede marcarlo en la base sin que haya
+   que programar nada.
    ========================================================================== */
 
 const ALL = 'todos';
@@ -87,14 +90,6 @@ export function DirectoryPage() {
       </div>
 
       <FilterChips options={gradeOptions} value={grade} onChange={setGrade} className="mb-4" />
-
-      {/* Aquí iba un aviso que decía que uno podía dejar de aparecer
-          "desactivando la opción desde Mi perfil". Esa opción se fue junto con
-          la pantalla de editar perfil, así que el texto prometía algo que la
-          aplicación no cumple. Se quita en vez de dejarlo mintiendo.
-
-          La base de datos sí guarda la preferencia (`oculto` en `perfiles`),
-          o sea que devolver la casilla es agregarla, no rehacer nada. */}
 
       {isLoading ? (
         <CardListSkeleton count={5} />
