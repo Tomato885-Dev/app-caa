@@ -87,8 +87,8 @@ export const appConfig: AppConfig = {
   organization: {
     shortName: 'Centro de Alumnos',
     fullName: 'Centro de Alumnos',
-    institution: 'Comunidad Estudiantil',
-    term: 'Periodo 2026',
+    institution: 'Colegio Del Verbo Divino',
+    term: 'Periodo 2027',
   },
 
   auth: {

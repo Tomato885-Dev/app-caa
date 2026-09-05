@@ -465,7 +465,32 @@ Administrador, o desactivas su cuenta.
 
 ## 6. Poner las imágenes
 
-Aquí sí hay que editar **un archivo**, pero es copiar y pegar. Son dos pasos.
+### Lo normal: subirla desde la app
+
+Al crear o editar una noticia, un evento, un proyecto o un colaborador, el
+formulario tiene un recuadro que dice **"Arrastra una foto aquí"**.
+
+- **En el computador:** arrastra el archivo al recuadro, o pulsa
+  *Elegir una foto*.
+- **En el teléfono:** pulsa *Elegir una foto* y se abre tu galería.
+
+La app **reduce la foto sola** antes de subirla: una de iPhone de 4 MB queda en
+unos 300 KB. Te lo dice abajo del recuadro cuando termina. Eso importa porque
+esa misma foto la van a descargar 694 alumnos cada vez que abran la noticia.
+
+> Requiere haber ejecutado `supabase/08-imagenes.sql` una vez.
+
+### Lo excepcional: imágenes que vienen dentro de la app
+
+El logo, la portada de la pantalla de acceso y los logotipos de colaboradores
+NO se suben: viajan dentro de la aplicación para que carguen al instante y
+sin depender del servidor. Esas sí se ponen editando un archivo, y es lo que
+explica el resto de este capítulo.
+
+En el formulario están detrás del enlace
+*"Usar una imagen que ya viene en la app"*.
+
+Son dos pasos.
 
 ### Los logotipos de los colaboradores son un caso aparte (más fácil)
 

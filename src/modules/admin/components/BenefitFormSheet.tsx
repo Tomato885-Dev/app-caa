@@ -190,7 +190,7 @@ export function BenefitFormSheet({
           error={errors.qrValue}
           value={form.qrValue}
           onChange={(event) => set('qrValue', event.target.value)}
-          placeholder="CAA2026-COMBO-2X1"
+          placeholder="CAA2027-COMBO-2X1"
           hint="Lo que lee el comercio al escanear: un código, un identificador o una dirección web."
         />
 

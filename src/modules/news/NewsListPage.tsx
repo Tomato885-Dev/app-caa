@@ -76,7 +76,7 @@ export function NewsListPage() {
     <Page>
       <PageHeader
         title="Noticias"
-        description="Comunicados oficiales e información verificada de la comunidad estudiantil."
+        description="Las noticias de nuestra comunidad Verbita."
       />
 
       <div className="relative mb-3">

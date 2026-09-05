@@ -253,8 +253,30 @@ function resolverRuta(src: string | null): string | null {
   return import.meta.env.BASE_URL.replace(/\/$/, '') + src;
 }
 
+/** ¿Es una foto subida desde la app, y no una clave del manifiesto? */
+export function esImagenSubida(key: string | undefined): boolean {
+  return Boolean(key && /^https?:\/\//i.test(key));
+}
+
 export function getImage(key: string | undefined): ImageAsset | null {
   if (!key) return null;
+
+  /* Una dirección completa es una foto que alguien subió desde la aplicación.
+     Vive en el almacenamiento del servidor y no en el manifiesto, así que no
+     hay nada que buscar: se usa tal cual.
+
+     El manifiesto sigue existiendo para las imágenes que vienen CON la app
+     —el logo, la portada de acceso, los logotipos de colaboradores—, que no
+     tiene sentido subir una y otra vez y conviene que viajen en el paquete. */
+  if (esImagenSubida(key)) {
+    return {
+      src: key,
+      alt: '',
+      description: 'Imagen subida desde la aplicación',
+      ratio: '16/9',
+      suggestedPath: '',
+    };
+  }
 
   const asset = images[key];
   if (asset) return { ...asset, src: resolverRuta(asset.src) };
