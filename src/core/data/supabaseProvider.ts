@@ -234,7 +234,6 @@ const PREFIJOS: Record<CollectionName, string> = {
   benefits: 'ben',
   sportsResults: 'res',
   projects: 'prj',
-  reports: 'rpt',
 };
 
 export function createSupabaseProvider(client: SupabaseClient): DataProvider {

@@ -240,7 +240,7 @@ Las otras dos cuentas de prueba son:
 | Cuenta | Correo | Qué puede hacer |
 | --- | --- | --- |
 | Administrador | `centrodealumnos@verbo.cl` | Todo |
-| Moderador | `moderacion@verbo.cl` | Revisar publicaciones y reportes |
+| Moderador | `moderacion@verbo.cl` | Publicar contenidos, pero no tocar cuentas |
 | Estudiante | cualquiera de la nómina | Solo participar |
 
 > ⚠️ **Antes de abrir la app a los alumnos**, pon `enableDemoAccounts: false` en
@@ -450,20 +450,11 @@ Tampoco se carga aparte: usa **las mismas cuentas** de
 *Administración → Cuentas y permisos*. Ahí mismo puedes escribir el **teléfono**
 de cada persona; se guarda al salir del campo.
 
-Cada estudiante controla si aparece: en **Mi perfil → Editar perfil** hay una
-casilla *«Quiero aparecer en el buscador de contactos»*. Si la desmarca, nadie
-lo encuentra ahí, aunque tenga teléfono cargado.
-
-### Revisar lo que publican los estudiantes
-
-Hoy no hay ningun modulo donde publiquen los estudiantes, asi que esta cola se
-mantiene vacia. La herramienta queda lista por si mas adelante se habilita uno.
-
-**Administración → Cola de revisión** → botones **Aprobar**, **Pedir cambios** o
-**Rechazar**. Si rechazas o pides cambios, debes escribir un comentario: el
-estudiante lo verá en su perfil.
-
-En **Administración → Reportes** aparece lo que la comunidad denuncia.
+> ⚠️ **Nadie puede salirse del buscador.** La casilla para ocultarse vivía en
+> "Editar perfil", que se quitó por decisión del Centro de Alumnos, así que hoy
+> todos los alumnos con cuenta aparecen. La base de datos sí guarda esa
+> preferencia (`oculto`), o sea que devolverla es agregar una casilla, no
+> rehacer nada. Queda pendiente.
 
 ### Cambiar permisos de una persona
 

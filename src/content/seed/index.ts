@@ -2,7 +2,6 @@ import { seedAnnouncements } from './announcements';
 import { seedBenefits } from './benefits';
 import { seedEvents } from './events';
 import { seedNews } from './news';
-import { seedReports } from './reports';
 import { seedProjects } from './projects';
 import { seedSportsResults } from './sports';
 import { seedUsers } from './users';
@@ -61,13 +60,6 @@ function pick<T>(fromFile: unknown[] | undefined, fallback: T[]): T[] {
   return Array.isArray(fromFile) ? (fromFile as T[]) : fallback;
 }
 
-/*
- * Inscripciones y reportes de ejemplo solo acompañan al contenido de ejemplo.
- * Con contenido propio no corresponde arrancar con inscritos ni reportes
- * ficticios: son datos de operación, no contenido editorial.
- */
-const demoOperations = own ? [] : null;
-
 export const seedData = {
   version: own?.version ?? FALLBACK_VERSION,
 
@@ -80,7 +72,6 @@ export const seedData = {
   benefits: pick(own?.benefits, seedBenefits),
   sportsResults: pick(own?.sportsResults, seedSportsResults),
   projects: pick(own?.projects, seedProjects),
-  reports: demoOperations ?? seedReports,
 };
 
 /** ¿La app está usando contenido propio en vez del de ejemplo? */

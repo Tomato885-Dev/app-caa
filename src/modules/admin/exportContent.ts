@@ -14,9 +14,7 @@ import type { BaseEntity } from '@/core/types';
    teléfono— y luego dejar ese trabajo grabado en firme, sin escribir código.
 
    QUÉ NO SE EXPORTA
-   • `users`        se genera desde la nómina (`src/content/roster.ts`).
-   • `reports` son datos de operación, no contenido: lo que la comunidad
-     reportó no corresponde congelarlo en el arranque.
+   • `users` se genera desde la nómina (`src/content/roster.ts`), no se exporta.
    ========================================================================== */
 
 /** Colecciones que forman el contenido editorial del Centro de Alumnos. */

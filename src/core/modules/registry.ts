@@ -1,6 +1,6 @@
 import { appConfig } from '@/config/app.config';
 import { ROLE_ORDER, type Role } from '@/core/types';
-import type { AppModule, CalendarSource, ModerationSource } from './types';
+import type { AppModule, CalendarSource } from './types';
 
 /* ============================================================================
    REGISTRO DE MÓDULOS
@@ -76,12 +76,6 @@ export function getNavGroups(role: Role | null): NavGroups {
     all,
   };
 }
-
-/** Fuentes de moderación aportadas por todos los módulos habilitados. */
-export function getModerationSources(): ModerationSource[] {
-  return getModules().flatMap((mod) => mod.moderationSources ?? []);
-}
-
 /** Fuentes de contenido fechado que alimentan el calendario mensual. */
 export function getCalendarSources(): CalendarSource[] {
   return getModules().flatMap((mod) => mod.calendarSources ?? []);

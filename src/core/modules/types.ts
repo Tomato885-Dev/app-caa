@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import type { RouteObject } from 'react-router-dom';
-import type { AuthorRef, ContentKind, ID, ModerationStatus, Role } from '@/core/types';
+import type { ID, Role } from '@/core/types';
 import type { Tone } from '@/ui/tone';
 
 /* ============================================================================
@@ -14,41 +14,6 @@ import type { Tone } from '@/ui/tone';
    `AppModule` y añadir su id en `src/modules/index.ts` y en
    `appConfig.enabledModules`. Nada más cambia.
    ========================================================================== */
-
-/** Un elemento pendiente de revisión, normalizado para la cola de moderación. */
-export interface ModerationItem {
-  id: ID;
-  kind: ContentKind;
-  title: string;
-  excerpt: string;
-  author: AuthorRef;
-  createdAt: string;
-  status: ModerationStatus;
-  /** Ruta para ver el contenido en su módulo, si existe. */
-  href?: string;
-}
-
-/**
- * Fuente de contenido moderable. Cada módulo que permita publicar contenido
- * de estudiantes declara una: así entra automáticamente a la cola de revisión
- * del panel de administración, sin tocar el módulo de administración.
- */
-export interface ModerationSource {
-  kind: ContentKind;
-  /** Etiqueta en singular, p. ej. "Noticia". */
-  label: string;
-  /** Etiqueta en plural para filtros, p. ej. "Noticias". */
-  pluralLabel: string;
-  /** Devuelve todos los elementos moderables de este tipo. */
-  fetchAll: () => Promise<ModerationItem[]>;
-  /** Aplica la decisión del moderador (§7.1: aprobar, rechazar o pedir cambios). */
-  decide: (input: {
-    id: ID;
-    status: ModerationStatus;
-    note?: string;
-    moderatorId: ID;
-  }) => Promise<void>;
-}
 
 /* --- Calendario mensual -----------------------------------------------------
    El calendario NO guarda contenido propio: reúne lo que ya publican los demás
@@ -114,7 +79,6 @@ export interface AppModule {
   /** Rol mínimo requerido para ver el módulo. Por defecto: 'student'. */
   minRole?: Role;
   /** Contenido de este módulo que pasa por revisión previa. */
-  moderationSources?: ModerationSource[];
   /** Contenido fechado de este módulo que se dibuja en el calendario mensual. */
   calendarSources?: CalendarSource[];
 }

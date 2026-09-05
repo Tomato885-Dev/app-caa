@@ -81,12 +81,6 @@ export interface AppConfig {
   bottomNavSlots: number;
 
   /** Comportamiento de moderación (§7.1). */
-  moderation: {
-    /** Si es true, todo contenido creado por estudiantes nace en revisión. */
-    requireApprovalForStudentContent: boolean;
-    /** Motivos predefinidos para reportar contenido. */
-    reportReasons: string[];
-  };
 }
 
 export const appConfig: AppConfig = {
@@ -162,15 +156,4 @@ export const appConfig: AppConfig = {
 
   bottomNavSlots: 4,
 
-  moderation: {
-    requireApprovalForStudentContent: true,
-    reportReasons: [
-      'Contenido ofensivo o agresivo',
-      'Información falsa o engañosa',
-      'No corresponde a la categoría',
-      'Contenido comercial no permitido',
-      'Datos personales de terceros',
-      'Otro motivo',
-    ],
-  },
 };

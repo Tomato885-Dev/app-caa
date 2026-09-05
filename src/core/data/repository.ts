@@ -6,7 +6,6 @@ import type {
   ID,
   NewsPost,
   Project,
-  Report,
   SportsResult,
   User,
 } from '@/core/types';
@@ -41,7 +40,6 @@ export interface DataProvider {
   benefits: Repository<Benefit>;
   sportsResults: Repository<SportsResult>;
   projects: Repository<Project>;
-  reports: Repository<Report>;
 
   /** Restaura el contenido de ejemplo. Útil en demos y pruebas. */
   reset(): Promise<void>;
@@ -56,7 +54,6 @@ export const COLLECTIONS = [
   'benefits',
   'sportsResults',
   'projects',
-  'reports',
 ] as const;
 
 export type CollectionName = (typeof COLLECTIONS)[number];

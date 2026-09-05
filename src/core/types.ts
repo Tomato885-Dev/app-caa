@@ -268,20 +268,3 @@ export interface SportsResult extends BaseEntity {
   author: AuthorRef;
 }
 
-/* --- Reportes de usuarios (§8.2) -------------------------------------------- */
-
-/** Identifica el tipo de contenido reportado o moderado. */
-export type ContentKind =
-  | 'news'
-  | 'event';
-
-export interface Report extends BaseEntity {
-  contentKind: ContentKind;
-  contentId: ID;
-  contentTitle: string;
-  reason: string;
-  detail?: string;
-  reporter: AuthorRef;
-  state: 'open' | 'reviewed' | 'dismissed';
-  resolutionNote?: string;
-}

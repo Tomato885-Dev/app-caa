@@ -5,17 +5,12 @@ import {
   ChevronRight,
   Download,
   FileStack,
-  Flag,
-  ShieldCheck,
   UserCog,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { usingOwnContent } from '@/content/seed';
 import { usingServer } from '@/core/data';
-import { db } from '@/core/data';
-import { useCollection } from '@/core/hooks/useData';
-import { useModerationQueue } from '@/core/moderation/useModerationQueue';
 import { Badge, Button, Card, Page, PageHeader, accentSolid, cn, toneSoft, useToast, type Tone } from '@/ui';
 import {
   COLLECTION_LABEL,
@@ -26,8 +21,9 @@ import {
   type PendingChanges,
 } from './exportContent';
 
-/* Panel de administración (§8). Reúne las tareas de moderadores y
-   administradores; cada tarjeta lleva a una herramienta específica. */
+/* Panel de administración. Dos herramientas: publicar contenido y gestionar
+   cuentas. La cola de revisión y los reportes se quitaron al dejar de existir
+   contenido publicado por estudiantes. */
 
 export function AdminHomePage() {
   const { hasRole } = useAuth();
@@ -43,11 +39,6 @@ export function AdminHomePage() {
   }, []);
 
   useEffect(refreshPending, [refreshPending]);
-  const { data: queue } = useModerationQueue();
-  const { data: reports } = useCollection('reports', db.reports);
-
-  const pending = queue?.pending.length ?? 0;
-  const openReports = (reports ?? []).filter((report) => report.state === 'open').length;
 
   const tools: {
     to: string;
@@ -59,28 +50,11 @@ export function AdminHomePage() {
     adminOnly?: boolean;
   }[] = [
     {
-      to: '/admin/moderacion',
-      icon: ShieldCheck,
-      tone: 'warning',
-      title: 'Cola de revisión',
-      description: 'Aprobar, rechazar o solicitar cambios en las publicaciones.',
-      count: pending,
-    },
-    {
-      to: '/admin/reportes',
-      icon: Flag,
-      tone: 'danger',
-      title: 'Reportes',
-      description: 'Revisar el contenido reportado por la comunidad.',
-      count: openReports,
-    },
-    {
       to: '/admin/contenidos',
       icon: FileStack,
       tone: 'brand',
       title: 'Contenidos',
       description: 'Publicar noticias, eventos y convocatorias de inscripción.',
-      adminOnly: true,
     },
     {
       to: '/admin/usuarios',
@@ -92,7 +66,10 @@ export function AdminHomePage() {
     },
   ];
 
+  /* Un moderador publica pero no toca cuentas: mismo permiso que le da la
+     base de datos. Se le ocultan las herramientas que no le corresponden. */
   const visibleTools = tools.filter((tool) => !tool.adminOnly || hasRole('admin'));
+
 
   return (
     <Page>
@@ -100,17 +77,6 @@ export function AdminHomePage() {
         title="Administración"
         description="Gestión compartida entre el Centro de Alumnos y los equipos designados por la institución."
       />
-
-      <div className="mb-6 grid grid-cols-2 gap-3">
-        <Card className="text-center">
-          <p className="text-[28px] font-extrabold leading-none text-ink">{pending}</p>
-          <p className="mt-1.5 text-[12.5px] font-medium text-ink-2">En revisión</p>
-        </Card>
-        <Card className="text-center">
-          <p className="text-[28px] font-extrabold leading-none text-ink">{openReports}</p>
-          <p className="mt-1.5 text-[12.5px] font-medium text-ink-2">Reportes abiertos</p>
-        </Card>
-      </div>
 
       <ul className="space-y-2.5">
         {visibleTools.map((tool) => (

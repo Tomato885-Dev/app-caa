@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
-import { usePendingCount } from '@/core/moderation/useModerationQueue';
-import { approvedOnly, canModerate } from '@/core/moderation/visibility';
+import { approvedOnly } from '@/core/moderation/visibility';
 import { getVisibleModules } from '@/core/modules/registry';
 import { nombreDePila } from '@/core/utils/nombres';
 import { AnnouncementCard } from '@/modules/announcements/components/AnnouncementCard';
@@ -47,7 +45,6 @@ function greeting(): string {
 
 export function HomePage() {
   const { user, role } = useAuth();
-  const pending = usePendingCount(canModerate(role));
 
   const announcements = useAnnouncementList();
   const news = useNewsList();
@@ -94,24 +91,6 @@ export function HomePage() {
           Esto es lo que está pasando en la comunidad.
         </p>
       </header>
-
-      {/* Aviso operativo para el equipo de moderación (§8.2). */}
-      {canModerate(role) && pending > 0 ? (
-        <Link to="/admin/moderacion" className="mb-5 block">
-          <Card className="flex items-center gap-3 border-warning-500 bg-warning-100 dark:border-warning-700 dark:bg-warning-950">
-            <ShieldCheck size={20} className="shrink-0 text-warning-700 dark:text-warning-300" />
-            <div className="min-w-0 flex-1">
-              <p className="text-[13.5px] font-bold text-ink">
-                {pending === 1
-                  ? '1 publicación esperando revisión'
-                  : `${pending} publicaciones esperando revisión`}
-              </p>
-              <p className="text-[12px] text-ink-2">Toca para ir a la cola de moderación.</p>
-            </div>
-            <ArrowRight size={17} className="shrink-0 text-ink-3" />
-          </Card>
-        </Link>
-      ) : null}
 
       {/* Accesos directos a las funcionalidades principales (§6.1). */}
       <nav aria-label="Accesos directos" className="mb-7">

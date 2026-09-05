@@ -1,11 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
-import { usePendingCount } from '@/core/moderation/useModerationQueue';
-import { canModerate } from '@/core/moderation/visibility';
 import { getNavGroups } from '@/core/modules/registry';
 import { ROLE_LABEL } from '@/core/types';
-import { Avatar, BrandLogo, accentSolid, cn } from '@/ui';
+import { Avatar, BrandLogo, cn } from '@/ui';
 
 /* ============================================================================
    MENÚ LATERAL (ESCRITORIO)
@@ -17,7 +15,6 @@ import { Avatar, BrandLogo, accentSolid, cn } from '@/ui';
 export function SideNav() {
   const { user, role } = useAuth();
   const { all } = getNavGroups(role);
-  const pending = usePendingCount(canModerate(role));
 
   return (
     <aside className="fixed inset-y-0 left-0 hidden w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
@@ -49,11 +46,7 @@ export function SideNav() {
               >
                 <mod.icon size={19} />
                 <span className="flex-1 truncate">{mod.title}</span>
-                {mod.id === 'admin' && pending > 0 ? (
-                  <span className={cn('rounded-full px-1.5 py-0.5 text-[10.5px] font-bold', accentSolid)}>
-                    {pending}
-                  </span>
-                ) : null}
+                
               </NavLink>
             </li>
           ))}
