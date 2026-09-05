@@ -56,15 +56,27 @@ self.addEventListener('push', (event) => {
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
-  const destino = new URL(event.notification.data?.ruta || './', self.location.origin + '/').href;
+  /* La dirección se arma desde el alcance de este trabajador, NO desde la raíz
+     del dominio. La app no vive en la raíz: en GitHub Pages está bajo
+     /app-caa/, y el día que tenga dominio propio estará en otro sitio.
+
+     Resolver contra la raíz mandaba a github.io/comunicados/... —una página que
+     no existe— y la notificación abría un 404. Se le quita la barra inicial a
+     la ruta para que se resuelva como relativa al alcance. */
+  const base = self.registration.scope;
+  const cruda = event.notification.data?.ruta || './';
+  const destino = new URL(String(cruda).replace(/^\/+/, ''), base).href;
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((ventanas) => {
       /* Si la app ya está abierta se reutiliza esa ventana. Abrir una segunda
          pestaña de la misma app es la forma más rápida de que alguien crea que
-         se le duplicó la sesión. */
+         se le duplicó la sesión.
+
+         Se compara contra el alcance y no contra el dominio: en github.io
+         conviven muchos proyectos, y una pestaña de otro no es esta app. */
       for (const ventana of ventanas) {
-        if (ventana.url.startsWith(self.location.origin) && 'focus' in ventana) {
+        if (ventana.url.startsWith(base) && 'focus' in ventana) {
           ventana.navigate?.(destino);
           return ventana.focus();
         }
