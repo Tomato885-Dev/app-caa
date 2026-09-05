@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Mail, Phone, Search, ShieldCheck, UserSearch } from 'lucide-react';
+import { Mail, Phone, Search, UserSearch } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { ROLE_LABEL } from '@/core/types';
 import type { User } from '@/core/types';
@@ -24,8 +24,11 @@ import { listedInDirectory, telHref, useDirectory } from './api';
    mismas cuentas que administra el panel de administración, de modo que no hay
    dos listas de datos personales que mantener sincronizadas.
 
-   Solo aparece quien tiene la cuenta activa y no pidió quedar fuera del
-   buscador desde su perfil.
+   Aparece quien tenga la cuenta activa. El filtro para quedar fuera existe en
+   los datos y se sigue respetando, pero HOY NADIE PUEDE ACTIVARLO: la casilla
+   vivía en "Editar perfil", que se quitó por decisión del Centro de Alumnos.
+   Queda anotado porque es una decisión sobre datos de menores, no un detalle
+   de interfaz.
    ========================================================================== */
 
 const ALL = 'todos';
@@ -85,13 +88,13 @@ export function DirectoryPage() {
 
       <FilterChips options={gradeOptions} value={grade} onChange={setGrade} className="mb-4" />
 
-      <p className="mb-4 flex items-start gap-2 rounded-field bg-surface-2 p-3 text-[12px] leading-relaxed text-ink-2">
-        <ShieldCheck size={14} className="mt-0.5 shrink-0 text-ink-3" />
-        <span>
-          Estos datos son de uso interno de la comunidad. Si prefieres no aparecer en el buscador,
-          desactiva la opción desde <span className="font-semibold text-ink">Mi perfil</span>.
-        </span>
-      </p>
+      {/* Aquí iba un aviso que decía que uno podía dejar de aparecer
+          "desactivando la opción desde Mi perfil". Esa opción se fue junto con
+          la pantalla de editar perfil, así que el texto prometía algo que la
+          aplicación no cumple. Se quita en vez de dejarlo mintiendo.
+
+          La base de datos sí guarda la preferencia (`oculto` en `perfiles`),
+          o sea que devolver la casilla es agregarla, no rehacer nada. */}
 
       {isLoading ? (
         <CardListSkeleton count={5} />
