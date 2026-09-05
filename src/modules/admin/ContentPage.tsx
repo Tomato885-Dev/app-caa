@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { FileStack, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Bell, FileStack, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
+import { usingServer } from '@/core/data';
+import { AvisoDuplicado, enviarAviso } from '@/core/notifications/enviar';
 import { sportDisciplineLabel, sportLevelLabel } from '@/content/taxonomies';
 import {
   ANNOUNCEMENT_PRIORITY_LABEL,
@@ -13,6 +15,7 @@ import {
   type SportsResult,
 } from '@/core/types';
 import { formatDate } from '@/core/utils/date';
+import { excerpt } from '@/core/utils/text';
 import {
   sortAnnouncements,
   useAnnouncementList,
@@ -64,6 +67,54 @@ export function ContentPage() {
   const { user } = useAuth();
   const notify = useToast();
   const [tab, setTab] = useState<Tab>('comunicados');
+  const [avisando, setAvisando] = useState(false);
+
+  /* Manda la notificación de un comunicado ya publicado.
+     Se pregunta antes: llega a los teléfonos de todo el colegio y no se puede
+     deshacer. El `origen` hace que un segundo intento no le llegue a nadie. */
+  const avisarDe = async (item: Announcement) => {
+    if (avisando) return;
+    if (
+      !window.confirm(
+        `¿Mandar una notificación de «${item.title}»?
+
+` +
+          'Les va a sonar el teléfono a todos los que tengan los avisos activados. ' +
+          'Esto no se puede deshacer.',
+      )
+    ) {
+      return;
+    }
+
+    setAvisando(true);
+    try {
+      const resultado = await enviarAviso({
+        titulo: item.title,
+        // El cuerpo del comunicado, recortado: en la barra de notificaciones
+        // del telefono no cabe mas, y se corta igual pero sin avisar.
+        cuerpo: excerpt(item.body, 140),
+        ruta: `/comunicados/${item.id}`,
+        origen: item.id,
+      });
+      notify(
+        resultado.enviados === 0
+          ? 'Nadie tiene los avisos activados todavía.'
+          : `Aviso enviado a ${resultado.enviados} de ${resultado.total} dispositivos.`,
+        resultado.enviados === 0 ? 'info' : undefined,
+      );
+    } catch (caught) {
+      notify(
+        caught instanceof AvisoDuplicado
+          ? 'Ese comunicado ya se avisó antes.'
+          : caught instanceof Error
+            ? caught.message
+            : 'No se pudo enviar el aviso.',
+        'info',
+      );
+    } finally {
+      setAvisando(false);
+    }
+  };
 
   const announcements = useAnnouncementList();
   const news = useNewsList();
@@ -176,6 +227,7 @@ export function ContentPage() {
                   item.publishedAt,
                 )}${item.pinned ? ' · Fijado' : ''}`}
                 onEdit={() => setAnnouncementForm({ open: true, editing: item })}
+                onNotify={usingServer ? () => void avisarDe(item) : undefined}
                 onDelete={() => {
                   if (!confirmDelete(item.title)) return;
                   deleteAnnouncement.mutate(item.id, {
@@ -316,11 +368,14 @@ function ContentRow({
   meta,
   onEdit,
   onDelete,
+  onNotify,
 }: {
   title: string;
   meta: string;
   onEdit: () => void;
   onDelete: () => void;
+  /** Si viene, la fila ofrece mandar una notificación de esta publicación. */
+  onNotify?: () => void;
 }) {
   return (
     <Card className="flex items-center gap-2">
@@ -328,6 +383,9 @@ function ContentRow({
         <p className="truncate text-[14px] font-semibold text-ink">{title}</p>
         <p className="truncate text-[12px] text-ink-3">{meta}</p>
       </div>
+      {onNotify ? (
+        <IconButton icon={Bell} label={`Avisar de ${title}`} onClick={onNotify} />
+      ) : null}
       <IconButton icon={Pencil} label={`Editar ${title}`} onClick={onEdit} />
       <IconButton
         icon={Trash2}

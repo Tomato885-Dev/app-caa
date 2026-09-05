@@ -36,6 +36,9 @@ supabase/03-nomina.sql
 # Y el archivo donde se escriben los correos del equipo que entra primero.
 supabase/05-lanzamiento.sql
 
+# La llave privada de las notificaciones. Va en Supabase, no aqui.
+supabase/vapid.txt
+
 # NOTA: `src/content/seed/contenido.json` SÍ se versiona a propósito.
 # Es el contenido oficial del Centro de Alumnos (noticias, comunicados,
 # eventos…), o sea, trabajo que hay que respaldar y que debe llegar a la

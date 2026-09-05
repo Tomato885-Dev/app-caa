@@ -1,7 +1,7 @@
 {
   "name": "App CAA · Centro de Alumnos",
   "short_name": "App CAA",
-  "description": "Noticias, eventos, inscripciones, comunidad y marketplace estudiantil.",
+  "description": "Comunicados, noticias, eventos, proyectos y colaboradores del Centro de Alumnos.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

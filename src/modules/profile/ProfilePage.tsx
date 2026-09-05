@@ -26,6 +26,7 @@ import {
   useToast,
 } from '@/ui';
 import { ChangePasswordSheet } from './components/ChangePasswordSheet';
+import { NotificationsSection } from './components/NotificationsSection';
 
 /* Perfil de usuario (§6.8): identidad de la cuenta, teléfono de contacto,
    apariencia y seguridad. El nombre, el curso y el correo los define la
@@ -82,6 +83,8 @@ export function ProfilePage() {
 
       {/* Teléfono de contacto */}
       <PhoneSection phone={user.phone} />
+
+      <NotificationsSection />
 
       {/* Preferencias */}
       <section className="mb-6">
