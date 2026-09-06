@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ChevronDown, Newspaper, Search } from 'lucide-react';
+import { ChevronDown, Newspaper } from 'lucide-react';
 import { newsCategories } from '@/content/taxonomies';
 import { approvedOnly } from '@/core/moderation/visibility';
-import { matchesSearch } from '@/core/utils/text';
 import {
   Button,
   CardListSkeleton,
   EmptyState,
   FilterChips,
-  Input,
   Page,
   PageHeader,
 } from '@/ui';
@@ -35,23 +33,20 @@ const PAGE_SIZE = 8;
 export function NewsListPage() {
   const { data, isLoading } = useNewsList();
   const [category, setCategory] = useState(ALL);
-  const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(PAGE_SIZE);
 
-  // Al filtrar o buscar se vuelve a empezar: seguir en la tanda 4 de una lista
-  // que acaba de cambiar dejaría al lector en un punto que ya no existe.
-  useEffect(() => setVisible(PAGE_SIZE), [category, query]);
+  // Al cambiar de categoría se vuelve a empezar: seguir en la tanda 4 de una
+  // lista que acaba de cambiar dejaría al lector en un punto que ya no existe.
+  useEffect(() => setVisible(PAGE_SIZE), [category]);
 
   const posts = useMemo(() => sortNews(approvedOnly(data ?? [])), [data]);
 
+  /* Solo por categoría. El buscador se quitó: con las noticias que caben en
+     esta pantalla, bajar es más rápido que escribir, y una caja de búsqueda
+     vacía ocupaba el lugar donde debería estar la primera noticia. */
   const filtered = useMemo(
-    () =>
-      posts.filter(
-        (post) =>
-          (category === ALL || post.category === category) &&
-          matchesSearch(query, post.title, post.summary, post.body),
-      ),
-    [posts, category, query],
+    () => posts.filter((post) => category === ALL || post.category === category),
+    [posts, category],
   );
 
   const options = useMemo(
@@ -78,18 +73,6 @@ export function NewsListPage() {
         title="Noticias"
         description="Las noticias de nuestra comunidad Verbita."
       />
-
-      <div className="relative mb-3">
-        <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-3" />
-        <Input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Buscar en noticias"
-          aria-label="Buscar en noticias"
-          className="pl-10"
-        />
-      </div>
 
       <FilterChips options={options} value={category} onChange={setCategory} className="mb-3" />
 

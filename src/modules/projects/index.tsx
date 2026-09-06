@@ -10,7 +10,7 @@ import { ProjectsPage } from './ProjectsPage';
 export const projectsModule: AppModule = {
   id: 'projects',
   title: 'Proyectos',
-  description: 'Lo que el colegio ha construido con los años.',
+  description: 'Los proyectos del Centro de Alumnos para este periodo.',
   icon: Lightbulb,
   tone: 'accent',
   path: '/proyectos',

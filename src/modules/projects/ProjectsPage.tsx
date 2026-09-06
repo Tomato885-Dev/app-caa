@@ -65,7 +65,7 @@ export function ProjectsPage() {
     <Page>
       <PageHeader
         title="Proyectos"
-        description="Lo que el colegio ha construido con los años: lo que sigue funcionando y lo que ya es historia."
+        description="Los proyectos que vamos a realizar durante nuestro periodo."
       />
 
       <div className="relative mb-3">
@@ -88,7 +88,7 @@ export function ProjectsPage() {
         <EmptyState
           icon={Lightbulb}
           title="Sin proyectos"
-          description="Cuando el Centro de Alumnos cargue los proyectos del colegio, aparecerán aquí."
+          description="Cuando el Centro de Alumnos cargue sus proyectos, aparecerán aquí."
         />
       ) : (
         <>
@@ -96,7 +96,7 @@ export function ProjectsPage() {
             <section className="mb-7">
               <SectionHeader
                 title="En marcha"
-                description="Puedes participar en cualquiera de estos ahora mismo."
+                description="Proyectos que se implementarán en la comunidad escolar."
               />
               <div className="space-y-3">
                 {activos.map((project) => (
@@ -110,7 +110,7 @@ export function ProjectsPage() {
             <section>
               <SectionHeader
                 title="Ya terminados"
-                description="Proyectos que marcaron una época del colegio."
+                description="Proyectos ya realizados por el Centro de Alumnos."
               />
               <div className="space-y-3">
                 {historicos.map((project) => (

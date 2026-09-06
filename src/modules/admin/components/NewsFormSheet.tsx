@@ -31,6 +31,10 @@ export function NewsFormSheet({
     featured: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  /* Al editar, ¿la fecha vuelve a ser hoy? Mismo criterio que en comunicados:
+     aquí los bloques se reutilizan, y una noticia reescrita que sigue diciendo
+     "hace seis días" está mintiendo. Se puede apagar para una corrección. */
+  const [refrescarFecha, setRefrescarFecha] = useState(true);
 
   // Al abrir en modo edición, precargar los valores existentes.
   useEffect(() => {
@@ -85,7 +89,15 @@ export function NewsFormSheet({
     };
 
     if (editing) {
-      update.mutate({ id: editing.id, patch: payload }, { onSuccess });
+      update.mutate(
+        {
+          id: editing.id,
+          patch: refrescarFecha
+            ? { ...payload, publishedAt: new Date().toISOString() }
+            : payload,
+        },
+        { onSuccess },
+      );
     } else {
       create.mutate(
         {
@@ -163,6 +175,26 @@ export function NewsFormSheet({
           onChange={(value) => set('imageKey', value)}
           prefix="news."
         />
+
+        {editing ? (
+          <Field label="Fecha">
+            <label className="flex cursor-pointer items-start gap-2.5 rounded-field border border-line p-3">
+              <input
+                type="checkbox"
+                checked={refrescarFecha}
+                onChange={(event) => setRefrescarFecha(event.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-[var(--color-brand-500)]"
+              />
+              <span className="text-[13.5px] leading-relaxed text-ink-2">
+                Marcar como publicada ahora.
+                <span className="mt-0.5 block text-[12px] text-ink-3">
+                  Desmárcalo si solo estás corrigiendo algo y no quieres que vuelva a
+                  aparecer arriba como recién publicada.
+                </span>
+              </span>
+            </label>
+          </Field>
+        ) : null}
 
         <Field label="Destacar">
           <label className="flex cursor-pointer items-center gap-2.5 rounded-field border border-line p-3">

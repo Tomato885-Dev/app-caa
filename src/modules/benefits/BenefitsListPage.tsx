@@ -53,7 +53,7 @@ export function BenefitsListPage() {
     <Page>
       <PageHeader
         title="Colaboradores"
-        description="Quiénes apoyan la campaña. Abre uno y muestra su código QR para usar su beneficio."
+        description="Quiénes apoyan la campaña. Abre uno y revisa los requisitos para canjearlo."
       />
 
       <div className="relative mb-3">
