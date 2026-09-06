@@ -114,9 +114,13 @@ export function ProfilePage() {
       <section className="mb-6">
         <SectionHeader title="Seguridad" />
         <Card>
+          {/* Con servidor esto dejó de ser cierto dos veces: la contraseña ya
+              no vive en el dispositivo, y la administración no puede
+              restablecerla porque tampoco la ve. */}
           <p className="text-[13px] leading-relaxed text-ink-2">
-            Tu contraseña se guarda cifrada en este dispositivo. Si la olvidas, el Centro de
-            Alumnos puede restablecerla desde el panel de cuentas.
+            Tu contraseña se guarda cifrada y nadie puede leerla, tampoco el Centro de Alumnos. Si
+            la olvidas, la recuperas tú desde <span className="font-semibold text-ink">Olvidé mi
+            contraseña</span> en la pantalla de acceso.
           </p>
           <Button
             variant="secondary"
@@ -140,8 +144,8 @@ export function ProfilePage() {
         </p>
         <p className="mt-3 text-[12.5px] leading-relaxed text-ink-3">
           Plataforma administrada en conjunto por el Centro de Alumnos y los equipos designados por
-          la institución. El acceso está restringido a cuentas institucionales y toda publicación de
-          estudiantes pasa por revisión previa.
+          la institución. El acceso está restringido a cuentas institucionales de la nómina oficial
+          del colegio.
         </p>
       </Card>
 
