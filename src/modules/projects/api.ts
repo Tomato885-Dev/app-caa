@@ -25,7 +25,12 @@ export function sortProjects(items: Project[]): Project[] {
 
 /** Rango de años en texto: "2018 – hoy" o "2017 – 2023". */
 export function projectYears(project: Project): string {
-  if (project.endYear === null) return `${project.startYear} – hoy`;
+  if (project.endYear === null) {
+    /* Un proyecto que todavía no empieza no lleva "– hoy": "2028 – hoy" se
+       leería como que viene ocurriendo desde 2028, y es al revés. */
+    if (project.startYear > new Date().getFullYear()) return String(project.startYear);
+    return `${project.startYear} – hoy`;
+  }
   if (project.endYear === project.startYear) return String(project.startYear);
   return `${project.startYear} – ${project.endYear}`;
 }

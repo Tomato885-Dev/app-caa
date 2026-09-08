@@ -12,6 +12,11 @@ import { ImageKeyField } from './ImageKeyField';
 const CURRENT_YEAR = new Date().getFullYear();
 /* El colegio no tiene proyectos anteriores a esto; acota errores de tipeo. */
 const MIN_YEAR = 1950;
+/* Los proyectos de un mandato se planifican hacia adelante: se anuncian antes
+   de existir. Poner el techo en el año en curso impedía justamente eso —dejar
+   escrito un proyecto para 2027 o 2028—, que es para lo que se usa la sección.
+   Diez años de margen alcanzan de sobra y siguen atajando un 2999 mal tecleado. */
+const MAX_YEAR = CURRENT_YEAR + 10;
 
 export function ProjectFormSheet({
   open,
@@ -84,14 +89,14 @@ export function ProjectFormSheet({
     if (form.description.trim().length < 30) {
       nextErrors.description = 'Cuenta de qué se trata, con al menos un par de líneas.';
     }
-    if (!Number.isInteger(startYear) || startYear < MIN_YEAR || startYear > CURRENT_YEAR) {
-      nextErrors.startYear = `Escribe un año entre ${MIN_YEAR} y ${CURRENT_YEAR}.`;
+    if (!Number.isInteger(startYear) || startYear < MIN_YEAR || startYear > MAX_YEAR) {
+      nextErrors.startYear = `Escribe un año entre ${MIN_YEAR} y ${MAX_YEAR}.`;
     }
     if (terminado) {
       if (endYear === null) {
         nextErrors.endYear = 'Indica en qué año terminó.';
-      } else if (endYear < startYear || endYear > CURRENT_YEAR) {
-        nextErrors.endYear = `Debe estar entre ${form.startYear} y ${CURRENT_YEAR}.`;
+      } else if (endYear < startYear || endYear > MAX_YEAR) {
+        nextErrors.endYear = `Debe estar entre ${form.startYear} y ${MAX_YEAR}.`;
       }
     }
 
