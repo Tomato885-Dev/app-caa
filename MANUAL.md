@@ -182,6 +182,34 @@ cierra la pestaña, o el correo cae en spam y lo ve al día siguiente.
 correo: la aplicación reconoce que empezó y le manda un código nuevo. La
 contraseña que escriba esa segunda vez es la que queda.
 
+### La cuenta para los revisores de las tiendas
+
+Google Play y App Store **no aprueban una app con pantalla de acceso** si no
+les entregas una cuenta con la que entrar. La revisan a cualquier hora y sin
+avisar; si no pueden entrar, la rechazan sin mirar nada más.
+
+Funciona porque **iniciar sesión no pide código**: el código del correo solo
+se exige al registrarse. El revisor no se registra, usa una cuenta que ya
+existe, y por eso no necesita recibir ningún correo.
+
+Está todo en **`supabase/09-cuenta-de-revision.sql`**, y son dos pasos en este
+orden:
+
+1. Ejecutar el punto 1 del archivo (agrega el correo a la nómina).
+2. Crear la cuenta en **Supabase → Authentication → Users → Add user**, con
+   **"Auto Confirm User" marcado**.
+
+> ⚠️ Si lo haces al revés, la cuenta nace sin perfil y no podrá entrar. Y si
+> se te olvida marcar *Auto Confirm*, Supabase intentará mandar un correo a una
+> dirección que no existe y la cuenta quedará a medias.
+
+La cuenta entra con **rol de estudiante**, a propósito: el revisor tiene que
+ver la aplicación como la ve un alumno. Enseñarle una versión distinta de la
+que reciben los usuarios reales es motivo de rechazo.
+
+> La contraseña de esa cuenta da acceso a la aplicación. Guárdala donde
+> guardas la nómina y **no la subas al repositorio**.
+
 ### Abrir el registro por partes
 
 Estar en la nómina y poder crear cuenta **hoy** son cosas distintas. La columna
