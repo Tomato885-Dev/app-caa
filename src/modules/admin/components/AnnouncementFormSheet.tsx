@@ -86,7 +86,7 @@ export function AnnouncementFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.title.trim().length < 6) nextErrors.title = 'El título es demasiado corto.';
+    if (form.title.trim().length < 2) nextErrors.title = 'El título es demasiado corto.';
     if (form.body.trim().length < 20) nextErrors.body = 'Escribe el contenido del aviso.';
     if (form.kind === 'inscripcion') {
       if (form.deadline && Number.isNaN(new Date(`${form.deadline}T12:00:00`).getTime())) {
