@@ -71,7 +71,7 @@ export function BenefitFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.name.trim().length < 4) nextErrors.name = 'Escribe el nombre del beneficio.';
+    if (form.name.trim().length < 2) nextErrors.name = 'Escribe el nombre del beneficio.';
     if (form.partner.trim().length < 2) nextErrors.partner = 'Indica quién otorga el beneficio.';
     if (form.summary.trim().length < 10) nextErrors.summary = 'Resume el beneficio en una línea.';
     if (form.description.trim().length < 30)
