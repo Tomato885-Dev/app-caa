@@ -69,7 +69,7 @@ export function ImageKeyField({
       <div className="space-y-2.5">
         {value ? (
           <div className="space-y-2">
-            <AppImage imageKey={value} ratio="16/9" />
+            <AppImage imageKey={value} ratio="16/9" fit="natural" />
             <Button
               variant="ghost"
               size="sm"

@@ -34,7 +34,7 @@ export function NewsDetailPage() {
   return (
     <Page>
       <article>
-        <AppImage imageKey={post.imageKey} ratio="16/9" className="mb-5" />
+        <AppImage imageKey={post.imageKey} ratio="16/9" fit="natural" className="mb-5" />
 
         <Badge tone="brand" className="mb-3">
           {post.category}

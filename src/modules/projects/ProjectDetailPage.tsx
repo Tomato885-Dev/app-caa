@@ -47,7 +47,7 @@ export function ProjectDetailPage() {
     <Page>
       <article>
         {project.imageKey ? (
-          <AppImage imageKey={project.imageKey} ratio="16/9" className="mb-4" />
+          <AppImage imageKey={project.imageKey} ratio="16/9" fit="natural" className="mb-4" />
         ) : null}
 
         <div className="mb-3 flex flex-wrap items-center gap-2">

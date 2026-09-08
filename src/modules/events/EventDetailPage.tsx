@@ -51,7 +51,7 @@ export function EventDetailPage() {
 
   return (
     <Page>
-      <AppImage imageKey={event.imageKey} ratio="16/9" className="mb-5" />
+      <AppImage imageKey={event.imageKey} ratio="16/9" fit="natural" className="mb-5" />
 
       <Badge tone="brand" className="mb-3">
         {event.category}

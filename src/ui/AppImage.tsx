@@ -44,11 +44,16 @@ interface AppImageProps {
   fallback?: ReactNode;
   /**
    * Cómo encaja la imagen en su marco.
-   *   'cover'   recorta para llenarlo. Fotografías.
-   *   'contain' la muestra entera, con aire alrededor. Logotipos: un logo
-   *             recortado deja de ser reconocible, que es justo su función.
+   *   'cover'   recorta para llenarlo. Miniaturas de un listado, donde todas
+   *             las tarjetas tienen que medir lo mismo.
+   *   'contain' la muestra entera dentro del marco, con aire alrededor.
+   *             Logotipos: un logo recortado deja de ser reconocible, que es
+   *             justo su función.
+   *   'natural' no hay marco. La imagen manda y se ve completa, con su propia
+   *             proporción: un afiche vertical sale vertical y una foto
+   *             apaisada sale apaisada, sin recorte ni franjas vacías.
    */
-  fit?: 'cover' | 'contain';
+  fit?: 'cover' | 'contain' | 'natural';
 }
 
 export function AppImage({
@@ -61,11 +66,16 @@ export function AppImage({
   fit = 'cover',
 }: AppImageProps) {
   const asset = getImage(imageKey);
-  const shape = cn(ratioClass[ratio ?? asset?.ratio ?? '16/9'], rounded && 'rounded-xl', className);
+  const marco = cn(ratioClass[ratio ?? asset?.ratio ?? '16/9'], rounded && 'rounded-xl', className);
+
+  /* El marcador de "imagen pendiente" conserva el marco siempre: no hay
+     ninguna imagen que medir todavía, y sin proporción se quedaría sin altura
+     y no se vería nada. Solo la imagen ya cargada puede prescindir de él. */
+  const shape = fit === 'natural' ? cn(rounded && 'rounded-xl', className) : marco;
 
   const ausente = fallback ?? (
     <PlaceholderBox
-      className={shape}
+      className={marco}
       compact={compact}
       label={asset?.description ?? 'Imagen pendiente'}
       path={asset?.suggestedPath}
@@ -92,11 +102,23 @@ function LoadedImage({
   alt: string;
   shape: string;
   ausente: ReactNode;
-  fit: 'cover' | 'contain';
+  fit: 'cover' | 'contain' | 'natural';
 }) {
   const [failed, setFailed] = useState(false);
 
   if (failed) return <>{ausente}</>;
+
+  /* `cn` concatena sin resolver conflictos, así que las clases de encaje se
+     eligen aquí una sola vez en vez de superponerse. */
+  const encaje =
+    fit === 'natural'
+      ? /* Sin recorte y sin franjas: la imagen manda. El tope de altura es
+           para que un afiche vertical no se coma la pantalla entera y haya
+           que hacer scroll para llegar al pie de la propia foto. */
+        'mx-auto block h-auto max-h-[70vh] w-auto max-w-full'
+      : fit === 'contain'
+        ? 'h-full w-full object-contain p-1.5'
+        : 'h-full w-full object-cover';
 
   return (
     <img
@@ -104,11 +126,7 @@ function LoadedImage({
       alt={alt}
       decoding="async"
       onError={() => setFailed(true)}
-      className={cn(
-        'h-full w-full bg-surface-2',
-        fit === 'contain' ? 'object-contain p-1.5' : 'object-cover',
-        shape,
-      )}
+      className={cn(encaje, 'bg-surface-2', shape)}
     />
   );
 }
