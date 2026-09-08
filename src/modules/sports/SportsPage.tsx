@@ -3,7 +3,6 @@ import { Trophy } from 'lucide-react';
 import { sportDisciplines, sportLevels } from '@/content/taxonomies';
 import type { SportDiscipline, SportLevel } from '@/core/types';
 import {
-  Card,
   CardListSkeleton,
   EmptyState,
   FilterChips,
@@ -11,7 +10,7 @@ import {
   PageHeader,
   SegmentedTabs,
 } from '@/ui';
-import { recordOf, sortResults, useSportsResults } from './api';
+import { sortResults, useSportsResults } from './api';
 import { ResultCard } from './components/ResultCard';
 
 /* ============================================================================
@@ -46,8 +45,6 @@ export function SportsPage() {
     () => (level === ALL ? byDiscipline : byDiscipline.filter((item) => item.level === (level as SportLevel))),
     [byDiscipline, level],
   );
-
-  const record = useMemo(() => recordOf(filtered), [filtered]);
 
   const disciplineOptions = useMemo(
     () => [
@@ -91,18 +88,6 @@ export function SportsPage() {
 
       <SegmentedTabs options={levelOptions} value={level} onChange={setLevel} className="mb-5" />
 
-      {/* Balance de lo que se está mirando ahora mismo. */}
-      {record.total > 0 ? (
-        <Card className="mb-5">
-          <div className="grid grid-cols-4 divide-x divide-line text-center">
-            <Stat value={record.victorias} label="Ganados" />
-            <Stat value={record.empates} label="Empatados" />
-            <Stat value={record.derrotas} label="Perdidos" />
-            <Stat value={record.participaciones} label="Participaciones" />
-          </div>
-        </Card>
-      ) : null}
-
       {isLoading ? (
         <CardListSkeleton />
       ) : filtered.length === 0 ? (
@@ -119,14 +104,5 @@ export function SportsPage() {
         </div>
       )}
     </Page>
-  );
-}
-
-function Stat({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="px-1">
-      <p className="text-[22px] font-extrabold leading-none text-ink">{value}</p>
-      <p className="mt-1 text-[11px] font-medium leading-tight text-ink-2">{label}</p>
-    </div>
   );
 }

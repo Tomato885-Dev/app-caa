@@ -116,9 +116,15 @@ function LoadedImage({
            para que un afiche vertical no se coma la pantalla entera y haya
            que hacer scroll para llegar al pie de la propia foto. */
         'mx-auto block h-auto max-h-[70vh] w-auto max-w-full'
-      : fit === 'contain'
-        ? 'h-full w-full object-contain p-1.5'
-        : 'h-full w-full object-cover';
+      : /* Sin `h-full`. La altura la da la proporción del marco, y ese era
+           justo el problema: dentro de un carrusel, las tarjetas se estiran
+           todas a la misma altura, `h-full` pasaba a valer esa altura entera
+           y la imagen se comía el título que venía debajo. Donde de verdad
+           haga falta llenar un alto fijo —la portada del acceso—, se pide con
+           `className="h-full"` y sigue funcionando igual. */
+        fit === 'contain'
+        ? 'w-full object-contain p-1.5'
+        : 'w-full object-cover';
 
   return (
     <img

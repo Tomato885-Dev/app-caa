@@ -18,25 +18,6 @@ export function sortResults(items: SportsResult[]): SportsResult[] {
   );
 }
 
-export interface SeasonRecord {
-  victorias: number;
-  empates: number;
-  derrotas: number;
-  participaciones: number;
-  total: number;
-}
-
-/** Balance de la selección seleccionada, para el resumen de la cabecera. */
-export function recordOf(items: SportsResult[]): SeasonRecord {
-  return {
-    victorias: items.filter((item) => item.outcome === 'victoria').length,
-    empates: items.filter((item) => item.outcome === 'empate').length,
-    derrotas: items.filter((item) => item.outcome === 'derrota').length,
-    participaciones: items.filter((item) => item.outcome === 'participacion').length,
-    total: items.length,
-  };
-}
-
 export function useCreateSportsResult() {
   return useDataMutation(
     (input: CreateInput<SportsResult>) => db.sportsResults.create(input),
