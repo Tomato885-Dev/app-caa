@@ -24,14 +24,17 @@ import { listedInDirectory, telHref, useDirectory } from './api';
    mismas cuentas que administra el panel de administración, de modo que no hay
    dos listas de datos personales que mantener sincronizadas.
 
-   Aparece TODA la comunidad con cuenta activa. Nadie puede quedarse fuera del
-   buscador: el Centro de Alumnos decidió que la base de contactos es completa
-   o no sirve, y esa decisión está tomada, no pendiente.
+   Aparece toda la comunidad con cuenta activa, MENOS quien pidió no aparecer.
 
-   El campo `oculto` de `perfiles` sigue existiendo y el filtro se sigue
-   aplicando. Se conserva a propósito: si algún día una familia pide que su
-   hijo no aparezca, la administración puede marcarlo en la base sin que haya
-   que programar nada.
+   Durante un tiempo no se pudo pedir: el Centro de Alumnos quería la base
+   completa, y ocultar a alguien era algo que la administración marcaba a mano.
+   Eso cambió al preparar la app para las tiendas. La base reúne el nombre, el
+   curso, el correo y el teléfono de 694 menores de edad, y oponerse a figurar
+   en una lista así tiene que poder decidirlo la propia persona, en su perfil,
+   sin pedir permiso. La casilla vive en `profile/ProfilePage.tsx`.
+
+   Ocultarse no borra nada: la cuenta sigue, la nómina sigue, y se puede
+   revertir cuando se quiera.
    ========================================================================== */
 
 const ALL = 'todos';

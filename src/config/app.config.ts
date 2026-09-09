@@ -19,6 +19,17 @@ export interface AppConfig {
     institution: string;
     /** Periodo/directiva vigente. Aparece en "Acerca de". */
     term: string;
+    /**
+     * Politica de privacidad publicada. Google Play y App Store exigen que
+     * sea alcanzable desde la propia aplicacion, no solo desde la ficha de
+     * la tienda, y comparan lo que dice con lo que la aplicacion hace.
+     */
+    privacyUrl: string;
+    /**
+     * Pagina de soporte. App Store Connect la exige y no acepta un correo:
+     * tiene que ser una direccion web que abra sin iniciar sesion.
+     */
+    supportUrl: string;
   };
 
   /** Reglas de acceso (§5 y §7 del documento). */
@@ -89,6 +100,8 @@ export const appConfig: AppConfig = {
     fullName: 'Centro de Alumnos',
     institution: 'Colegio Del Verbo Divino',
     term: 'Periodo 2027',
+    privacyUrl: 'https://sites.google.com/view/appcaa',
+    supportUrl: 'https://sites.google.com/view/appcaa/soporte',
   },
 
   auth: {

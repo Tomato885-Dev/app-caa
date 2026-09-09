@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Check,
+  ExternalLink,
   KeyRound,
   LogOut,
   Phone,
@@ -86,6 +87,8 @@ export function ProfilePage() {
       {/* Teléfono de contacto */}
       <PhoneSection phone={user.phone} />
 
+      <DirectorySection hidden={user.hideFromDirectory ?? false} />
+
       <NotificationsSection />
 
       {/* Preferencias */}
@@ -149,6 +152,17 @@ export function ProfilePage() {
           la institución. El acceso está restringido a cuentas institucionales de la nómina oficial
           del colegio.
         </p>
+        {/* Las dos tiendas piden que la política sea alcanzable desde la propia
+            aplicación, no solo desde la ficha de la tienda. */}
+        <a
+          href={appConfig.organization.privacyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-brand-500 underline-offset-2 hover:underline"
+        >
+          Política de privacidad
+          <ExternalLink size={12.5} />
+        </a>
       </Card>
 
       <div className="space-y-2">
@@ -192,6 +206,66 @@ export function ProfilePage() {
         user={user}
       />
     </Page>
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   APARECER O NO EN LA BASE DE CONTACTOS
+   El Centro de Alumnos quería la base completa, y por eso durante un tiempo
+   esta casilla no existió: ocultarse era algo que la administración marcaba a
+   mano si una familia lo pedía.
+
+   Vuelve por una razón concreta. La base reúne el nombre, el curso, el correo
+   y el teléfono de 694 menores de edad, y tanto la política de privacidad
+   publicada como las tiendas parten de que oponerse a figurar en una lista así
+   es algo que decide la propia persona, no un trámite que hay que pedir.
+
+   Ocultarse NO borra nada ni saca a nadie de la nómina del colegio: solo deja
+   de mostrar la ficha en el buscador de la comunidad.
+   -------------------------------------------------------------------------- */
+
+function DirectorySection({ hidden }: { hidden: boolean }) {
+  const { updateProfile } = useAuth();
+  const notify = useToast();
+  const [saving, setSaving] = useState(false);
+
+  const handleToggle = async (ocultar: boolean) => {
+    setSaving(true);
+    try {
+      await updateProfile({ hideFromDirectory: ocultar });
+      notify(
+        ocultar
+          ? 'Ya no apareces en la base de contactos.'
+          : 'Vuelves a aparecer en la base de contactos.',
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <section className="mb-6">
+      <SectionHeader title="Base de contactos" />
+      <Card>
+        <label className="flex cursor-pointer items-start gap-2.5">
+          <input
+            type="checkbox"
+            checked={hidden}
+            disabled={saving}
+            onChange={(event) => void handleToggle(event.target.checked)}
+            className="mt-0.5 h-4 w-4 accent-[var(--color-brand-500)]"
+          />
+          <span className="text-[13.5px] leading-relaxed text-ink-2">
+            No quiero aparecer en la base de contactos.
+            <span className="mt-1 block text-[12.5px] text-ink-3">
+              Tu nombre, tu curso, tu correo y tu teléfono dejan de verse en el buscador de la
+              comunidad. Sigues teniendo tu cuenta y sigues en la nómina del colegio; puedes
+              volver a aparecer cuando quieras.
+            </span>
+          </span>
+        </label>
+      </Card>
+    </section>
   );
 }
 
