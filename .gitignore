@@ -43,3 +43,7 @@ supabase/vapid.txt
 # Es el contenido oficial del Centro de Alumnos (noticias, comunicados,
 # eventos…), o sea, trabajo que hay que respaldar y que debe llegar a la
 # versión publicada. No es un dato personal como la nómina.
+
+# Estado que deja el CLI de Supabase al enlazar el proyecto. Es de esta
+# maquina, no del proyecto.
+supabase/.temp/
