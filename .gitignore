@@ -47,3 +47,8 @@ supabase/vapid.txt
 # Estado que deja el CLI de Supabase al enlazar el proyecto. Es de esta
 # maquina, no del proyecto.
 supabase/.temp/
+
+# Capturas para las tiendas. Se regeneran con scripts/capturas.mjs y pueden
+# llevar contenido real, incluidos nombres de estudiantes.
+capturas/
+scripts/.sesion.json
