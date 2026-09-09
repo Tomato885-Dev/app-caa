@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  MANIFIESTO DE PRIVACIDAD
+
+  Apple lo exige desde 2024. Declara dos cosas: que datos personales recoge la
+  aplicacion, y por que motivo usa ciertas funciones del sistema que se prestan
+  para identificar a una persona.
+
+  Capacitor trae el suyo para sus propias piezas. Este es el de la aplicacion,
+  y tiene que coincidir con lo que dice la politica de privacidad publicada en
+  sites.google.com/view/appcaa: los revisores comparan los dos.
+
+  NO HAY SEGUIMIENTO
+  La aplicacion no lleva publicidad, ni analitica, ni rastreadores. Por eso
+  NSPrivacyTracking va en false y la lista de dominios de seguimiento va vacia.
+
+  QUE SE RECOGE
+    · Correo institucional y nombre, para la cuenta.
+    · Curso, para dirigir avisos por nivel.
+    · Telefono, opcional, que la persona decide poner o no.
+  Todo va ligado a la identidad —es una comunidad cerrada donde uno figura con
+  su nombre real— y nada se usa para publicidad ni para seguir a nadie.
+
+  ALMACENAMIENTO DEL USUARIO
+  La aplicacion guarda preferencias en el propio dispositivo (el tema claro u
+  oscuro, la sesion). Apple considera esa funcion como de "motivo requerido" y
+  hay que declarar cual es: CA92.1, es decir, usarla solo para datos de la
+  propia aplicacion, sin compartirlos con nadie.
+-->
+<plist version="1.0">
+<dict>
+	<key>NSPrivacyTracking</key>
+	<false/>
+
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeEmailAddress</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeName</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypePhoneNumber</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+		<dict>
+			<key>NSPrivacyCollectedDataType</key>
+			<string>NSPrivacyCollectedDataTypeOtherUserContent</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key>
+			<true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key>
+			<false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key>
+			<array>
+				<string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+			</array>
+		</dict>
+	</array>
+
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CA92.1</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
