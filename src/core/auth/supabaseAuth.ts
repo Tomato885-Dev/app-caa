@@ -235,3 +235,35 @@ export async function perfilActual(client: SupabaseClient): Promise<User | null>
     updatedAt: fila.editado_en,
   };
 }
+
+/* ----------------------------------------------------------------------------
+   BORRAR LA PROPIA CUENTA
+   Lo hace una funcion del servidor, porque eliminar unas credenciales necesita
+   la llave de administracion y esa llave no puede viajar dentro de la
+   aplicacion. Aqui solo se pide; alla se comprueba quien pide.
+   -------------------------------------------------------------------------- */
+export async function eliminarCuenta(cliente: SupabaseClient): Promise<void> {
+  const { data, error } = await cliente.functions.invoke('borrar-cuenta', { body: {} });
+
+  /* Un error de funcion trae el motivo en el cuerpo de la respuesta, no en el
+     mensaje. Sin leerlo, el unico administrador que quedara veria un
+     "Edge Function returned a non-2xx status code" en vez de saber que tiene
+     que nombrar a alguien antes. */
+  if (error) {
+    let motivo = error.message;
+    const respuesta = (error as { context?: Response }).context;
+    if (respuesta && typeof respuesta.json === 'function') {
+      try {
+        const cuerpo = await respuesta.json();
+        if (cuerpo?.error) motivo = cuerpo.error;
+      } catch {
+        /* Se queda con el mensaje generico. */
+      }
+    }
+    throw new Error(motivo);
+  }
+
+  if (data && (data as { error?: string }).error) {
+    throw new Error((data as { error: string }).error);
+  }
+}

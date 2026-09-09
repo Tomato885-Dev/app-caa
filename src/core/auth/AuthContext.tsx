@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { appConfig } from '@/config/app.config';
 import { db, supabase, usingServer } from '@/core/data';
 import { ROLE_ORDER, type ID, type Role, type User } from '@/core/types';
-import { hasPassword, setPassword, verifyPassword } from './credentials';
+import { clearPassword, hasPassword, setPassword, verifyPassword } from './credentials';
 import { MailError, mailerIsConfigured, sendVerificationCode } from './mailer';
 import { checkPassword } from './passwordPolicy';
 import {
@@ -18,6 +18,7 @@ import {
   type ResultadoRegistro,
   pedirRecuperacion,
   confirmarRecuperacion,
+  eliminarCuenta,
 } from './supabaseAuth';
 import {
   CODE_TTL_MINUTES,
@@ -122,6 +123,12 @@ interface AuthContextValue {
   confirmPasswordReset: (email: string, code: string, newPassword: string) => Promise<User>;
   /** ¿Se puede recuperar la contraseña sola? Sin servidor, no hay correo. */
   canRecoverPassword: boolean;
+  /**
+   * Borra la cuenta de quien está en sesión y la cierra. No se puede deshacer.
+   * Exige la contraseña: es una acción irreversible y no puede bastar con
+   * tener el teléfono desbloqueado en la mano.
+   */
+  deleteAccount: (password: string) => Promise<void>;
   /** ¿La sesión alcanza al menos este rol? */
   hasRole: (minimum: Role) => boolean;
 }
@@ -558,6 +565,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
      no haría nada.
      ---------------------------------------------------------------------- */
 
+  /* --- Borrar la propia cuenta ---------------------------------------------
+     Apple exige que quien puede crearse una cuenta pueda borrarla desde
+     adentro de la aplicación, sin escribirle a nadie. Google pide lo mismo en
+     su formulario de seguridad de los datos.
+
+     Se pide la contraseña antes. No es burocracia: es lo único que distingue
+     al dueño de la cuenta de quien encontró el teléfono desbloqueado, y esto
+     no se puede deshacer. */
+  const deleteAccount = useCallback<AuthContextValue['deleteAccount']>(
+    async (password) => {
+      if (!user) throw new AuthError('No hay una sesión activa.');
+
+      if (usingServer && supabase) {
+        try {
+          await entrar(supabase, user.email, password);
+        } catch {
+          throw new AuthError('La contraseña no es correcta.');
+        }
+
+        try {
+          await eliminarCuenta(supabase);
+        } catch (caught) {
+          throw new AuthError((caught as Error).message);
+        }
+
+        signOut();
+        return;
+      }
+
+      /* Sin servidor todo vive en este dispositivo. Una cuenta abierta con el
+         acceso de demostración no tiene contraseña que comprobar. */
+      if (hasPassword(user.id) && !(await verifyPassword(user.id, password))) {
+        throw new AuthError('La contraseña no es correcta.');
+      }
+
+      clearPassword(user.id);
+      await db.users.remove(user.id);
+      signOut();
+    },
+    [user, signOut],
+  );
+
   const requestPasswordReset = useCallback<AuthContextValue['requestPasswordReset']>(
     async (email) => {
       if (!usingServer || !supabase) {
@@ -638,6 +687,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       requestPasswordReset,
       confirmPasswordReset,
       canRecoverPassword: usingServer,
+      deleteAccount,
       hasRole,
     }),
     [
@@ -656,6 +706,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       changePassword,
       requestPasswordReset,
       confirmPasswordReset,
+      deleteAccount,
       hasRole,
     ],
   );

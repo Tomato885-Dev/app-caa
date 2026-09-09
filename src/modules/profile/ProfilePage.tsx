@@ -26,6 +26,7 @@ import {
   useToast,
 } from '@/ui';
 import { ChangePasswordSheet } from './components/ChangePasswordSheet';
+import { DeleteAccountSheet } from './components/DeleteAccountSheet';
 import { NotificationsSection } from './components/NotificationsSection';
 
 /* Perfil de usuario (§6.8): identidad de la cuenta, teléfono de contacto,
@@ -37,6 +38,7 @@ export function ProfilePage() {
   const { preference, setPreference } = useTheme();
   const notify = useToast();
   const [passwordOpen, setPasswordOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
 
   if (!user) return null;
@@ -162,9 +164,31 @@ export function ProfilePage() {
         </Button>
       </div>
 
+      {/* Borrar la cuenta. Apple y Google exigen que se pueda hacer desde
+          adentro de la aplicación, y que se encuentre sin tener que buscarla.
+          Va al final y separada: es lo único aquí que no se puede deshacer. */}
+      <div className="mt-8 border-t border-line pt-5">
+        <button
+          type="button"
+          onClick={() => setDeleteOpen(true)}
+          className="text-[13px] font-semibold text-danger-500 underline-offset-2 hover:underline"
+        >
+          Eliminar mi cuenta
+        </button>
+        <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-3">
+          Borra tu acceso, tu perfil y tu teléfono. No se puede deshacer.
+        </p>
+      </div>
+
       <ChangePasswordSheet
         open={passwordOpen}
         onClose={() => setPasswordOpen(false)}
+        user={user}
+      />
+
+      <DeleteAccountSheet
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
         user={user}
       />
     </Page>
