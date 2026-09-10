@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  PERMISOS ESPECIALES DE LA APP EN IPHONE
+
+  Apple no deja que una aplicacion reciba notificaciones solo porque lo pida
+  desde el codigo: tiene que estar declarado aqui y firmado junto con la app.
+  Sin este archivo, la app compila e instala igual, pero al tocar "Activar los
+  avisos" el iPhone responde que no y no hay ningun mensaje que lo explique.
+
+  POR QUE DICE "development" SI VA A LA TIENDA
+  Es el valor que corresponde. Al preparar la version para App Store, Xcode lo
+  cambia solo a "production" usando el certificado de distribucion. Escribir
+  "production" a mano rompe las pruebas en un iPhone conectado por cable.
+
+  NO HAY MAS PERMISOS
+  Ni ubicacion, ni contactos, ni camara, ni tareas en segundo plano. Cada
+  permiso declarado de mas es una pregunta que Apple hace en la revision y que
+  hay que justificar, y este es el unico que la aplicacion necesita.
+-->
+<plist version="1.0">
+<dict>
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>

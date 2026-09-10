@@ -123,15 +123,76 @@ Sin subirlo, nadie más podría compilar la app.
 
 ---
 
-## Mañana: iPhone
+## Paso 5 — iPhone
 
-El mismo Firebase sirve para los dos. Para iPhone falta:
+El mismo Firebase sirve para los dos. **Del lado del código ya está todo
+hecho**: el permiso especial que exige Apple, el aviso al sistema cuando
+entrega el identificador, y el plugin declarado en el proyecto de Xcode.
 
-1. En Firebase, registrar también la app de **iOS** con el mismo identificador.
-2. En <https://developer.apple.com>, crear una **clave de notificaciones
-   (APNs)**. Se descarga un archivo `.p8` que Apple deja bajar **una sola vez**.
-3. Subir ese `.p8` a Firebase, en Configuración del proyecto → **Cloud
-   Messaging** → sección de iOS.
+Faltan tres cosas, y ninguna es de programar.
 
-No hay que tocar código: la app ya pide el permiso y guarda el registro igual
-en los dos sistemas.
+### 5.1 · Registrar la app de iPhone en Firebase
+
+1. En la portada del proyecto de Firebase, **Agregar app** → icono de **Apple**.
+2. **ID del paquete**: el mismo de siempre, `cl.verbo.centroalumnos`.
+3. Descarga el **`GoogleService-Info.plist`**.
+4. Guárdalo aquí, con ese nombre exacto:
+
+   ```
+   ios/App/App/GoogleService-Info.plist
+   ```
+
+> **Sin ese archivo la app de iPhone no compila.** Está declarado dentro del
+> proyecto de Xcode a propósito: es preferible que el error salte al compilar,
+> y no que la app llegue a la App Store sin poder recibir un solo aviso.
+
+### 5.2 · La clave de notificaciones de Apple
+
+1. Entra a <https://developer.apple.com/account> → **Certificates, Identifiers
+   & Profiles** → **Keys** → el botón **+**.
+2. Nombre: `App CAA`. Marca **Apple Push Notifications service (APNs)**.
+3. Continuar → Registrar → **Descargar**.
+
+> Apple deja bajar ese archivo `.p8` **una sola vez**. Si lo pierdes hay que
+> anular la clave y crear otra. Guárdalo en un lugar seguro antes de seguir, y
+> apunta también el **Key ID** que aparece en pantalla.
+
+4. Necesitas además tu **Team ID**: está arriba a la derecha en esa misma
+   página de Apple, o en Membership.
+
+### 5.3 · Entregarle esa clave a Firebase
+
+1. Firebase → Configuración del proyecto → pestaña **Cloud Messaging**.
+2. En la sección de la app de iOS, **Clave de autenticación de APNs** →
+   **Cargar**.
+3. Sube el `.p8` y escribe el **Key ID** y el **Team ID**.
+
+Con eso, Firebase ya puede hablar con Apple en nombre de la app.
+
+### 5.4 · Al compilar en el Mac
+
+El proyecto de iPhone necesita bajar sus dependencias, y eso solo corre en un
+Mac. En la carpeta `ios/App`:
+
+```bash
+pod install
+```
+
+Después se abre **`App.xcworkspace`** (el `.xcworkspace`, no el `.xcodeproj`) y
+se compila desde ahí.
+
+En Xcode, en la pestaña **Signing & Capabilities**, tiene que aparecer **Push
+Notifications** en la lista. Si aparece, está bien puesto. Si no aparece, se
+agrega con el botón **+ Capability**.
+
+---
+
+## Lo que todavía no está probado
+
+El camino de Android está compilado y revisado, pero **ninguna notificación ha
+llegado a un teléfono de verdad todavía**, porque para eso hace falta el
+proyecto de Firebase.
+
+El de iPhone tampoco está compilado: hacerlo necesita un Mac.
+
+Los dos hay que probarlos en un aparato real antes de subir la app.

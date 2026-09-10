@@ -46,4 +46,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
     }
 
+    // MARK: - Notificaciones
+    //
+    // Apple entrega el identificador del telefono aqui, y solo aqui. iOS llama
+    // a este metodo del delegado y a ningun otro sitio; si no se reenvia, el
+    // permiso se concede, la persona ve el interruptor encendido y el aviso no
+    // llega nunca, sin ningun error de por medio.
+    //
+    // Estas dos funciones no hacen nada mas que pasar el recado a Capacitor,
+    // que a su vez se lo entrega al plugin de Firebase.
+
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        NotificationCenter.default.post(name: .capacitorDidRegisterForRemoteNotifications,
+                                        object: deviceToken)
+    }
+
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        NotificationCenter.default.post(name: .capacitorDidFailToRegisterForRemoteNotifications,
+                                        object: error)
+    }
+
 }
