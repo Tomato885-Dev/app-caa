@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  COLORES DE LA APP EN ANDROID
+
+  Capacitor trae los suyos por defecto, en un azul indigo que no tiene nada que
+  ver con el colegio. Sin este archivo la barra de estado del telefono salia
+  azul sobre una aplicacion entera verde.
+
+  El verde es el mismo #11673c que usan la pantalla de carga y la marca.
+-->
+<resources>
+    <color name="colorPrimary">#11673c</color>
+    <color name="colorPrimaryDark">#0d4f2e</color>
+    <color name="colorAccent">#11673c</color>
+
+    <!-- Con el que Android colorea el icono pequeno de cada notificacion. -->
+    <color name="aviso">#11673c</color>
+</resources>

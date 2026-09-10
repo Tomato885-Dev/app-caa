@@ -1,4 +1,5 @@
 import { supabase, usingServer } from '@/core/data';
+import { activarNativo, desactivarNativo, esNativo, estadoNativo } from './nativo';
 
 /* ============================================================================
    NOTIFICACIONES
@@ -14,6 +15,15 @@ import { supabase, usingServer } from '@/core/data';
    Quien entra desde el teléfono y desde el computador aparece dos veces, y
    recibe el aviso en los dos. Es lo correcto: el permiso lo concede cada
    aparato por separado y no se puede trasladar.
+
+   DOS CAMINOS SEGÚN DÓNDE SE ABRA
+   Lo de arriba es el navegador. Dentro de la app instalada desde Google Play
+   o App Store no sirve: un navegador metido dentro de una app no recibe
+   notificaciones del sistema. Ahí el aviso lo entrega el propio teléfono a
+   través de Firebase, y de eso se encarga `nativo.ts`.
+
+   Este archivo es la puerta de entrada de los dos: quien lo llama no necesita
+   saber en cuál de las dos está corriendo.
 
    EL PERMISO NO SE PIDE SOLO
    Nunca al abrir la aplicación. Un navegador que pregunta apenas entras recibe
@@ -57,6 +67,8 @@ function bytesABase64Url(buffer: ArrayBuffer | null): string {
 
 /** ¿Este navegador puede recibir notificaciones? */
 export function soportaPush(): boolean {
+  // La app instalada siempre puede: no depende del navegador.
+  if (esNativo()) return true;
   return (
     typeof window !== 'undefined' &&
     'serviceWorker' in navigator &&
@@ -102,6 +114,7 @@ async function registrarTrabajador(): Promise<ServiceWorkerRegistration> {
 }
 
 export async function estadoActual(): Promise<EstadoPush> {
+  if (esNativo()) return estadoNativo();
   if (!soportaPush()) return 'no-soportado';
   if (!usingServer || !supabase) return 'sin-servidor';
   if (Notification.permission === 'denied') return 'bloqueado';
@@ -117,6 +130,7 @@ export async function estadoActual(): Promise<EstadoPush> {
  * porque negarse no es un error.
  */
 export async function activar(): Promise<EstadoPush> {
+  if (esNativo()) return activarNativo();
   if (!soportaPush()) return 'no-soportado';
   if (!usingServer || !supabase) return 'sin-servidor';
 
@@ -162,6 +176,7 @@ export async function activar(): Promise<EstadoPush> {
 
 /** Desactiva las notificaciones en este dispositivo. */
 export async function desactivar(): Promise<EstadoPush> {
+  if (esNativo()) return desactivarNativo();
   if (!soportaPush()) return 'no-soportado';
 
   const registro = await navigator.serviceWorker.getRegistration(import.meta.env.BASE_URL);

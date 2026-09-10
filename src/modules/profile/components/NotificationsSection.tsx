@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Bell, BellOff } from 'lucide-react';
+import { esNativo } from '@/core/notifications/nativo';
 import { activar, desactivar, estadoActual, type EstadoPush } from '@/core/notifications/push';
 import { Button, Card, SectionHeader, useToast } from '@/ui';
 
@@ -9,6 +10,12 @@ import { Button, Card, SectionHeader, useToast } from '@/ui';
    El interruptor por dispositivo. Cada aparato concede su propio permiso, así
    que activarlo en el teléfono no lo activa en el computador: se dice en voz
    alta en vez de dejar que la persona lo descubra sola.
+
+   EL MISMO INTERRUPTOR SIRVE EN LOS DOS SITIOS
+   En el navegador y en la app instalada el permiso lo pide quien corresponda,
+   pero lo que ve la persona es idéntico. Lo único que cambia es dónde se
+   arregla si dijo que no: en los ajustes del navegador o en los del teléfono,
+   que no son el mismo lugar y mandar al equivocado no ayuda a nadie.
 
    CUANDO ESTÁ BLOQUEADO NO SE INSISTE
    Si alguien ya dijo que no, el navegador no vuelve a preguntar por mucho que
@@ -43,6 +50,16 @@ const TEXTOS: Record<EstadoPush, { titulo: string; detalle: string }> = {
   },
 };
 
+/** Lo que cambia dentro de la app instalada. El resto de los textos sirve
+ *  igual en los dos sitios. */
+const EN_LA_APP: Partial<Record<EstadoPush, { titulo: string; detalle: string }>> = {
+  bloqueado: {
+    titulo: 'Los avisos están bloqueados',
+    detalle:
+      'Dijiste que no cuando el teléfono preguntó, y desde aquí no se puede volver a preguntar. Se cambia en los ajustes del teléfono, en las notificaciones de App CAA.',
+  },
+};
+
 export function NotificationsSection() {
   const notify = useToast();
   const [estado, setEstado] = useState<EstadoPush | null>(null);
@@ -62,7 +79,7 @@ export function NotificationsSection() {
   // apagado y salta a encendido se lee como que uno lo apagó sin querer.
   if (estado === null) return null;
 
-  const texto = TEXTOS[estado];
+  const texto = (esNativo() ? EN_LA_APP[estado] : undefined) ?? TEXTOS[estado];
   const puedeActuar = estado === 'activo' || estado === 'inactivo';
 
   const alternar = async () => {
@@ -73,7 +90,12 @@ export function NotificationsSection() {
 
       if (siguiente === 'activo') notify('Listo, ya te van a llegar los avisos.');
       else if (siguiente === 'bloqueado') {
-        notify('Tu navegador bloqueó los avisos. Se cambia en sus ajustes.', 'info');
+        notify(
+          esNativo()
+            ? 'El teléfono bloqueó los avisos. Se cambia en sus ajustes.'
+            : 'Tu navegador bloqueó los avisos. Se cambia en sus ajustes.',
+          'info',
+        );
       } else if (estado === 'activo') notify('Avisos desactivados en este dispositivo.', 'info');
     } catch (caught) {
       notify(caught instanceof Error ? caught.message : 'No se pudo cambiar.', 'info');

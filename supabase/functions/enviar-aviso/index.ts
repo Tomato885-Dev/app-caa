@@ -3,6 +3,7 @@
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 import webpush from 'npm:web-push@3.6.7';
+import { cuentaDeServicio, enviarPorFirebase } from './firebase.ts';
 
 /* ============================================================================
    ENVIAR UN AVISO A TODOS LOS DISPOSITIVOS
@@ -18,6 +19,13 @@ import webpush from 'npm:web-push@3.6.7';
    QUIÉN PUEDE
    Solo moderadores y administradores. Se comprueba con el perfil de quien
    llama, no con lo que diga el mensaje.
+
+   DOS CANALES, UN SOLO AVISO
+   Quien usa la aplicacion en el navegador recibe por Web Push. Quien la
+   instalo desde Google Play o App Store recibe por Firebase, porque un
+   navegador metido dentro de una app no puede mostrar notificaciones del
+   sistema. La columna `canal` de cada dispositivo dice por donde va, y el
+   aviso se registra una sola vez para los dos.
 
    LIMPIA LO QUE SE MUERE
    Un teléfono que desinstala la app deja una dirección que ya no existe. El
@@ -47,10 +55,6 @@ Deno.serve(async (req) => {
   const vapidPublica = Deno.env.get('VAPID_PUBLIC_KEY');
   const vapidPrivada = Deno.env.get('VAPID_PRIVATE_KEY');
   const contacto = Deno.env.get('VAPID_CONTACTO') ?? 'mailto:centrodealumnos@verbo.cl';
-
-  if (!vapidPublica || !vapidPrivada) {
-    return responder({ error: 'Faltan las llaves VAPID en los secretos.' }, 500);
-  }
 
   // --- ¿Quién llama, y puede publicar? --------------------------------------
   const authorization = req.headers.get('Authorization') ?? '';
@@ -112,58 +116,106 @@ Deno.serve(async (req) => {
   // --- A quiénes ------------------------------------------------------------
   const { data: dispositivos, error: errorDispositivos } = await admin
     .from('dispositivos')
-    .select('id, canal, destino, clave_p256, clave_auth')
-    .eq('canal', 'web');
+    .select('id, canal, destino, clave_p256, clave_auth');
 
   if (errorDispositivos) {
     return responder({ error: `No se pudieron leer los dispositivos: ${errorDispositivos.message}` }, 500);
   }
 
-  webpush.setVapidDetails(contacto, vapidPublica, vapidPrivada);
+  const todos = dispositivos ?? [];
+  const porNavegador = todos.filter((d) => d.canal === 'web');
+  const porApp = todos.filter((d) => d.canal === 'android' || d.canal === 'ios');
 
-  const carga = JSON.stringify({
-    titulo,
-    cuerpo: texto,
-    ruta: cuerpoPeticion.ruta ?? './',
-    origen: cuerpoPeticion.origen ?? null,
-  });
+  /* Sin ruta se manda './': el navegador la resuelve como "la portada" y la
+     app instalada la descarta, porque solo navega a rutas que empiezan con
+     una barra. En los dos casos el aviso simplemente abre la aplicación. */
+  const ruta = cuerpoPeticion.ruta ?? './';
+  const origen = cuerpoPeticion.origen ?? null;
 
   let enviados = 0;
   const muertos: string[] = [];
 
-  /* Todos a la vez: son cientos de peticiones independientes y en serie
-     tardarían minutos, tiempo que la función no tiene. */
-  await Promise.all(
-    (dispositivos ?? []).map(async (dispositivo) => {
-      try {
-        await webpush.sendNotification(
-          {
-            endpoint: dispositivo.destino,
-            keys: { p256dh: dispositivo.clave_p256, auth: dispositivo.clave_auth },
-          },
-          carga,
-        );
-        enviados += 1;
-      } catch (fallo) {
-        // 404/410 = ese navegador ya no existe. Cualquier otro error es
-        // pasajero y el registro se conserva para el próximo aviso.
-        const codigo = (fallo as { statusCode?: number }).statusCode;
-        if (codigo === 404 || codigo === 410) muertos.push(dispositivo.id);
-      }
-    }),
-  );
+  // --- Navegadores ----------------------------------------------------------
+  if (porNavegador.length > 0) {
+    if (!vapidPublica || !vapidPrivada) {
+      return responder({ error: 'Faltan las llaves VAPID en los secretos.' }, 500);
+    }
+
+    webpush.setVapidDetails(contacto, vapidPublica, vapidPrivada);
+    const carga = JSON.stringify({ titulo, cuerpo: texto, ruta, origen });
+
+    /* Todos a la vez: son peticiones independientes y en serie tardarían
+       minutos, tiempo que la función no tiene. */
+    await Promise.all(
+      porNavegador.map(async (dispositivo) => {
+        try {
+          await webpush.sendNotification(
+            {
+              endpoint: dispositivo.destino,
+              keys: { p256dh: dispositivo.clave_p256, auth: dispositivo.clave_auth },
+            },
+            carga,
+          );
+          enviados += 1;
+        } catch (fallo) {
+          // 404/410 = ese navegador ya no existe. Cualquier otro error es
+          // pasajero y el registro se conserva para el próximo aviso.
+          const codigo = (fallo as { statusCode?: number }).statusCode;
+          if (codigo === 404 || codigo === 410) muertos.push(dispositivo.id);
+        }
+      }),
+    );
+  }
+
+  // --- Apps instaladas ------------------------------------------------------
+  const cuenta = cuentaDeServicio();
+
+  if (porApp.length > 0 && !cuenta) {
+    /* No se corta el envío: los navegadores ya recibieron y cortar ahora los
+       dejaría sin aviso además de los teléfonos. Quedan como fallidos, que es
+       lo que se ve en Administración. */
+    console.error(
+      `Hay ${porApp.length} teléfonos esperando el aviso y falta el secreto ` +
+        'FIREBASE_CUENTA_SERVICIO. No se envió a ninguno.',
+    );
+  }
+
+  if (porApp.length > 0 && cuenta) {
+    /* De a cincuenta. Firebase quiere una petición por teléfono, y lanzar
+       setecientas a la vez agota las conexiones del servidor antes de que
+       ninguna termine. */
+    const LOTE = 50;
+    for (let desde = 0; desde < porApp.length; desde += LOTE) {
+      const lote = porApp.slice(desde, desde + LOTE);
+      const resultados = await Promise.all(
+        lote.map((dispositivo) =>
+          enviarPorFirebase(cuenta, dispositivo.destino, {
+            titulo,
+            cuerpo: texto,
+            ruta,
+            origen,
+          }),
+        ),
+      );
+
+      resultados.forEach((resultado, indice) => {
+        if (resultado === 'enviado') enviados += 1;
+        else if (resultado === 'muerto') muertos.push(lote[indice].id);
+      });
+    }
+  }
 
   if (muertos.length > 0) {
     await admin.from('dispositivos').delete().in('id', muertos);
   }
 
-  const fallidos = (dispositivos ?? []).length - enviados;
+  const fallidos = todos.length - enviados;
   await admin.from('avisos').update({ enviados, fallidos }).eq('id', aviso.id);
 
   return responder({
     enviados,
     fallidos,
     dispositivosBorrados: muertos.length,
-    total: (dispositivos ?? []).length,
+    total: todos.length,
   });
 });

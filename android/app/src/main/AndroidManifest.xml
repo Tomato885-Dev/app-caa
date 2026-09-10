@@ -20,6 +20,21 @@
             </intent-filter>
         </activity>
 
+        <!-- EL ICONO DE LAS NOTIFICACIONES
+             Android dibuja el icono pequeno como una silueta: le da igual el
+             color de la imagen y solo mira su transparencia. Si no se le
+             indica ninguno usa el icono de la app, que es un cuadro verde
+             entero, y en la barra de estado eso se ve como una mancha gris.
+
+             `ic_stat_aviso` es el logo recortado sin fondo, y el color de
+             abajo es con el que Android lo colorea. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_aviso" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/aviso" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

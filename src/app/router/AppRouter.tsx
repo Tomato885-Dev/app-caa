@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import { RequireAuth, RequireRole } from '@/core/auth/guards';
+import { escucharNativo } from '@/core/notifications/nativo';
 import { getModules, registerModules } from '@/core/modules/registry';
 import type { AppModule } from '@/core/modules/types';
 import { appModules } from '@/modules';
@@ -50,6 +51,21 @@ const router = createBrowserRouter([
     ],
   },
 ], { basename });
+
+/* ----------------------------------------------------------------------------
+   TOCAR UNA NOTIFICACIÓN ABRE LO QUE ANUNCIA
+   Solo en la app instalada; en el navegador de esto se encarga `public/sw.js`.
+
+   Va aquí, fuera de React, por una razón: cuando alguien toca el aviso con la
+   app cerrada, el sistema la levanta y entrega el evento antes de que exista
+   ningún componente montado que pueda escucharlo. El router, en cambio, ya
+   está construido en cuanto se carga este archivo.
+
+   Un aviso que solo abre la aplicación en la portada obliga a buscar a mano lo
+   que se acaba de anunciar, que es justo lo que la notificación venía a
+   ahorrar.
+   -------------------------------------------------------------------------- */
+escucharNativo((ruta) => void router.navigate(ruta));
 
 export function AppRouter() {
   return <RouterProvider router={router} />;
