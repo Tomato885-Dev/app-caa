@@ -52,3 +52,9 @@ supabase/.temp/
 # llevar contenido real, incluidos nombres de estudiantes.
 capturas/
 scripts/.sesion.json
+
+# Contenido exportado desde el panel. Lleva el nombre y el curso de cada
+# persona que publico algo, y este repositorio es publico. La app en
+# produccion siempre corre con el servidor, asi que este archivo solo actua de
+# respaldo local: sacarlo de Git no le quita nada a nadie.
+src/content/seed/contenido.json

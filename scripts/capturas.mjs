@@ -93,11 +93,16 @@ async function capturar(nombreTienda, medidas, sufijo) {
   const destino = path.join(CARPETA, nombreTienda);
   await mkdir(destino, { recursive: true });
 
-  /* En modo demostración no hay contraseña: se entra con la cuenta de
-     administrador que ofrece la propia pantalla de acceso. */
+  /* Se entra con la cuenta de ESTUDIANTE, no con la de administrador.
+
+     Quien mira la ficha de la tienda tiene que ver lo que va a recibir: un
+     alumno de la nómina. Con la cuenta de administrador aparecía el acceso al
+     panel de gestión —que la mayoría nunca va a ver— y el saludo mostraba
+     "Centro", porque el nombre de pila de "Directiva Centro de Alumnos" es
+     justamente eso. */
   if (modoDemo) {
     await pagina.goto(SERVIDOR, { waitUntil: 'networkidle' });
-    const demo = pagina.getByText('Publica y gestiona todo el contenido.');
+    const demo = pagina.getByText('Experiencia de un alumno de la nómina.');
     if (await demo.count()) {
       await demo.click();
       await pagina.waitForTimeout(1500);
