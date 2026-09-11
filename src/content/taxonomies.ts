@@ -74,7 +74,7 @@ export const announcementAudiences = [
   'Delegados de curso',
 ] as const;
 
-/* --- Beneficios canjeables por QR ------------------------------------------- */
+/* --- Beneficios y convenios -------------------------------------------------- */
 export const benefitCategories = [
   'Alimentación',
   'Entretención',

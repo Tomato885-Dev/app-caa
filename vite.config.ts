@@ -78,7 +78,6 @@ export default defineConfig({
             'react-dom',
             'react-router-dom',
             '@tanstack/react-query',
-            'qrcode-generator',
           ],
         },
       },

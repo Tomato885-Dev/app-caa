@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { CalendarClock, FileQuestion, QrCode as QrIcon, ScrollText, Store } from 'lucide-react';
+import { CalendarClock, FileQuestion, ScrollText, Store, Ticket } from 'lucide-react';
 import { formatDate } from '@/core/utils/date';
 import {
   AppImage,
   Avatar,
   Badge,
-  Button,
   ButtonLink,
   Card,
   EmptyState,
@@ -17,16 +15,27 @@ import {
   Skeleton,
 } from '@/ui';
 import { isRedeemable, useBenefit } from './api';
-import { BenefitQrSheet } from './components/BenefitQrSheet';
 
-/* Ficha del beneficio: primero se explica de qué se trata y recién después se
-   entrega el código. El botón de canje queda fijo al pie en móvil, para poder
-   abrirlo con el pulgar mientras se está en la caja del comercio. */
+/* ============================================================================
+   FICHA DEL BENEFICIO
+   ----------------------------------------------------------------------------
+   Primero se explica de qué se trata y recién después se entrega el código.
+
+   AQUÍ HUBO UN CÓDIGO QR
+   Durante un tiempo cada beneficio mostraba un QR a pantalla completa, pensado
+   para que el comercio lo escaneara. Ningún comercio escaneaba nada: no hay
+   lector al otro lado ni sistema que valide un canje, así que el estudiante
+   enseñaba un cuadro negro que no significaba nada y el cajero lo miraba sin
+   saber qué hacer.
+
+   Lo que sí funciona es lo que ya existía como respaldo: un código corto que
+   se muestra o se dicta en voz alta, y que el local reconoce porque se lo pasó
+   el Centro de Alumnos al cerrar el convenio. Eso es ahora lo único que hay.
+   ========================================================================== */
 
 export function BenefitDetailPage() {
   const { id } = useParams();
   const { data: benefit, isLoading } = useBenefit(id);
-  const [qrOpen, setQrOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -76,7 +85,7 @@ export function BenefitDetailPage() {
           <div className="mt-2.5 flex flex-wrap gap-2">
             <Badge tone="neutral">{benefit.category}</Badge>
             {available ? (
-              <Badge tone="accent" icon={QrIcon}>
+              <Badge tone="accent" icon={Ticket}>
                 Canjeable
               </Badge>
             ) : (
@@ -103,6 +112,34 @@ export function BenefitDetailPage() {
         </section>
       ) : null}
 
+      {/* El codigo de canje, cuando el convenio tiene uno. Va antes de los
+          datos del local porque es lo que la persona viene a buscar cuando
+          abre esta pantalla estando en la caja.
+
+          `select-all` hace que un toque lo seleccione entero: es mas facil
+          copiarlo que leerlo en voz alta sin equivocarse. */}
+      {available && benefit.code ? (
+        <section className="mb-6">
+          <SectionHeader title="Código de canje" />
+          <Card>
+            <p className="select-all break-all text-center font-mono text-[22px] font-bold tracking-wide text-ink">
+              {benefit.code}
+            </p>
+            <p className="mt-3 text-center text-[12.5px] leading-relaxed text-ink-2">
+              Muéstralo o dítalo en caja al pedir el beneficio.
+            </p>
+          </Card>
+        </section>
+      ) : null}
+
+      {!available ? (
+        <Card className="mb-6 border-danger-500/30">
+          <p className="text-center text-[13px] font-semibold text-danger-500">
+            Este beneficio ya no está vigente.
+          </p>
+        </Card>
+      ) : null}
+
       <Card className="mb-6">
         <MetaRow icon={Store} label="Dónde se canjea" value={benefit.partner} />
         <MetaRow
@@ -116,32 +153,6 @@ export function BenefitDetailPage() {
         />
       </Card>
 
-      {/* Espacio reservado para la barra fija de abajo: `cn` no resuelve clases
-          en conflicto, así que se reserva con un separador en vez de cambiar
-          el relleno inferior de `Page`. */}
-      <div aria-hidden className="h-9 lg:hidden" />
-
-      {/* Acción principal. Fija al pie en móvil, sobre la barra de navegación. */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface px-4 pb-[calc(env(safe-area-inset-bottom)+4.75rem)] pt-3 lg:static lg:border-0 lg:bg-transparent lg:p-0">
-        <div className="mx-auto w-full max-w-3xl">
-          <Button
-            size="lg"
-            icon={QrIcon}
-            disabled={!available}
-            onClick={() => setQrOpen(true)}
-            className="w-full"
-          >
-            ¡Mostrar QR!
-          </Button>
-          {!available ? (
-            <p className="mt-2 text-center text-[12px] text-ink-3">
-              Este beneficio ya no está vigente.
-            </p>
-          ) : null}
-        </div>
-      </div>
-
-      <BenefitQrSheet open={qrOpen} onClose={() => setQrOpen(false)} benefit={benefit} />
     </Page>
   );
 }

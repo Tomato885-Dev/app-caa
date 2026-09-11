@@ -5,7 +5,7 @@ import { BenefitsListPage } from './BenefitsListPage';
 
 /* Colaboradores de la campaña. Los administradores cargan cada colaborador y
    el beneficio que entrega desde Administración → Contenidos → Colaboradores;
-   el estudiante abre uno, lee de qué se trata y muestra su código QR.
+   el estudiante abre uno, lee de qué se trata y muestra su código de canje.
 
    El identificador del módulo sigue siendo `benefits`: es interno, no se ve, y
    cambiarlo obligaría a migrar el contenido ya cargado sin ganar nada.

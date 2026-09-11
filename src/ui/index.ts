@@ -9,7 +9,6 @@ export { Card, CardLink } from './Card';
 export { Badge, StatusBadge } from './Badge';
 export { Avatar } from './Avatar';
 export { AppImage } from './AppImage';
-export { QrCode } from './QrCode';
 export { EmptyState } from './EmptyState';
 export { Skeleton, CardListSkeleton } from './Skeleton';
 export { SectionHeader } from './SectionHeader';

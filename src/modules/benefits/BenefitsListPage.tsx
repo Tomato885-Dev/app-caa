@@ -10,7 +10,7 @@ import { BenefitCard } from './components/BenefitCard';
    BENEFICIOS
    ----------------------------------------------------------------------------
    Convenios conseguidos por la campaña. Al abrir uno se explica de qué se
-   trata y, con un botón, se muestra el código QR a pantalla completa para
+   trata y se muestra el código de canje que el local reconoce, para
    canjearlo en el comercio.
 
    La plataforma no valida canjes ni procesa pagos: solo entrega el código.

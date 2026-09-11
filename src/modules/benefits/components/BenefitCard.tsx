@@ -1,4 +1,4 @@
-import { QrCode } from 'lucide-react';
+import { Ticket } from 'lucide-react';
 import type { Benefit } from '@/core/types';
 import { AppImage, Avatar, Badge, CardLink } from '@/ui';
 import { isRedeemable } from '../api';
@@ -39,7 +39,7 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
           <div className="mt-2.5 flex flex-wrap items-center gap-2">
             <Badge tone="neutral">{benefit.category}</Badge>
             {available ? (
-              <Badge tone="accent" icon={QrCode}>
+              <Badge tone="accent" icon={Ticket}>
                 Canjeable
               </Badge>
             ) : (

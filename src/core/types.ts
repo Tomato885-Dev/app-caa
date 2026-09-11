@@ -204,8 +204,8 @@ export interface Announcement extends BaseEntity {
 
 /* --- Beneficios canjeables por QR -------------------------------------------
    Convenios conseguidos por el Centro de Alumnos. Cada beneficio guarda el
-   contenido que se codifica en el código QR; la plataforma no procesa pagos
-   ni valida canjes: solo muestra el código al estudiante.                    */
+   la plataforma no procesa pagos ni valida canjes: solo le muestra al
+   estudiante el código que el local acordó con el Centro de Alumnos.                    */
 
 export interface Benefit extends BaseEntity {
   /** Nombre del beneficio tal como lo ve el estudiante. */
@@ -220,9 +220,8 @@ export interface Benefit extends BaseEntity {
   terms?: string;
   category: string;
   logoImageKey?: string;
-  /** Texto que se codifica en el QR: un código, una URL o un identificador. */
-  qrValue: string;
-  /** Código legible, por si el lector del comercio no funciona. */
+  /** Código que el estudiante muestra o dicta en caja. Opcional: hay
+   *  convenios que se canjean solo diciendo que uno es del colegio. */
   code?: string;
   /** Fecha de término del convenio, ISO 8601. */
   validUntil?: string;

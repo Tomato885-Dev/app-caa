@@ -2,14 +2,23 @@ import { useEffect, useState } from 'react';
 import { benefitCategories } from '@/content/taxonomies';
 import type { Benefit } from '@/core/types';
 import { useCreateBenefit, useUpdateBenefit } from '@/modules/benefits/api';
-import { Button, Field, QrCode, SelectField, Sheet, TextField, useToast } from '@/ui';
+import { Button, Field, SelectField, Sheet, TextField, useToast } from '@/ui';
 import { ImageKeyField } from './ImageKeyField';
 
 function toDateInput(iso: string | undefined): string {
   return iso ? new Date(iso).toISOString().slice(0, 10) : '';
 }
 
-/** Carga y edición de los convenios de la campaña, con su código QR. */
+/* ============================================================================
+   CARGA Y EDICION DE LOS CONVENIOS
+   ----------------------------------------------------------------------------
+   Aqui habia un campo obligatorio con el contenido de un codigo QR. Se quito:
+   ningun local escaneaba nada, y exigirlo obligaba a inventar un dato que no
+   servia para cerrar un convenio.
+
+   Queda el codigo de canje, que ahora es opcional. Hay convenios que se
+   canjean solo diciendo que uno es del colegio, y antes no se podian cargar.
+   ========================================================================== */
 export function BenefitFormSheet({
   open,
   onClose,
@@ -31,7 +40,6 @@ export function BenefitFormSheet({
     terms: '',
     category: benefitCategories[0] as string,
     logoImageKey: '',
-    qrValue: '',
     code: '',
     validUntil: '',
     active: true,
@@ -53,7 +61,6 @@ export function BenefitFormSheet({
             terms: editing.terms ?? '',
             category: editing.category,
             logoImageKey: editing.logoImageKey ?? '',
-            qrValue: editing.qrValue,
             code: editing.code ?? '',
             validUntil: toDateInput(editing.validUntil),
             active: editing.active,
@@ -76,8 +83,6 @@ export function BenefitFormSheet({
     if (form.summary.trim().length < 10) nextErrors.summary = 'Resume el beneficio en una línea.';
     if (form.description.trim().length < 30)
       nextErrors.description = 'Explica de qué se trata el beneficio.';
-    if (form.qrValue.trim().length === 0)
-      nextErrors.qrValue = 'Sin este dato no se puede generar el código QR.';
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
@@ -89,7 +94,6 @@ export function BenefitFormSheet({
       terms: form.terms.trim() || undefined,
       category: form.category,
       logoImageKey: form.logoImageKey || undefined,
-      qrValue: form.qrValue.trim(),
       code: form.code.trim() || undefined,
       validUntil: form.validUntil ? new Date(form.validUntil).toISOString() : undefined,
       active: form.active,
@@ -185,29 +189,11 @@ export function BenefitFormSheet({
         />
 
         <TextField
-          label="Contenido del código QR"
-          required
-          error={errors.qrValue}
-          value={form.qrValue}
-          onChange={(event) => set('qrValue', event.target.value)}
-          placeholder="CAA2027-COMBO-2X1"
-          hint="Lo que lee el comercio al escanear: un código, un identificador o una dirección web."
-        />
-
-        {/* Vista previa: permite comprobar el código antes de publicarlo. */}
-        {form.qrValue.trim() ? (
-          <Field label="Vista previa del código">
-            <div className="mx-auto w-40 rounded-2xl bg-white p-3 shadow-card">
-              <QrCode value={form.qrValue.trim()} label="Vista previa del código QR" />
-            </div>
-          </Field>
-        ) : null}
-
-        <TextField
-          label="Código escrito (opcional)"
+          label="Código de canje (opcional)"
           value={form.code}
           onChange={(event) => set('code', event.target.value)}
-          hint="Respaldo por si el lector del comercio no funciona."
+          placeholder="CAA2027-COMBO-2X1"
+          hint="Lo que el estudiante muestra o dicta en caja. Tiene que ser el mismo que se acordó con el local. Si el convenio no usa código, déjalo vacío."
         />
 
         <TextField
