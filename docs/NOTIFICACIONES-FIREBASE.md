@@ -146,12 +146,30 @@ Faltan tres cosas, y ninguna es de programar.
 > proyecto de Xcode a propósito: es preferible que el error salte al compilar,
 > y no que la app llegue a la App Store sin poder recibir un solo aviso.
 
-### 5.2 · La clave de notificaciones de Apple
+### 5.2 · Permitir notificaciones en el identificador de la app
+
+Apple no deja que una app reciba avisos si su identificador no lo tiene
+permitido, y esto se hace una sola vez.
+
+1. <https://developer.apple.com/account> → **Certificates, Identifiers &
+   Profiles** → **Identifiers**.
+2. Busca `cl.verbo.centroalumnos` en la lista.
+   - **Si esta**: entra y marca **Push Notifications** en la lista de
+     capacidades. Guarda.
+   - **Si no esta**: boton **+** → **App IDs** → **App** → descripcion
+     `App CAA`, **Explicit** Bundle ID `cl.verbo.centroalumnos`, marca
+     **Push Notifications**, y registrar.
+
+### 5.3 · La clave de notificaciones de Apple
 
 1. Entra a <https://developer.apple.com/account> → **Certificates, Identifiers
    & Profiles** → **Keys** → el botón **+**.
-2. Nombre: `App CAA`. Marca **Apple Push Notifications service (APNs)**.
-3. Continuar → Registrar → **Descargar**.
+2. Nombre: `App CAA notificaciones`. Marca **Apple Push Notifications service
+   (APNs)**.
+3. Si aparece un boton **Configure** al lado, entra y deja **Sandbox &
+   Production**. Si lo dejas solo en Sandbox, los avisos funcionan mientras
+   pruebas y dejan de llegar el dia que la app este en la App Store.
+4. Continuar → Registrar → **Descargar**.
 
 > Apple deja bajar ese archivo `.p8` **una sola vez**. Si lo pierdes hay que
 > anular la clave y crear otra. Guárdalo en un lugar seguro antes de seguir, y
@@ -160,7 +178,7 @@ Faltan tres cosas, y ninguna es de programar.
 4. Necesitas además tu **Team ID**: está arriba a la derecha en esa misma
    página de Apple, o en Membership.
 
-### 5.3 · Entregarle esa clave a Firebase
+### 5.4 · Entregarle esa clave a Firebase
 
 1. Firebase → Configuración del proyecto → pestaña **Cloud Messaging**.
 2. En la sección de la app de iOS, **Clave de autenticación de APNs** →
@@ -169,7 +187,7 @@ Faltan tres cosas, y ninguna es de programar.
 
 Con eso, Firebase ya puede hablar con Apple en nombre de la app.
 
-### 5.4 · Al compilar en el Mac
+### 5.5 · Al compilar en el Mac
 
 El proyecto de iPhone necesita bajar sus dependencias, y eso solo corre en un
 Mac. En la carpeta `ios/App`:
