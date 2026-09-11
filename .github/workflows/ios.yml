@@ -1,0 +1,202 @@
+# ============================================================================
+# COMPILAR LA APP DE IPHONE
+# ----------------------------------------------------------------------------
+# Una app de iPhone solo se puede compilar en macOS. Nadie del equipo tiene un
+# Mac, y arrendar uno cuesta dinero cada vez que haya que publicar una version
+# nueva.
+#
+# GitHub presta maquinas Mac gratis a los repositorios publicos, y este archivo
+# le dice a una de ellas que compile la aplicacion. Se lanza a mano desde la
+# pestana Actions: no corre solo al subir codigo, porque cada ejecucion gasta
+# varios minutos de una maquina prestada y no tiene sentido repetirla por un
+# cambio de texto.
+#
+# QUE NECESITA
+# Seis secretos en Settings -> Secrets and variables -> Actions. Cada uno esta
+# descrito donde se usa. Sin ellos el trabajo falla al preparar la firma y no
+# llega a tocar nada de Apple.
+#
+# DOS MODOS
+#   solo-compilar    (por defecto)  Compila y deja el archivo para descargar.
+#                                   No le manda nada a Apple. Sirve para
+#                                   comprobar que todo funciona.
+#   compilar-y-subir                Ademas lo entrega a App Store Connect, y
+#                                   ahi queda listo para enviarlo a revision.
+# ============================================================================
+
+name: Compilar para App Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: Que hacer con la app compilada
+        required: true
+        default: solo-compilar
+        type: choice
+        options:
+          - solo-compilar
+          - compilar-y-subir
+
+jobs:
+  compilar:
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    env:
+      EQUIPO: GB9YFP4L8M
+      PAQUETE: cl.verbo.centroalumnos
+      PERFIL: App CAA App Store
+
+    steps:
+      - name: Traer el codigo
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Sin BASE_PATH a proposito: dentro del paquete la app vive en la raiz.
+      # En GitHub Pages se compila con /app-caa/ delante, y esa carpeta aqui no
+      # existe; con ella, la app abriria en blanco.
+      - name: Compilar la aplicacion web
+        run: npm run build
+
+      - name: Meter la web dentro del proyecto de iPhone
+        run: npx cap sync ios
+
+      - name: Instalar las dependencias de iOS
+        working-directory: ios/App
+        run: pod install --repo-update
+
+      # --- Firma ------------------------------------------------------------
+      # El certificado y el perfil viajan como texto en los secretos, porque un
+      # secreto de GitHub no puede ser un archivo. Aqui vuelven a serlo.
+      #
+      # El llavero es temporal y muere con la maquina: cada ejecucion arranca de
+      # cero y no queda nada guardado en ninguna parte.
+      #
+      #   IOS_CERTIFICADO_P12    el .p12 de distribucion, en base64
+      #   IOS_CERTIFICADO_CLAVE  la contrasena de ese .p12
+      #   IOS_PERFIL             el .mobileprovision, en base64
+      - name: Preparar el certificado y el perfil
+        env:
+          CERTIFICADO: ${{ secrets.IOS_CERTIFICADO_P12 }}
+          CLAVE_CERTIFICADO: ${{ secrets.IOS_CERTIFICADO_CLAVE }}
+          PERFIL_B64: ${{ secrets.IOS_PERFIL }}
+        run: |
+          set -euo pipefail
+          CERT="$RUNNER_TEMP/certificado.p12"
+          PERF="$RUNNER_TEMP/perfil.mobileprovision"
+          LLAVERO="$RUNNER_TEMP/firma.keychain-db"
+          CLAVE_LLAVERO="$(uuidgen)"
+
+          echo "$CERTIFICADO" | base64 --decode > "$CERT"
+          echo "$PERFIL_B64" | base64 --decode > "$PERF"
+
+          security create-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          security set-keychain-settings -lut 21600 "$LLAVERO"
+          security unlock-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          security import "$CERT" -P "$CLAVE_CERTIFICADO" -A -t cert -f pkcs12 -k "$LLAVERO"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$CLAVE_LLAVERO" "$LLAVERO" > /dev/null
+          security list-keychain -d user -s "$LLAVERO" login.keychain-db
+
+          # Xcode busca los perfiles en dos carpetas distintas segun su version.
+          # Se copia a las dos para no depender de cual traiga la maquina.
+          UUID="$(security cms -D -i "$PERF" | plutil -extract UUID raw -)"
+          for destino in "$HOME/Library/MobileDevice/Provisioning Profiles" \
+                         "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
+            mkdir -p "$destino"
+            cp "$PERF" "$destino/$UUID.mobileprovision"
+          done
+
+          echo "Firma lista. Perfil instalado con UUID $UUID"
+
+      # --- Compilacion ------------------------------------------------------
+      # El numero de compilacion sale del contador de ejecuciones de GitHub.
+      # Apple exige que cada envio traiga uno distinto, y llevarlo a mano es la
+      # forma mas facil de que un envio salga rechazado por repetido.
+      - name: Archivar
+        run: |
+          set -euo pipefail
+          xcodebuild archive \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination "generic/platform=iOS" \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="$EQUIPO" \
+            PROVISIONING_PROFILE_SPECIFIER="$PERFIL" \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }}
+
+      - name: Preparar las opciones de exportacion
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.modo }}" = "compilar-y-subir" ]; then
+            DESTINO=upload
+          else
+            DESTINO=export
+          fi
+
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">'
+            echo '<plist version="1.0">'
+            echo '<dict>'
+            echo '  <key>method</key><string>app-store</string>'
+            echo "  <key>destination</key><string>$DESTINO</string>"
+            echo "  <key>teamID</key><string>$EQUIPO</string>"
+            echo '  <key>signingStyle</key><string>manual</string>'
+            echo '  <key>uploadSymbols</key><true/>'
+            echo '  <key>provisioningProfiles</key>'
+            echo '  <dict>'
+            echo "    <key>$PAQUETE</key><string>$PERFIL</string>"
+            echo '  </dict>'
+            echo '</dict>'
+            echo '</plist>'
+          } > "$RUNNER_TEMP/opciones.plist"
+
+          plutil -lint "$RUNNER_TEMP/opciones.plist"
+          echo "Modo: ${{ inputs.modo }}  (destination=$DESTINO)"
+
+      # La llave de App Store Connect solo hace falta para subir, pero se pasa
+      # siempre: xcodebuild la ignora cuando el destino es export.
+      #
+      #   APPSTORE_API_LLAVE   el contenido del AuthKey_XXXXXXXXXX.p8
+      #   APPSTORE_KEY_ID      el identificador de esa llave
+      #   APPSTORE_ISSUER_ID   el identificador del emisor, con guiones
+      - name: Exportar la app
+        env:
+          LLAVE: ${{ secrets.APPSTORE_API_LLAVE }}
+          KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$LLAVE" > "$RUNNER_TEMP/AuthKey.p8"
+          trap 'rm -f "$RUNNER_TEMP/AuthKey.p8"' EXIT
+
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/opciones.plist" \
+            -exportPath "$RUNNER_TEMP/salida" \
+            -authenticationKeyPath "$RUNNER_TEMP/AuthKey.p8" \
+            -authenticationKeyID "$KEY_ID" \
+            -authenticationKeyIssuerID "$ISSUER_ID"
+
+          ls -la "$RUNNER_TEMP/salida"
+
+      - name: Guardar el archivo compilado
+        if: inputs.modo == 'solo-compilar'
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-caa-iphone
+          path: ${{ runner.temp }}/salida/*.ipa
+          if-no-files-found: error
+          retention-days: 14
