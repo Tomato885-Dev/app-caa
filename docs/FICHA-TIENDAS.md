@@ -122,18 +122,72 @@ cada tienda.
 
 ---
 
-## Antes de enviar: una pregunta que hay que responder bien
+## A qué edades va dirigida
 
-Las dos tiendas preguntan a qué edades va dirigida la aplicación, y **esa
-respuesta cambia las reglas que se aplican**.
+**Trece años o más.** La nómina es solo de enseñanza media; no hay menores de
+esa edad.
 
-Si entre los 694 de la nómina hay estudiantes **menores de 13 años**, Google
-aplica su Política de Familias y Apple su categoría de apps para niños, que
-traen exigencias adicionales.
+Eso importa porque, de haberlos, Google aplicaría su Política de Familias y
+Apple su categoría de apps para niños, las dos con exigencias adicionales. No
+es el caso, así que no hay nada extra que hacer.
 
-Si la nómina es solo de enseñanza media, la respuesta es 13 o más y no hay
-nada extra que hacer.
+---
 
-Hay que responderlo según la nómina real, no según lo que sea más cómodo:
-declarar de menos aquí es de las cosas por las que una app se retira después
-de publicada.
+## Lo que pide solo App Store
+
+Apple usa campos que Google no tiene. La descripcion larga de arriba sirve
+igual; estos son los que hay que escribir aparte.
+
+**Subtitulo** (maximo 30 caracteres, sale bajo el nombre):
+
+```
+Colegio Del Verbo Divino
+```
+
+**Texto promocional** (maximo 170, se puede cambiar sin publicar una version
+nueva):
+
+```
+Los comunicados, los eventos y los beneficios del Centro de Alumnos, en tu telefono. El acceso es solo para la comunidad del colegio, con correo @verbo.cl.
+```
+
+**Palabras clave** (maximo 100 caracteres, separadas por coma y sin espacios):
+
+```
+centro de alumnos,colegio,comunicados,eventos,estudiantes,escolar,caa,verbo divino
+```
+
+**Categoria**: Educacion. Sin categoria secundaria.
+
+**Clasificacion por edad**: se responde un cuestionario y Apple calcula el
+numero. Todas las respuestas son "Ninguno": no hay violencia, ni lenguaje
+adulto, ni juegos de azar, ni acceso web sin restricciones. Sale 4+, y esta
+bien: la nomina es de ensenanza media, pero el contenido no tiene nada que
+requiera una edad minima mayor.
+
+**Categoria Kids**: NO. Es para ensenanza media, no para menores de 13.
+
+**Derechos de contenido**: la app no contiene contenido de terceros.
+
+---
+
+## Informacion para el revisor de Apple
+
+Apple no puede probar la app sin entrar, y no esta en la nomina. En el
+formulario hay que marcar que **se requiere iniciar sesion** y entregar la
+cuenta de revision.
+
+En las notas conviene explicar por que la app es cerrada:
+
+```
+Esta es la aplicacion del Centro de Alumnos de un colegio. El acceso esta
+restringido a los estudiantes de la nomina oficial del establecimiento, que
+entran con su correo institucional. No es una aplicacion de uso publico y no
+admite registro abierto.
+
+Se adjunta una cuenta creada para la revision. Esa cuenta no aparece en la
+base de contactos de la comunidad.
+
+Los estudiantes no pueden publicar contenido: solo la directiva del Centro de
+Alumnos y los equipos designados por el colegio.
+```
