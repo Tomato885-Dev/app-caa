@@ -40,6 +40,13 @@ const SESION = 'scripts/.sesion.json';
  *  que Apple pide para 6,9 pulgadas, y de la que deriva el resto. */
 const IPHONE = { viewport: { width: 440, height: 956 }, deviceScaleFactor: 3 };
 
+/** iPhone 11 Pro Max: 414x896 puntos por 3 = 1242x2688 pixeles. Es la medida
+ *  de 6,5 pulgadas, y es la que App Store Connect pide en la ranura que sale
+ *  por defecto. Sacar solo la de 6,9 obliga a convertirlas despues, y
+ *  redimensionar a mano deja imagenes de 2687 pixeles que Apple rechaza por
+ *  un pixel. */
+const IPHONE_65 = { viewport: { width: 414, height: 896 }, deviceScaleFactor: 3 };
+
 /** Google acepta un rango amplio; 1080x2400 es una proporción de teléfono
  *  Android corriente y entra holgado en lo que exige. */
 const ANDROID = { viewport: { width: 360, height: 800 }, deviceScaleFactor: 3 };
@@ -146,8 +153,11 @@ if (!modoDemo && !existsSync(SESION)) {
 await rm(CARPETA, { recursive: true, force: true });
 
 console.log(`\n${modoDemo ? 'Contenido de DEMOSTRACIÓN' : 'Contenido REAL'}\n`);
-console.log('App Store · 1320x2868');
+console.log('App Store · 1320x2868  (6,9 pulgadas)');
 await capturar('app-store', IPHONE, '');
+console.log('');
+console.log('App Store · 1242x2688  (6,5 pulgadas)');
+await capturar('app-store-6.5', IPHONE_65, '');
 console.log('\nGoogle Play · 1080x2400');
 await capturar('google-play', ANDROID, '');
 console.log(`\nListo. Están en ${path.resolve(CARPETA)}\n`);
