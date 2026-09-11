@@ -78,6 +78,22 @@ jobs:
       # En GitHub Pages se compila con /app-caa/ delante, y esa carpeta aqui no
       # existe; con ella, la app abriria en blanco.
       - name: Compilar la aplicacion web
+        env:
+          # SIN ESTO LA APP NO SE CONECTA A NADA. Vite reemplaza estas
+          # variables al compilar, y si llegan vacias `usingServer` queda en
+          # falso: la aplicacion arranca en modo demostracion, con la nomina
+          # inventada y los datos guardados en el propio telefono.
+          #
+          # Eso fue exactamente lo que se subio a Apple la primera vez. La app
+          # abria bien y parecia correcta, pero ninguna cuenta real entraba,
+          # porque la nomina de verdad vive en el servidor y la compilacion no
+          # sabia donde estaba.
+          #
+          # La clave `anon` es publica a proposito: viaja dentro de la app de
+          # todos modos. Lo que protege los datos son las reglas de acceso de
+          # la base de datos.
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build
 
       - name: Meter la web dentro del proyecto de iPhone
