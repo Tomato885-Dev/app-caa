@@ -246,7 +246,13 @@ jobs:
             -authenticationKeyID "$KEY_ID" \
             -authenticationKeyIssuerID "$ISSUER_ID"
 
-          ls -la "$RUNNER_TEMP/salida"
+          # Cuando la app se entrega directamente a Apple no queda carpeta
+          # local, y listarla hacia fallar el paso despues de haber subido bien.
+          if [ -d "$RUNNER_TEMP/salida" ]; then
+            ls -la "$RUNNER_TEMP/salida"
+          else
+            echo "Sin archivo local: la app se entrego directamente a App Store Connect."
+          fi
 
       - name: Guardar el archivo compilado
         if: inputs.modo == 'solo-compilar'
