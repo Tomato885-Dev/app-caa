@@ -105,6 +105,37 @@ jobs:
           printf '%s' "$PERFIL_B64"  | tr -dc "$LIMPIO" | openssl base64 -d -A -out "$PERF"
           echo "Certificado: $(wc -c < "$CERT") bytes.  Perfil: $(wc -c < "$PERF") bytes."
 
+          # Comprobaciones antes de tocar nada. Sin esto, un secreto mal pegado
+          # o una contrasena equivocada fallan mas abajo con un mensaje de
+          # macOS que no dice cual de las dos cosas fue.
+          if [ ! -s "$CERT" ]; then
+            echo "ERROR: el secreto IOS_CERTIFICADO_P12 llego vacio o no es base64."
+            exit 1
+          fi
+          if [ ! -s "$PERF" ]; then
+            echo "ERROR: el secreto IOS_PERFIL llego vacio o no es base64."
+            exit 1
+          fi
+          if [ -z "${CLAVE_CERTIFICADO:-}" ]; then
+            echo "ERROR: el secreto IOS_CERTIFICADO_CLAVE esta vacio."
+            exit 1
+          fi
+
+          # `-legacy` no se pasa aqui a proposito: el openssl de macOS es
+          # LibreSSL y esa opcion no existe; lee el formato antiguo de por si.
+          REVISION="$(openssl pkcs12 -in "$CERT" -info -noout -passin pass:"$CLAVE_CERTIFICADO" 2>&1 || true)"
+          if echo "$REVISION" | grep -qi "mac verify error"; then
+            echo "ERROR: la contrasena de IOS_CERTIFICADO_CLAVE no abre el certificado."
+            echo "Se rehace el .p12 o se corrige el secreto."
+            exit 1
+          fi
+          if ! echo "$REVISION" | grep -qi "MAC:"; then
+            echo "ERROR: IOS_CERTIFICADO_P12 no parece un certificado valido."
+            echo "$REVISION"
+            exit 1
+          fi
+          echo "El certificado se abre con la contrasena entregada."
+
           security create-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
           security set-keychain-settings -lut 21600 "$LLAVERO"
           security unlock-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
