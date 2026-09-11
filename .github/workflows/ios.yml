@@ -40,7 +40,7 @@ on:
 
 jobs:
   compilar:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 45
 
     env:
@@ -51,6 +51,19 @@ jobs:
     steps:
       - name: Traer el codigo
         uses: actions/checkout@v5
+
+      # Apple exige compilar con un SDK reciente y rechaza el envio si no lo
+      # es: "This app was built with the iOS 18.5 SDK". Las maquinas traen
+      # varios Xcode instalados y el que viene elegido no siempre es el mas
+      # nuevo, asi que se elige a mano el ultimo que haya.
+      - name: Usar el Xcode mas nuevo
+        run: |
+          set -euo pipefail
+          ULTIMO="$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$ULTIMO"
+          echo "Elegido: $ULTIMO"
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i iphoneos
 
       - name: Preparar Node
         uses: actions/setup-node@v5
