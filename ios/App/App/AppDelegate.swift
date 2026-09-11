@@ -68,4 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         object: error)
     }
 
+    // Y aqui llega el aviso en si. iOS espera que se le confirme que ya se
+    // atendio; si nadie responde, el sistema lo anota como una app que se
+    // queda colgada y termina recortandole los avisos.
+    func application(_ application: UIApplication,
+                     didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        NotificationCenter.default.post(name: Notification.Name.init("didReceiveRemoteNotification"),
+                                        object: completionHandler,
+                                        userInfo: userInfo)
+    }
+
 }
