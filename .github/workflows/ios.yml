@@ -92,6 +92,10 @@ jobs:
           # La clave `anon` es publica a proposito: viaja dentro de la app de
           # todos modos. Lo que protege los datos son las reglas de acceso de
           # la base de datos.
+          # Por si algun dia la nomina real llegara a este repositorio: con
+          # esta variable, el complemento de vite.config.ts la vacia al
+          # compilar y no entra al paquete.
+          VITE_DEMO_ROSTER: "true"
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build
