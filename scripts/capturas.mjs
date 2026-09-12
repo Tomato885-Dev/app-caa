@@ -51,6 +51,33 @@ const IPHONE_65 = { viewport: { width: 414, height: 896 }, deviceScaleFactor: 3 
  *  Android corriente y entra holgado en lo que exige. */
 const ANDROID = { viewport: { width: 360, height: 800 }, deviceScaleFactor: 3 };
 
+/* ----------------------------------------------------------------------------
+   QUÉ NAVEGADOR USAR
+   El Chromium que trae Playwright dejó de arrancar en este equipo: Windows
+   responde "la configuración en paralelo no es correcta", que es su manera de
+   decir que al binario le falta una librería del sistema. Volver a descargarlo
+   no lo arregla, porque el problema no está en la descarga.
+
+   Edge sirve igual de bien: es el mismo motor, viene con Windows y trae sus
+   propias librerías. Se prueba primero el de Playwright —así en otro equipo
+   esto sigue funcionando sin tocar nada— y solo si no arranca se usa Edge.
+   -------------------------------------------------------------------------- */
+let canal;
+
+async function abrirNavegador(opciones = {}) {
+  if (canal === undefined) {
+    try {
+      const prueba = await chromium.launch();
+      await prueba.close();
+      canal = null;
+    } catch {
+      canal = 'msedge';
+      console.log('El Chromium de Playwright no arranca en este equipo. Se usa Edge.');
+    }
+  }
+  return chromium.launch({ ...opciones, ...(canal ? { channel: canal } : {}) });
+}
+
 const PANTALLAS = [
   { archivo: '1-inicio', ruta: '/', espera: 'Comunicados' },
   { archivo: '2-comunicados', ruta: '/comunicados', espera: 'Comunicados' },
@@ -69,7 +96,7 @@ async function entrarAMano() {
   console.log('Inicia sesión ahí con tu cuenta. Cuando estés dentro, vuelve');
   console.log('a esta terminal y presiona Enter.\n');
 
-  const navegador = await chromium.launch({ headless: false });
+  const navegador = await abrirNavegador({ headless: false });
   const contexto = await navegador.newContext({ viewport: { width: 480, height: 900 } });
   const pagina = await contexto.newPage();
   await pagina.goto(SERVIDOR);
@@ -85,7 +112,7 @@ async function entrarAMano() {
 }
 
 async function capturar(nombreTienda, medidas, sufijo) {
-  const navegador = await chromium.launch();
+  const navegador = await abrirNavegador();
   const contexto = await navegador.newContext({
     ...medidas,
     isMobile: true,
