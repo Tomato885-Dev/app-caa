@@ -1,0 +1,66 @@
+APP CAA - NOTES FOR APP REVIEW
+
+WHAT THE APP IS
+App CAA is the official app of the Student Council (Centro de Alumnos) of
+Colegio Del Verbo Divino, a secondary school in Santiago, Chile. Its audience
+is the school's own community: around 700 students aged 13 to 18, plus the
+teachers and staff. It replaces paper posters in the hallways and informal
+WhatsApp groups with one official channel for announcements, news, events,
+the school calendar, inter-grade competition results, Student Council
+projects, the discounts negotiated with local businesses, and a contact
+directory. The app is free: no advertising, no purchases, no subscriptions,
+no tracking.
+
+ACCESS IS CLOSED
+An account can only be created by someone whose institutional e-mail address
+(@verbo.cl) is on the school's official roster. There is no open sign-up. The
+demo account provided in the sign-in fields above is a regular student
+account, hidden from the contact directory. A code sent by e-mail is required
+only when CREATING an account, never when signing in, so the demo account
+needs no mailbox access.
+
+WHERE THINGS ARE
+Inicio (home), Comunicados (announcements), Noticias (news), Eventos (events
+and sign-ups), Calendario, 365 (inter-grade competition results), Proyectos,
+Colaboradores (partner discounts, each with its redemption code), Contactos
+(directory), Mi perfil.
+- Push notifications: Mi perfil, section "Avisos". Sent only when the Student
+  Council publishes something; never marketing.
+- Account deletion: Mi perfil, "Eliminar mi cuenta", done inside the app.
+
+NO USER-GENERATED CONTENT
+Students cannot publish anything. Only the Student Council's elected board and
+the teams appointed by the school can publish, and only into the app's own
+sections. There are no comments, no private messaging, no photo uploads and no
+public profiles. The only text a student can write anywhere in the app is
+their own optional phone number; their name and class come from the official
+roster and cannot be edited, and anyone can hide themselves from the directory
+entirely. There is therefore no user-to-user content to report or block.
+
+NO PAID CONTENT
+Every feature is free for every account. No in-app purchase, no subscription,
+no paywall.
+
+EXTERNAL SERVICES, AND ONLY TWO
+1. Supabase - database, authentication, file storage, serverless functions,
+   and the confirmation e-mails sent at registration. Hosted on AWS.
+2. Firebase Cloud Messaging with APNs - push notification delivery only.
+No analytics, no crash reporting, no advertising network or identifier, no
+payment processor, no AI service, no third-party data provider. No personal
+data is sold, shared or transferred to anyone.
+
+REGIONS
+No regional differences: the same features and the same content everywhere,
+no geolocation, no region gating. Spanish only.
+
+REGULATION AND THIRD-PARTY MATERIAL
+Not a regulated industry: no financial, medical, health, gambling or dating
+services. All text, photographs and logos belong to the school and its Student
+Council. Partner logos are shown with each business's agreement.
+
+GUIDELINE 3.2
+This is not a business or employee app. Its users are students who install it
+on their own personal iPhones, which the school neither owns nor manages.
+There is no MDM and no managed Apple Accounts, so custom distribution through
+Apple Business Manager would leave the intended users unable to install it. It
+is a school community app, free and with no commercial purpose.

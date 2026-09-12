@@ -1,0 +1,206 @@
+Thank you for the review. Below is all the information requested, in the same
+order as your message. A screen recording is attached, and this same
+information has also been added to the Notes field of the App Review
+Information section for future submissions.
+
+
+--------------------------------------------------------------------------
+1. SCREEN RECORDING
+--------------------------------------------------------------------------
+
+The attached recording was captured on a physical iPhone running the latest
+version of iOS. It begins with launching the app and covers the typical user
+flow, push notifications, account deletion and account registration.
+
+The recording uses two accounts. The tour of the app is done with the demo
+account provided for App Review, so that you see exactly what you will see
+when you sign in. Account deletion and registration are then demonstrated with
+a second, personal account, because registration requires a confirmation code
+sent by e-mail and the demo account has no mailbox of its own. The demo
+account is left untouched and working.
+
+The app has no user-generated content and no paid content. Both points are
+explained under section 3 below.
+
+
+--------------------------------------------------------------------------
+2. PURPOSE AND TARGET AUDIENCE
+--------------------------------------------------------------------------
+
+App CAA is the official app of the Student Council (Centro de Alumnos) of
+Colegio Del Verbo Divino, a secondary school in Santiago, Chile.
+
+WHO IT IS FOR
+The school's own community: around 700 high-school students aged 13 to 18,
+plus the teachers and staff of the school. It is not aimed at the general
+public.
+
+THE PROBLEM IT SOLVES
+Until now, everything the Student Council announced travelled through paper
+posters in the hallways, informal WhatsApp groups and word of mouth. News
+arrived late, arrived incomplete, or never arrived at all, and there was no
+reliable way to tell an official announcement from a rumour. Students missed
+sign-up deadlines for events they wanted to attend.
+
+THE VALUE IT PROVIDES
+One single official channel. The app gathers the Student Council's
+announcements, news, events and sign-ups, the school-year calendar, the
+results of the inter-grade competitions, the progress of the Council's
+projects, the discounts the Council has negotiated with local businesses, and
+a contact directory of the school community.
+
+The app is free. There is no advertising, no in-app purchase, no subscription,
+no tracking and no data sold or shared with anyone.
+
+
+--------------------------------------------------------------------------
+3. SETUP AND ACCESS INSTRUCTIONS
+--------------------------------------------------------------------------
+
+HOW ACCESS WORKS
+The app is not open to the public. An account can only be created by a person
+whose institutional e-mail address (@verbo.cl) is on the school's official
+roster. There is no open sign-up: any other address is rejected at
+registration.
+
+DEMO ACCOUNT FOR APP REVIEW
+The account below is a regular student account, the same credentials entered
+in the App Review Information section. It is hidden from the app's contact
+directory so it does not appear among the real students.
+
+  E-mail:   CORREO
+  Password: CONTRASENA
+
+HOW TO SIGN IN
+1. Launch the app.
+2. On the sign-in screen, enter the e-mail and password above.
+3. Tap "Entrar".
+
+A confirmation code by e-mail is required only when CREATING an account, never
+when signing in, so the demo account needs no mailbox access.
+
+MAIN FEATURES, AND WHERE THEY ARE
+Everything is reachable from the navigation inside the app.
+
+- Inicio (Home): a summary of what is happening right now.
+- Comunicados (Announcements): the Student Council's official notices.
+- Noticias (News): what has already happened, with photographs.
+- Eventos (Events): what is coming, with date, place and sign-up.
+- Calendario (Calendar): the whole school year, month by month.
+- 365: the results of the competitions between grades.
+- Proyectos (Projects): what the Student Council is working on and how each
+  item is progressing.
+- Colaboradores (Partners): the discounts agreed with local businesses. Open
+  any of them to see its redemption code.
+- Contactos (Directory): shows the name, school e-mail address and, if the
+  person chose to add one, the phone number of the members of the school
+  community, so that a student can write to someone without having to ask
+  around for their address. It is visible only to signed-in members of the
+  same school, and any person can hide themselves from it completely from
+  their own profile.
+- Mi perfil (My profile): edit your own details, turn push notifications on
+  and off, change your password, and delete your account.
+
+PUSH NOTIFICATIONS
+Mi perfil, section "Avisos". The app asks for the system permission there.
+Notifications are only sent when the Student Council publishes something;
+there are no marketing or promotional notifications.
+
+DELETING THE ACCOUNT
+Mi perfil, "Eliminar mi cuenta". It is done from inside the app, with no need
+to write to anybody. The account and its personal data are erased.
+
+THE APP HAS NO USER-GENERATED CONTENT
+Students cannot publish anything. Only the Student Council's elected board and
+the teams appointed by the school can publish, and only into the app's own
+sections. There are no comments, no private messaging, no photo uploads and no
+public profiles.
+
+The only text a student can write anywhere in the app is their own phone
+number, which is optional; their name and class come from the school's
+official roster and cannot be edited. There is therefore no user-to-user
+content that could be reported or blocked, and no mechanism for it is needed.
+
+THERE IS NO PAID CONTENT
+Every feature of the app is free and available to every account. There is no
+in-app purchase, no subscription and no paywalled section.
+
+
+--------------------------------------------------------------------------
+4. EXTERNAL SERVICES, TOOLS AND PLATFORMS
+--------------------------------------------------------------------------
+
+The app relies on two external services, and only two.
+
+1. SUPABASE (https://supabase.com)
+   Database, authentication, file storage and serverless functions. This is
+   where the app's content and the user accounts live. Supabase is hosted on
+   Amazon Web Services. Passwords are stored hashed by Supabase Auth; the
+   confirmation e-mails sent at registration go out through Supabase's mail
+   service.
+
+2. FIREBASE CLOUD MESSAGING (Google) together with APPLE PUSH NOTIFICATION
+   SERVICE
+   Used only to deliver push notifications. Firebase receives the device token
+   and the text of the notice, nothing else.
+
+The app does NOT use:
+   - any analytics or crash-reporting service
+   - any advertising network or advertising identifier
+   - any payment processor (there is nothing to pay for)
+   - any artificial intelligence service
+   - any data provider or third-party content feed
+
+No personal data is sold, shared or transferred to any third party for any
+purpose.
+
+
+--------------------------------------------------------------------------
+5. REGIONAL DIFFERENCES
+--------------------------------------------------------------------------
+
+There are none. The app behaves exactly the same everywhere: the same
+features, the same content, the same screens. There is no region-based
+gating, no geolocation, and no content that changes by country.
+
+The app is written in Spanish only, and in practice it is useful only to the
+members of one school in Santiago, Chile, but this is a consequence of who is
+on the roster, not of any regional restriction in the software.
+
+
+--------------------------------------------------------------------------
+6. REGULATED INDUSTRY AND PROTECTED THIRD-PARTY MATERIAL
+--------------------------------------------------------------------------
+
+The app does not operate in a regulated industry. It offers no financial,
+medical, health, gambling, dating or age-restricted services of any kind.
+
+It contains no protected third-party material. Every text, photograph, logo
+and name shown in the app belongs to Colegio Del Verbo Divino and to its
+Student Council, which is the body that commissioned and operates this app.
+The logos of the partner businesses shown in the "Colaboradores" section are
+displayed with the agreement of each business, as part of the discount
+arrangement made with the Student Council.
+
+
+--------------------------------------------------------------------------
+ADDITIONAL NOTE ON GUIDELINE 3.2
+--------------------------------------------------------------------------
+
+Since the app's audience is a defined community, we would like to address this
+point in advance.
+
+App CAA is not a business or employee app. Its users are secondary-school
+students who install it on their own personal iPhones, which the school
+neither owns nor manages. There is no MDM, no managed Apple Accounts and no
+device enrolment, so Apple Business Manager custom distribution would leave
+the intended users unable to install the app at all.
+
+The app is free, has no commercial purpose and does not serve a company's
+internal operations. It is the equivalent of a school or university community
+app, published on the App Store so that each student can install it on their
+own device in the ordinary way.
+
+
+Thank you for your time. We are happy to provide anything further that would
+help complete the review.
