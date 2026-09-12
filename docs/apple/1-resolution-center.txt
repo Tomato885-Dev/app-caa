@@ -19,6 +19,12 @@ a second, personal account, because registration requires a confirmation code
 sent by e-mail and the demo account has no mailbox of its own. The demo
 account is left untouched and working.
 
+That second account belongs to a member of the Student Council's board, so
+after signing in again at the end of the recording it shows the publishing
+tools that an ordinary student account does not have. The demo account you
+will use is a regular student account: it sees the app exactly as the 700
+students see it, which is what the first part of the recording shows.
+
 The app has no user-generated content and no paid content. Both points are
 explained under section 3 below.
 
