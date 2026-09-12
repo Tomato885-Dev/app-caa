@@ -4,52 +4,93 @@ Apple no rechazó la aplicación por un error: pidió información. Es la revisi
 que le hacen a toda cuenta de desarrollador nueva, antes de dejarla publicar por
 primera vez. No hay que tocar ni una línea de código.
 
-Este archivo tiene los textos ya escritos, en inglés, listos para copiar. Van a
-dos lugares, **los mismos textos en los dos**:
+Los textos están escritos en inglés, listos para copiar, y van a **dos lugares
+distintos con dos versiones distintas**:
 
-1. **Resolution Center** — la respuesta al mensaje de Apple.
-2. **App Store Connect → App Review Information → Notes** — para que queden
-   guardados y no haya que volver a explicarlo en cada versión futura.
+| Dónde | Qué se pega | Por qué |
+|---|---|---|
+| **Resolution Center** | La versión larga (secciones 2 a 7) | Es la respuesta al mensaje. No tiene límite corto. |
+| **App Store Connect → App Review Information → Notes** | La versión corta (sección 8) | **El campo Notes acepta 4.000 caracteres y la versión larga tiene 6.566.** No cabe. |
+
+Apple pidió las dos cosas: responder *y* dejarlo guardado en las notas, para no
+tener que volver a explicarlo en cada versión futura.
 
 Lo único que no está aquí es el video: ese tiene que grabarlo una persona con
 el teléfono en la mano.
 
 ---
 
-## 1 · El video
+## 0 · Antes de grabar nada
 
-Apple lo pide grabado **en un iPhone de verdad** (no en el simulador), con el
-sistema al día, y tiene que **empezar cuando se abre la aplicación**.
+Cuatro comprobaciones de un minuto cada una. Si alguna falla, el video hay que
+rehacerlo.
 
-Se graba con la propia función del iPhone: Ajustes → Centro de control →
-agregar "Grabación de pantalla". Después se desliza desde arriba a la derecha y
-se toca el círculo.
+**1. Que la cuenta de revisión entre.** Ábrela en TestFlight en tu iPhone y
+entra con ella. Si la contraseña no funciona, Apple tampoco va a poder entrar y
+te rechazan sin mirar nada más.
 
-**Antes de grabar**, en Supabase → SQL Editor, comprobar que tu correo vuelve a
-entrar con tu mismo rol después de borrarte:
+**2. Que el iPhone esté al día.** Ajustes → General → Actualización de
+software. Apple pide el video "running the latest operating system".
+
+**3. Que las credenciales estén en el formulario, no solo en las notas.** En
+App Store Connect → App Review Information, la casilla **"Sign-in required"**
+tiene que estar marcada y con el correo y la contraseña de la cuenta de
+revisión escritos ahí. Es un campo aparte del de Notes.
+
+**4. Que tu cuenta personal vuelva a entrar después de borrarte.** En Supabase
+→ SQL Editor, con tu correo:
 
 ```sql
 select correo, rol_inicial, habilitado from public.nomina where correo = 'TU-CORREO@verbo.cl';
 ```
 
-Tiene que decir `habilitado = true`. El `rol_inicial` es el rol con el que vas a
-volver a entrar.
+Tiene que devolver una fila con `habilitado = true`. El `rol_inicial` es el rol
+con el que vas a volver a entrar cuando te registres de nuevo en el video.
 
-### Qué mostrar, en este orden
+---
 
-| # | Qué se hace | Por qué lo pide Apple |
-|---|---|---|
-| 1 | Abrir la app desde la pantalla de inicio del iPhone, cerrada del todo | "The recording must begin with launching the app" |
-| 2 | Pantalla de acceso. Escribir correo y contraseña. Entrar | Flujo de inicio de sesión |
-| 3 | Inicio, Comunicados (abrir uno), Noticias, Eventos, Calendario, 365, Proyectos, Colaboradores (abrir uno y que se vea el código de canje), Contactos | "show the typical user flow" |
-| 4 | Mi perfil → activar las notificaciones → que se vea el permiso del sistema | Función principal |
-| 5 | Mi perfil → Eliminar mi cuenta → confirmar → la app vuelve al acceso | "Account deletion is required" |
-| 6 | Crear cuenta → correo @verbo.cl → llega el código → escribirlo → entrar | Flujo de registro |
+## 1 · El video
 
-Con eso queda todo en una sola toma y terminas con tu cuenta igual que antes.
+Apple lo pide grabado **en un iPhone de verdad** (no en el simulador) y tiene
+que **empezar cuando se abre la aplicación**.
 
-**Que no falte el paso 5.** Es el que Apple revisa con lupa: si una app deja
-crear cuenta, tiene que dejar borrarla desde adentro, y quieren verlo.
+Se graba con la propia función del iPhone: Ajustes → Centro de control →
+agregar "Grabación de pantalla". Después se desliza desde arriba a la derecha y
+se toca el círculo.
+
+### Se usan dos cuentas, y el orden importa
+
+> ⚠️ **Nunca borres la cuenta de revisión.** Su correo no tiene buzón de verdad:
+> se creó a mano en el panel de Supabase. Si la borras no puede volver a
+> registrarse, porque el registro pide un código que llega por correo y ese
+> correo no lo recibe nadie. Apple se quedaría sin poder entrar.
+
+Por eso el borrado y el registro se muestran con **tu** cuenta personal, que sí
+recibe correos.
+
+**Parte 1 — con la cuenta de revisión** (la misma que le entregas a Apple)
+
+| # | Qué se hace |
+|---|---|
+| 1 | Abrir la app desde la pantalla de inicio del iPhone, cerrada del todo |
+| 2 | Pantalla de acceso: escribir el correo y la contraseña de revisión, entrar |
+| 3 | Recorrer Inicio, Comunicados (abrir uno), Noticias, Eventos, Calendario, 365, Proyectos, Colaboradores (abrir uno y que se vea el código de canje), Contactos |
+| 4 | Mi perfil → activar las notificaciones → que se vea el permiso del sistema |
+| 5 | Mi perfil → que se vea el botón "Eliminar mi cuenta" **sin tocarlo** |
+| 6 | Cerrar sesión |
+
+**Parte 2 — con tu cuenta personal @verbo.cl**, sin cortar la grabación
+
+| # | Qué se hace |
+|---|---|
+| 7 | Entrar con tu correo y tu contraseña |
+| 8 | Mi perfil → Eliminar mi cuenta → confirmar → la app vuelve al acceso |
+| 9 | Crear cuenta → tu mismo correo @verbo.cl → llega el código → escribirlo → entrar |
+
+El paso 3 es el que Apple llama *"the typical user flow"*, y por eso va con la
+cuenta de estudiante: el revisor tiene que ver lo mismo que verá cuando entre
+él. Los pasos 8 y 9 son los que más miran: si una app deja crear cuenta, tiene
+que dejar borrarla desde adentro, y quieren verlo pasar.
 
 Si el video pesa mucho para adjuntarlo, se sube a Google Drive o a YouTube como
 "no listado" y se pega el enlace en la respuesta.
@@ -57,6 +98,23 @@ Si el video pesa mucho para adjuntarlo, se sube a Google Drive o a YouTube como
 ---
 
 ## 2 · Propósito y a quién va dirigida
+
+Este párrafo va primero en la respuesta, explicando el video:
+
+```
+Attached is a screen recording captured on a physical iPhone running the
+latest version of iOS. It begins with launching the app and covers the typical
+user flow, push notifications, account deletion and account registration.
+
+The recording uses two accounts. The tour of the app is done with the demo
+account provided for App Review, so that you see exactly what you will see
+when you sign in. Account deletion and registration are then demonstrated with
+a second, personal account, because registration requires a confirmation code
+sent by e-mail and the demo account has no mailbox of its own. The demo
+account is left untouched and working.
+```
+
+Y después:
 
 ```
 App CAA is the official app of the Student Council (Centro de Alumnos) of
@@ -89,8 +147,8 @@ no tracking and no data sold or shared with anyone.
 
 ## 3 · Cómo entrar y qué probar
 
-Donde dice `CORREO` y `CONTRASEÑA` van los de la cuenta de revisión. **La
-contraseña se escribe directamente en App Store Connect, no queda guardada en
+Donde dice `CORREO` y `CONTRASENA` van los de la cuenta de revisión. **La
+contraseña se escribe directamente en App Store Connect; no queda guardada en
 ningún archivo de este proyecto.**
 
 ```
@@ -101,8 +159,9 @@ roster. There is no open sign-up: any other address is rejected at
 registration.
 
 DEMO ACCOUNT FOR APP REVIEW
-We have created a regular student account for the review. It is hidden from
-the app's contact directory so it does not appear among the real students.
+The account below is a regular student account, the same credentials entered
+in the App Review Information section. It is hidden from the app's contact
+directory so it does not appear among the real students.
 
   E-mail:   CORREO
   Password: CONTRASENA
@@ -128,11 +187,14 @@ Everything is reachable from the navigation inside the app.
   item is progressing.
 - Colaboradores (Partners): the discounts agreed with local businesses. Open
   any of them to see its redemption code.
-- Contactos (Directory): the school community, so a student can write to
-  someone without having to ask around for their e-mail. Any person can hide
-  themselves from this directory.
+- Contactos (Directory): shows the name, school e-mail address and, if the
+  person chose to add one, the phone number of the members of the school
+  community, so that a student can write to someone without having to ask
+  around for their address. It is visible only to signed-in members of the
+  same school, and any person can hide themselves from it completely from
+  their own profile.
 - Mi perfil (My profile): edit your own details, turn push notifications on
-  and off, and delete your account.
+  and off, change your password, and delete your account.
 
 PUSH NOTIFICATIONS
 Mi perfil, section "Avisos". The app asks for the system permission there.
@@ -147,9 +209,12 @@ THE APP HAS NO USER-GENERATED CONTENT
 Students cannot publish anything. Only the Student Council's elected board and
 the teams appointed by the school can publish, and only into the app's own
 sections. There are no comments, no private messaging, no photo uploads and no
-public profiles. The only thing a person can change is their own profile
-details. For that reason the app has no reporting or blocking mechanism: there
-is no user-to-user content to report or block.
+public profiles.
+
+The only text a student can write anywhere in the app is their own phone
+number, which is optional; their name and class come from the school's
+official roster and cannot be edited. There is therefore no user-to-user
+content that could be reported or blocked, and no mechanism for it is needed.
 
 THERE IS NO PAID CONTENT
 Every feature of the app is free and available to every account. There is no
@@ -237,6 +302,82 @@ The app is free, has no commercial purpose and does not serve a company's
 internal operations. It is the equivalent of a school or university community
 app, published on the App Store so that each student can install it on their
 own device in the ordinary way.
+```
+
+---
+
+## 8 · La versión corta, para el campo Notes
+
+Lo de arriba no cabe en Notes: ese campo acepta 4.000 caracteres. Esta versión
+dice lo mismo en menos, y es la que hay que pegar ahí.
+
+```
+APP CAA - NOTES FOR APP REVIEW
+
+WHAT THE APP IS
+App CAA is the official app of the Student Council (Centro de Alumnos) of
+Colegio Del Verbo Divino, a secondary school in Santiago, Chile. Its audience
+is the school's own community: around 700 students aged 13 to 18, plus the
+teachers and staff. It replaces paper posters in the hallways and informal
+WhatsApp groups with one official channel for announcements, news, events,
+the school calendar, inter-grade competition results, Student Council
+projects, the discounts negotiated with local businesses, and a contact
+directory. The app is free: no advertising, no purchases, no subscriptions,
+no tracking.
+
+ACCESS IS CLOSED
+An account can only be created by someone whose institutional e-mail address
+(@verbo.cl) is on the school's official roster. There is no open sign-up. The
+demo account provided in the sign-in fields above is a regular student
+account, hidden from the contact directory. A code sent by e-mail is required
+only when CREATING an account, never when signing in, so the demo account
+needs no mailbox access.
+
+WHERE THINGS ARE
+Inicio (home), Comunicados (announcements), Noticias (news), Eventos (events
+and sign-ups), Calendario, 365 (inter-grade competition results), Proyectos,
+Colaboradores (partner discounts, each with its redemption code), Contactos
+(directory), Mi perfil.
+- Push notifications: Mi perfil, section "Avisos". Sent only when the Student
+  Council publishes something; never marketing.
+- Account deletion: Mi perfil, "Eliminar mi cuenta", done inside the app.
+
+NO USER-GENERATED CONTENT
+Students cannot publish anything. Only the Student Council's elected board and
+the teams appointed by the school can publish, and only into the app's own
+sections. There are no comments, no private messaging, no photo uploads and no
+public profiles. The only text a student can write anywhere in the app is
+their own optional phone number; their name and class come from the official
+roster and cannot be edited, and anyone can hide themselves from the directory
+entirely. There is therefore no user-to-user content to report or block.
+
+NO PAID CONTENT
+Every feature is free for every account. No in-app purchase, no subscription,
+no paywall.
+
+EXTERNAL SERVICES, AND ONLY TWO
+1. Supabase - database, authentication, file storage, serverless functions,
+   and the confirmation e-mails sent at registration. Hosted on AWS.
+2. Firebase Cloud Messaging with APNs - push notification delivery only.
+No analytics, no crash reporting, no advertising network or identifier, no
+payment processor, no AI service, no third-party data provider. No personal
+data is sold, shared or transferred to anyone.
+
+REGIONS
+No regional differences: the same features and the same content everywhere,
+no geolocation, no region gating. Spanish only.
+
+REGULATION AND THIRD-PARTY MATERIAL
+Not a regulated industry: no financial, medical, health, gambling or dating
+services. All text, photographs and logos belong to the school and its Student
+Council. Partner logos are shown with each business's agreement.
+
+GUIDELINE 3.2
+This is not a business or employee app. Its users are students who install it
+on their own personal iPhones, which the school neither owns nor manages.
+There is no MDM and no managed Apple Accounts, so custom distribution through
+Apple Business Manager would leave the intended users unable to install it. It
+is a school community app, free and with no commercial purpose.
 ```
 
 ---
