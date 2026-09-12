@@ -29,6 +29,10 @@ rehacerlo.
 entra con ella. Si la contraseña no funciona, Apple tampoco va a poder entrar y
 te rechazan sin mirar nada más.
 
+**1b. Deja las dos contraseñas copiadas en la app Notas del iPhone.** En el
+video se pegan, no se escriben: el teclado muestra una burbuja con cada letra y
+la grabación la capta. Está explicado más abajo.
+
 **2. Que el iPhone esté al día.** Ajustes → General → Actualización de
 software. Apple pide el video "running the latest operating system".
 
@@ -92,8 +96,35 @@ cuenta de estudiante: el revisor tiene que ver lo mismo que verá cuando entre
 él. Los pasos 8 y 9 son los que más miran: si una app deja crear cuenta, tiene
 que dejar borrarla desde adentro, y quieren verlo pasar.
 
-Si el video pesa mucho para adjuntarlo, se sube a Google Drive o a YouTube como
-"no listado" y se pega el enlace en la respuesta.
+### El video es privado, pero hay que mantenerlo así
+
+Lo que se manda por el Resolution Center lo ve **solo el equipo de revisión de
+Apple**. Es un canal privado de la cuenta de desarrollador: no se publica en
+ninguna parte, no aparece en la ficha de la App Store y no lo ve nadie del
+colegio. Lo mismo vale para el campo Notes y para las credenciales del
+formulario.
+
+Aun así, el video muestra dos cosas que no pueden salir de ahí: **contraseñas**
+y, en la sección Contactos, **los nombres, correos y teléfonos de unos 700
+menores de edad**. De ahí estas dos reglas.
+
+**Adjunta el archivo, no pongas un enlace.** Un video de dos o tres minutos
+pesa entre 20 y 30 MB y entra como adjunto. Subirlo a YouTube "no listado" o a
+Drive con "cualquiera con el enlace" significa que cualquiera que consiga la
+dirección lo abre, y ahí van los datos de los 700. Si quedara muy pesado, se
+recorta o se graba de nuevo más corto; nunca se resuelve con una nube abierta.
+
+**Pega las contraseñas, no las escribas.** El campo muestra puntitos, pero el
+teclado del iPhone dibuja una burbuja ampliada con cada letra que tocas, y la
+grabación la capta. Antes de grabar, deja las dos contraseñas copiadas en la
+app Notas del teléfono; en el video, toca el campo, mantén apretado y elige
+"Pegar". Cero teclas, cero burbujas.
+
+Si prefieres una red más: cámbiale la contraseña a tu cuenta personal por una
+temporal antes de grabar, y vuelve a cambiarla desde Mi perfil cuando termines.
+Así, aunque el video se filtrara, la contraseña que se ve ya no sirve. Con la
+cuenta de revisión esto no se puede hacer: su contraseña tiene que seguir
+siendo la misma que está escrita en el formulario de App Store Connect.
 
 ---
 
