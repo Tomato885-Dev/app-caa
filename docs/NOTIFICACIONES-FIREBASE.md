@@ -181,9 +181,16 @@ permitido, y esto se hace una sola vez.
 ### 5.4 · Entregarle esa clave a Firebase
 
 1. Firebase → Configuración del proyecto → pestaña **Cloud Messaging**.
-2. En la sección de la app de iOS, **Clave de autenticación de APNs** →
-   **Cargar**.
-3. Sube el `.p8` y escribe el **Key ID** y el **Team ID**.
+2. En la sección de la app de iOS, **Clave de autenticación de APNs**. Hay
+   **dos filas**: una de **desarrollo** y otra de **producción**.
+3. En cada una: **Subir**, el mismo `.p8`, el mismo **Key ID** y el mismo
+   **Team ID**. El Team ID es `GB9YFP4L8M`, con un ocho, no una B.
+
+> **Las dos filas, no una.** La de producción es la que usan las apps
+> instaladas desde la App Store y desde TestFlight. Con solo la de desarrollo,
+> el envío dice que salió, pero Firebase responde `401 Invalid APNs credential`
+> y a ningún iPhone le llega nada. Pasó el 13 de septiembre de 2026, con la app
+> ya publicada.
 
 Con eso, Firebase ya puede hablar con Apple en nombre de la app.
 
