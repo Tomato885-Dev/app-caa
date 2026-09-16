@@ -25,11 +25,15 @@ import { activarNativo, desactivarNativo, esNativo, estadoNativo } from './nativ
    Este archivo es la puerta de entrada de los dos: quien lo llama no necesita
    saber en cuál de las dos está corriendo.
 
-   EL PERMISO NO SE PIDE SOLO
-   Nunca al abrir la aplicación. Un navegador que pregunta apenas entras recibe
-   un "no" casi automático, y ese "no" es difícil de revertir: hay que ir a la
-   configuración del navegador. Se pide cuando la persona toca el interruptor,
-   que es el único momento en que ya sabe qué está aceptando.
+   EL PERMISO DEL SISTEMA NO SE PIDE SOLO
+   Nunca al abrir la aplicación. Un teléfono o un navegador que pregunta apenas
+   entras recibe un "no" casi automático, y ese "no" es difícil de revertir: en
+   iPhone el permiso se pide una sola vez, y después hay que ir a Ajustes.
+
+   Lo que sí se ofrece solo es una invitación propia (`InvitacionAvisos`), que
+   explica para qué sirven. El permiso del sistema aparece recién cuando la
+   persona dice que sí ahí, o cuando toca el interruptor de Mi perfil: los dos
+   únicos momentos en que ya sabe qué está aceptando.
    ========================================================================== */
 
 /** Llave pública VAPID. Viaja dentro de la app a propósito: identifica al

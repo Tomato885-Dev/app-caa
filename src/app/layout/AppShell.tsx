@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { BottomNav } from './BottomNav';
+import { InvitacionAvisos } from './InvitacionAvisos';
 import { SideNav } from './SideNav';
 import { TopBar } from './TopBar';
 
@@ -28,6 +29,9 @@ export function AppShell() {
       </div>
 
       <BottomNav />
+
+      {/* Solo aquí, dentro de la app con sesión: nunca en la pantalla de acceso. */}
+      <InvitacionAvisos />
     </div>
   );
 }

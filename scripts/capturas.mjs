@@ -123,6 +123,13 @@ async function capturar(nombreTienda, medidas, sufijo) {
     storageState: !modoDemo && existsSync(SESION) ? SESION : undefined,
   });
 
+  /* La invitacion a activar los avisos aparece sola al entrar, y taparia la
+     pantalla de Inicio en la primera captura. Se marca como ya ofrecida antes
+     de que cargue la app: en la ficha de la tienda tiene que verse la app. */
+  await contexto.addInitScript(() => {
+    localStorage.setItem('avisos:invitacion', JSON.stringify({ veces: 3, ultima: Date.now() }));
+  });
+
   const pagina = await contexto.newPage();
   const destino = path.join(CARPETA, nombreTienda);
   await mkdir(destino, { recursive: true });
