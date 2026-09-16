@@ -287,7 +287,7 @@ export function ContentPage() {
               <ContentRow
                 key={event.id}
                 title={event.title}
-                meta={`${event.category} · ${formatDate(event.startsAt)} · ${event.location}`}
+                meta={[event.category, formatDate(event.startsAt), event.location].filter(Boolean).join(' · ')}
                 onEdit={() => setEventForm({ open: true, editing: event })}
                 onNotify={
                   usingServer
@@ -296,7 +296,7 @@ export function ContentPage() {
                           titulo: event.title,
                           /* De un evento lo que sirve en la notificación es
                              cuándo y dónde, no el comienzo de la descripción. */
-                          cuerpo: `${formatDateTimeShort(event.startsAt)} · ${event.location}`,
+                          cuerpo: [formatDateTimeShort(event.startsAt), event.location].filter(Boolean).join(' · '),
                           ruta: `/eventos/${event.id}`,
                           origen: event.id,
                         })

@@ -100,10 +100,12 @@ export function BenefitDetailPage() {
         </div>
       </header>
 
-      <section className="mb-6">
-        <SectionHeader title="De qué se trata" />
-        <Prose text={benefit.description} />
-      </section>
+      {benefit.description.trim() ? (
+        <section className="mb-6">
+          <SectionHeader title="De qué se trata" />
+          <Prose text={benefit.description} />
+        </section>
+      ) : null}
 
       {available && benefit.redeem ? <ComoCanjear benefit={benefit} redeem={benefit.redeem} /> : null}
 

@@ -20,9 +20,11 @@ export function NewsFeatureCard({ post }: { post: NewsPost }) {
         </div>
 
         <h3 className="text-[17px] font-bold leading-snug text-ink">{post.title}</h3>
-        <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
-          {post.summary}
-        </p>
+        {post.summary ? (
+          <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
+            {post.summary}
+          </p>
+        ) : null}
       </div>
     </CardLink>
   );
@@ -50,9 +52,11 @@ export function NewsRowCard({ post }: { post: NewsPost }) {
           <h3 className="line-clamp-2 text-[14.5px] font-bold leading-snug text-ink">
             {post.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-ink-2">
-            {post.summary}
-          </p>
+          {post.summary ? (
+            <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-ink-2">
+              {post.summary}
+            </p>
+          ) : null}
         </div>
       </div>
     </CardLink>

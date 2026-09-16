@@ -22,7 +22,7 @@ const eventsCalendar: CalendarSource = {
         date: event.startsAt,
         endDate: event.endsAt,
         title: event.title,
-        detail: event.location,
+        detail: event.location || undefined,
         href: `/eventos/${event.id}`,
         sourceId: 'events',
       })),

@@ -60,7 +60,9 @@ export function ProjectDetailPage() {
         <h1 className="text-[24px] font-extrabold leading-[1.2] tracking-tight text-ink">
           {project.title}
         </h1>
-        <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{project.summary}</p>
+        {project.summary ? (
+          <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{project.summary}</p>
+        ) : null}
 
         <Prose text={project.description} className="my-6" />
 

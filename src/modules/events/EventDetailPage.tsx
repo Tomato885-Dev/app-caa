@@ -69,7 +69,7 @@ export function EventDetailPage() {
       <Card className="my-5 divide-y divide-line">
         <MetaRow icon={CalendarDays} label="Fecha" value={dateLabel} />
         <MetaRow icon={Clock} label="Horario" value={timeLabel} />
-        <MetaRow icon={MapPin} label="Ubicación" value={event.location} />
+        {event.location ? <MetaRow icon={MapPin} label="Ubicación" value={event.location} /> : null}
         {event.requirements ? (
           <MetaRow icon={ClipboardList} label="Requisitos" value={event.requirements} />
         ) : null}

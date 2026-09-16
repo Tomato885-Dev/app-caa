@@ -102,11 +102,8 @@ export function BenefitFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.name.trim().length < 2) nextErrors.name = 'Escribe el nombre del beneficio.';
-    if (form.partner.trim().length < 2) nextErrors.partner = 'Indica quién otorga el beneficio.';
-    if (form.summary.trim().length < 10) nextErrors.summary = 'Resume el beneficio en una línea.';
-    if (form.description.trim().length < 30)
-      nextErrors.description = 'Explica de qué se trata el beneficio.';
+    if (!form.name.trim()) nextErrors.name = 'Ponle un nombre al beneficio.';
+    if (!form.partner.trim()) nextErrors.partner = 'Indica quién otorga el beneficio.';
 
     const canje = form.method
       ? limpiarCanje({
@@ -185,7 +182,6 @@ export function BenefitFormSheet({
           value={form.name}
           onChange={(event) => set('name', event.target.value)}
           placeholder="2x1 en combos"
-          maxLength={80}
         />
 
         <TextField
@@ -195,22 +191,18 @@ export function BenefitFormSheet({
           value={form.partner}
           onChange={(event) => set('partner', event.target.value)}
           placeholder="Nombre del local en convenio"
-          maxLength={80}
         />
 
         <TextField
           label="Resumen"
-          required
           error={errors.summary}
           value={form.summary}
           onChange={(event) => set('summary', event.target.value)}
-          hint="Una línea. Es lo que se lee en el listado."
-          maxLength={120}
+          hint="Es lo que se lee en el listado."
         />
 
         <TextField
           label="De qué se trata"
-          required
           multiline
           rows={5}
           error={errors.description}
@@ -364,7 +356,6 @@ function FormaDeCanje({
             hint="Exactamente el que te dio el local."
             autoCapitalize="characters"
             autoComplete="off"
-            maxLength={60}
           />
         ) : null}
 
@@ -465,7 +456,6 @@ function FormaDeCanje({
               hint="El código de descuento que se pega al pagar, si lo hay."
               autoCapitalize="characters"
               autoComplete="off"
-              maxLength={60}
             />
           </>
         ) : null}

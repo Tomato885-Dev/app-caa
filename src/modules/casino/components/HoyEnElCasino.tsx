@@ -20,7 +20,11 @@ export function HoyEnElCasino() {
   const dia = useMemo(() => diaHabilDeReferencia(), []);
   const menu = useMemo(() => menusPorFecha(data ?? []).get(dayKey(dia)), [data, dia]);
 
-  if (!menu || menu.sinServicio || !menu.principal) return null;
+  // Si ese día no cargaron plato de fondo, se muestra lo primero que haya.
+  const destacado = menu && !menu.sinServicio
+    ? menu.principal || menu.entrada || menu.alternativa || menu.postre
+    : undefined;
+  if (!menu || !destacado) return null;
 
   const mañana = new Date();
   mañana.setDate(mañana.getDate() + 1);
@@ -40,8 +44,8 @@ export function HoyEnElCasino() {
           <p className="text-[10.5px] font-bold uppercase tracking-wider text-ink-3">
             {cuando} en el casino
           </p>
-          <p className="truncate text-[16px] font-bold text-ink">{menu.principal}</p>
-          {menu.alternativa ? (
+          <p className="truncate text-[16px] font-bold text-ink">{destacado}</p>
+          {menu.alternativa && menu.alternativa !== destacado ? (
             <p className="truncate text-[12.5px] text-ink-2">Vegetariano: {menu.alternativa}</p>
           ) : null}
         </div>

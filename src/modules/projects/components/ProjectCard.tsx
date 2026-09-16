@@ -34,9 +34,11 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <h3 className="text-[17px] font-bold leading-snug text-ink">{project.title}</h3>
-        <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
-          {project.summary}
-        </p>
+        {project.summary ? (
+          <p className="mt-1.5 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
+            {project.summary}
+          </p>
+        ) : null}
 
         <p className="mt-2 text-[11.5px] font-bold uppercase tracking-wide text-brand-600 dark:text-brand-300">
           {project.area}

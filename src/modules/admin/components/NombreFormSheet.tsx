@@ -25,9 +25,7 @@ export function limpiarNombre(valor: string): string {
 
 export function errorDelNombre(valor: string): string {
   const limpio = limpiarNombre(valor);
-  if (limpio.length < 3) return 'Escribe el nombre completo.';
-  if (limpio.length > 80) return 'Es demasiado largo: máximo 80 caracteres.';
-  if (!/^[\p{L}' .-]+$/u.test(limpio)) return 'Usa solo letras, espacios, guiones o apóstrofos.';
+  if (!limpio) return 'Escribe el nombre.';
   return '';
 }
 
@@ -108,7 +106,6 @@ export function NombreFormSheet({ user, onClose }: { user: User | null; onClose:
           }}
           error={error}
           hint="Como en las listas del colegio: apellidos primero y después los nombres."
-          maxLength={80}
           autoCapitalize="words"
           autoComplete="off"
         />

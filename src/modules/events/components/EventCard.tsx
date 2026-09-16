@@ -33,10 +33,12 @@ export function EventCard({ event }: { event: EventItem }) {
 
           <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-ink">{event.title}</h3>
 
-          <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink-2">
-            <MapPin size={13} className="shrink-0 text-ink-3" />
-            <span className="truncate">{event.location}</span>
-          </p>
+          {event.location ? (
+            <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink-2">
+              <MapPin size={13} className="shrink-0 text-ink-3" />
+              <span className="truncate">{event.location}</span>
+            </p>
+          ) : null}
         </div>
       </div>
     </CardLink>
@@ -56,10 +58,12 @@ export function EventHighlightCard({ event }: { event: EventItem }) {
           {falta ? <Badge tone="accent">{falta}</Badge> : null}
         </div>
         <h3 className="line-clamp-2 text-[14.5px] font-bold leading-snug text-ink">{event.title}</h3>
-        <p className="mt-1 flex items-center gap-1.5 text-[12px] text-ink-2">
-          <MapPin size={12.5} className="shrink-0 text-ink-3" />
-          <span className="truncate">{event.location}</span>
-        </p>
+        {event.location ? (
+          <p className="mt-1 flex items-center gap-1.5 text-[12px] text-ink-2">
+            <MapPin size={12.5} className="shrink-0 text-ink-3" />
+            <span className="truncate">{event.location}</span>
+          </p>
+        ) : null}
       </div>
     </CardLink>
   );

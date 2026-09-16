@@ -68,7 +68,7 @@ export function CarpetaFormSheet({
 
   const guardar = () => {
     const nuevos: Record<string, string> = {};
-    if (titulo.trim().length < 2) nuevos.titulo = 'Escribe el nombre de la carpeta.';
+    if (!titulo.trim()) nuevos.titulo = 'Ponle un nombre a la carpeta.';
     if (!esEnlaceSeguro(url)) nuevos.url = 'Pega el enlace completo, que empiece con https://';
     setErrores(nuevos);
     if (Object.keys(nuevos).length) return;
@@ -111,7 +111,6 @@ export function CarpetaFormSheet({
           }}
           error={errores.titulo}
           placeholder="Central de apuntes · Generación 2027"
-          maxLength={80}
         />
 
         <SelectField
@@ -146,7 +145,6 @@ export function CarpetaFormSheet({
           value={descripcion}
           onChange={(event) => setDescripcion(event.target.value)}
           placeholder="Guías, resúmenes y pruebas anteriores, ordenados por asignatura."
-          maxLength={200}
         />
       </div>
     </Sheet>

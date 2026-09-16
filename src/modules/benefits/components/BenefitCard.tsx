@@ -43,9 +43,11 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
             {benefit.name}
           </h3>
 
-          <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-ink-2">
-            {benefit.summary}
-          </p>
+          {benefit.summary ? (
+            <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-ink-2">
+              {benefit.summary}
+            </p>
+          ) : null}
 
           <div className="mt-2.5 flex flex-wrap items-center gap-2">
             <Badge tone="neutral">{benefit.category}</Badge>

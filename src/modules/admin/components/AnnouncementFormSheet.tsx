@@ -86,7 +86,7 @@ export function AnnouncementFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.title.trim().length < 2) nextErrors.title = 'El título es demasiado corto.';
+    if (!form.title.trim()) nextErrors.title = 'Ponle un título.';
     /* Basta con que tenga texto. Antes se exigian 20 caracteres, y eso dejaba
        fuera justo los avisos mas urgentes, que suelen ser los mas cortos. */
     if (!form.body.trim()) nextErrors.body = 'Escribe el contenido del aviso.';
@@ -194,7 +194,6 @@ export function AnnouncementFormSheet({
           error={errors.title}
           value={form.title}
           onChange={(event) => set('title', event.target.value)}
-          maxLength={120}
           hint="Directo y concreto: se lee de una pasada en el listado."
         />
 
@@ -238,7 +237,6 @@ export function AnnouncementFormSheet({
               label="Jefes del proyecto (opcional)"
               value={form.leads}
               onChange={(event) => set('leads', event.target.value)}
-              maxLength={140}
               placeholder="María Pérez (IV Medio A) y Juan Soto (III Medio B)"
               hint="Quién está a cargo. Aparece en el comunicado para que sepan a quién acudir."
             />

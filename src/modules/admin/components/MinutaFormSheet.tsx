@@ -143,10 +143,6 @@ export function MinutaFormSheet({
       const alternativa = dia.alternativa.trim();
       const postre = dia.postre.trim();
       if (!principal && !entrada && !alternativa && !postre) continue;
-      if (!principal) {
-        nuevosErrores[fecha] = 'Falta el plato de fondo.';
-        continue;
-      }
       resultado.push({
         fecha,
         principal,
@@ -157,10 +153,6 @@ export function MinutaFormSheet({
     }
 
     setErrores(nuevosErrores);
-    if (Object.keys(nuevosErrores).length) {
-      setError('Hay días con la entrada o el postre, pero sin plato de fondo.');
-      return;
-    }
     if (resultado.length === 0) {
       setError('Carga al menos un día.');
       return;
@@ -178,7 +170,7 @@ export function MinutaFormSheet({
 
   const cargados = fechas.filter((f) => {
     const d = dias[f];
-    return d && (d.sinServicio || d.principal.trim());
+    return d && (d.sinServicio || d.principal.trim() || d.entrada.trim() || d.alternativa.trim() || d.postre.trim());
   }).length;
 
   return (
@@ -217,7 +209,6 @@ export function MinutaFormSheet({
           value={nota}
           onChange={(event) => setNota(event.target.value)}
           placeholder="La minuta puede cambiar sin previo aviso."
-          maxLength={140}
         />
 
         {error ? (
@@ -261,7 +252,6 @@ export function MinutaFormSheet({
                       onChange={(event) => cambiar(fecha, 'principal', event.target.value)}
                       placeholder="Pollo arvejado con arroz"
                       error={errores[fecha]}
-                      maxLength={80}
                     />
 
                     {abierto ? (
@@ -271,21 +261,18 @@ export function MinutaFormSheet({
                           value={dia.entrada}
                           onChange={(event) => cambiar(fecha, 'entrada', event.target.value)}
                           placeholder="Ensalada chilena"
-                          maxLength={80}
                         />
                         <TextField
                           label="Opción vegetariana (opcional)"
                           value={dia.alternativa}
                           onChange={(event) => cambiar(fecha, 'alternativa', event.target.value)}
                           placeholder="Guiso de lentejas"
-                          maxLength={80}
                         />
                         <TextField
                           label="Postre (opcional)"
                           value={dia.postre}
                           onChange={(event) => cambiar(fecha, 'postre', event.target.value)}
                           placeholder="Fruta de la estación"
-                          maxLength={80}
                         />
                       </>
                     ) : null}

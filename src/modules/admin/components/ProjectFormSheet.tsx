@@ -82,13 +82,7 @@ export function ProjectFormSheet({
     const startYear = Number(form.startYear);
     const endYear = form.endYear ? Number(form.endYear) : null;
 
-    if (form.title.trim().length < 4) nextErrors.title = 'Escribe el nombre del proyecto.';
-    if (form.summary.trim().length < 10) {
-      nextErrors.summary = 'Resume el proyecto en una frase.';
-    }
-    if (form.description.trim().length < 30) {
-      nextErrors.description = 'Cuenta de qué se trata, con al menos un par de líneas.';
-    }
+    if (!form.title.trim()) nextErrors.title = 'Ponle un nombre al proyecto.';
     if (!Number.isInteger(startYear) || startYear < MIN_YEAR || startYear > MAX_YEAR) {
       nextErrors.startYear = `Escribe un año entre ${MIN_YEAR} y ${MAX_YEAR}.`;
     }
@@ -154,23 +148,19 @@ export function ProjectFormSheet({
           error={errors.title}
           value={form.title}
           onChange={(event) => set('title', event.target.value)}
-          maxLength={80}
           hint="Como lo conoce todo el mundo en el colegio."
         />
 
         <TextField
           label="En una frase"
-          required
           error={errors.summary}
           value={form.summary}
           onChange={(event) => set('summary', event.target.value)}
-          maxLength={140}
           hint="Es lo que se lee en el listado. Que se entienda sin saber nada del tema."
         />
 
         <TextField
           label="De qué se trata"
-          required
           multiline
           rows={6}
           error={errors.description}
@@ -230,7 +220,6 @@ export function ProjectFormSheet({
           label="A cargo de (opcional)"
           value={form.ledBy}
           onChange={(event) => set('ledBy', event.target.value)}
-          maxLength={80}
           placeholder="Academia de Ciencias, Pastoral, un curso…"
         />
 

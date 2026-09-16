@@ -149,11 +149,15 @@ function MenuDelDiaCard({ fecha, menu }: { fecha: Date; menu: MenuDelDia | undef
         <Vacio icon={CalendarOff} titulo="No hay almuerzo este día" detalle="Feriado o jornada sin clases." />
       ) : (
         <>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-ink-3">Plato de fondo</p>
-          <p className="mt-1 text-[22px] font-extrabold leading-tight text-ink">{menu.principal}</p>
+          {menu.principal ? (
+            <>
+              <p className="text-[11px] font-bold uppercase tracking-wider text-ink-3">Plato de fondo</p>
+              <p className="mt-1 text-[22px] font-extrabold leading-tight text-ink">{menu.principal}</p>
+            </>
+          ) : null}
 
           {extras.length ? (
-            <ul className="mt-4 space-y-3 border-t border-line pt-4">
+            <ul className={menu.principal ? 'mt-4 space-y-3 border-t border-line pt-4' : 'space-y-3'}>
               {extras.map(({ icon: Icono, etiqueta, valor }) => (
                 <li key={etiqueta} className="flex items-start gap-3">
                   <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">

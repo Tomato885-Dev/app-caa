@@ -93,7 +93,7 @@ export function SportsResultFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.opponent.trim().length < 3)
+    if (!form.opponent.trim())
       nextErrors.opponent = 'Indica el rival o el nombre de la competencia.';
     if (!form.playedAt) nextErrors.playedAt = 'Falta la fecha del encuentro.';
 

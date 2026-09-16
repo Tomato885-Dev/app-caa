@@ -51,7 +51,9 @@ export function NewsDetailPage() {
           {post.title}
         </h1>
 
-        <p className="mt-3 text-[16px] font-medium leading-relaxed text-ink-2">{post.summary}</p>
+        {post.summary ? (
+          <p className="mt-3 text-[16px] font-medium leading-relaxed text-ink-2">{post.summary}</p>
+        ) : null}
 
         <div className="my-5 flex items-center gap-3 border-y border-line py-3.5">
           <Avatar name={post.author.name} avatarKey={post.author.avatarKey} size="md" />

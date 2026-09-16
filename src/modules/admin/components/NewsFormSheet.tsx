@@ -68,9 +68,7 @@ export function NewsFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.title.trim().length < 8) nextErrors.title = 'El título es demasiado corto.';
-    if (form.summary.trim().length < 20) nextErrors.summary = 'Escribe una bajada más informativa.';
-    if (form.body.trim().length < 40) nextErrors.body = 'Desarrolla el cuerpo de la noticia.';
+    if (!form.title.trim()) nextErrors.title = 'Ponle un título.';
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
@@ -137,18 +135,16 @@ export function NewsFormSheet({
           error={errors.title}
           value={form.title}
           onChange={(event) => set('title', event.target.value)}
-          maxLength={120}
         />
 
         <TextField
           label="Bajada"
-          required
           multiline
           rows={2}
           error={errors.summary}
           value={form.summary}
           onChange={(event) => set('summary', event.target.value)}
-          hint="Resumen de una o dos líneas que aparece en los listados."
+          hint="Aparece en los listados, bajo el título."
         />
 
         <SelectField
@@ -161,7 +157,6 @@ export function NewsFormSheet({
 
         <TextField
           label="Cuerpo"
-          required
           multiline
           rows={8}
           error={errors.body}

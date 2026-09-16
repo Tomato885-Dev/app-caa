@@ -80,14 +80,11 @@ export function EventFormSheet({
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
-    if (form.title.trim().length < 5) nextErrors.title = 'El título es demasiado corto.';
+    if (!form.title.trim()) nextErrors.title = 'Ponle un título.';
     if (!form.startsAt) nextErrors.startsAt = 'Indica la fecha y hora de inicio.';
     if (form.endsAt && form.startsAt && new Date(form.endsAt) < new Date(form.startsAt)) {
       nextErrors.endsAt = 'El término no puede ser anterior al inicio.';
     }
-    if (!form.location.trim()) nextErrors.location = 'Indica dónde se realiza.';
-    if (form.description.trim().length < 20)
-      nextErrors.description = 'Describe la actividad con más detalle.';
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
@@ -170,7 +167,6 @@ export function EventFormSheet({
 
         <TextField
           label="Ubicación"
-          required
           error={errors.location}
           value={form.location}
           onChange={(event) => set('location', event.target.value)}
@@ -179,7 +175,6 @@ export function EventFormSheet({
 
         <TextField
           label="Descripción"
-          required
           multiline
           rows={5}
           error={errors.description}
