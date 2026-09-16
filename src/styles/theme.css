@@ -97,8 +97,8 @@
   --radius-field: 0.75rem;
 
   /* --- Sombras (suaves, nunca dramáticas) --------------------------------- */
-  --shadow-card: 0 1px 2px rgb(16 26 21 / 0.04), 0 8px 24px -12px rgb(16 26 21 / 0.14);
-  --shadow-raised: 0 2px 4px rgb(16 26 21 / 0.05), 0 16px 40px -16px rgb(16 26 21 / 0.24);
+  --shadow-card: 0 1px 2px rgb(8 51 29 / 0.08), 0 10px 26px -12px rgb(8 51 29 / 0.26);
+  --shadow-raised: 0 2px 4px rgb(8 51 29 / 0.08), 0 18px 42px -16px rgb(8 51 29 / 0.36);
   --shadow-nav: 0 -1px 0 rgb(16 26 21 / 0.06), 0 -12px 32px -20px rgb(16 26 21 / 0.28);
   /* La barra flotante: una sombra larga y verde que la despega del contenido. */
   --shadow-dock: 0 18px 40px -12px rgb(8 51 29 / 0.55), 0 4px 12px -4px rgb(8 51 29 / 0.35);
@@ -109,12 +109,12 @@
    El lienzo lleva un blanco apenas verdoso para que esas superficies se
    distingan sin necesidad de bordes marcados.                              */
 :root {
-  --sf-canvas: #f4f7f5;
+  --sf-canvas: #eaf2ec;
   --sf-surface: #ffffff;
-  --sf-surface-2: #eef2ef;
-  --sf-surface-3: #e3eae6;
-  --sf-line: #e4eae6;
-  --sf-line-strong: #cfd9d3;
+  --sf-surface-2: #edf3ef;
+  --sf-surface-3: #dfe9e3;
+  --sf-line: #d9e5dd;
+  --sf-line-strong: #bccdc2;
   --sf-ink: #101a15;
   --sf-ink-2: #4f5c55;
   --sf-ink-3: #7c8981;

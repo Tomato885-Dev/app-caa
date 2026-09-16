@@ -152,7 +152,7 @@ export function Bento({
       </Bloque>
 
       {/* Colaboradores: a lo ancho, con los logos de verdad. */}
-      <Bloque to="/colaboradores" className="col-span-2 flex-row items-center gap-3 bg-surface text-ink" delay={240}>
+      <Bloque to="/colaboradores" className="col-span-2 flex-row items-center gap-3 bg-surface text-ink ring-1 ring-line" delay={240}>
         <span className="flex shrink-0 -space-x-4">
           {colaboradores.slice(0, 3).map((beneficio) => (
             <span

@@ -121,8 +121,8 @@
     height: 22rem;
     top: -8rem;
     left: -7rem;
-    background: var(--color-brand-200);
-    opacity: 0.7;
+    background: var(--color-brand-300);
+    opacity: 0.75;
     animation: deriva-1 22s ease-in-out infinite alternate;
   }
   .fondo-vivo .mancha-2 {
@@ -130,8 +130,8 @@
     height: 18rem;
     top: 14rem;
     right: -8rem;
-    background: var(--color-accent-300);
-    opacity: 0.55;
+    background: var(--color-accent-500);
+    opacity: 0.5;
     animation: deriva-2 26s ease-in-out infinite alternate;
   }
   .fondo-vivo .mancha-3 {
@@ -139,8 +139,8 @@
     height: 20rem;
     bottom: -9rem;
     left: 10%;
-    background: var(--color-brand-100);
-    opacity: 0.8;
+    background: var(--color-brand-200);
+    opacity: 0.85;
     animation: deriva-1 30s ease-in-out infinite alternate-reverse;
   }
   [data-theme='dark'] .fondo-vivo .mancha-1 {
@@ -167,7 +167,7 @@
 
   /* El nombre del saludo, en verde con un brillo hacia el verde claro. */
   .texto-degradado {
-    background: linear-gradient(120deg, var(--color-brand-600), var(--color-brand-400) 70%, var(--color-accent-600));
+    background: linear-gradient(120deg, var(--color-brand-800), var(--color-brand-500) 65%, var(--color-brand-400));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
