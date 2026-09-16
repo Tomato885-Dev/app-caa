@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Download,
   FileStack,
+  Info,
   UserCog,
   type LucideIcon,
 } from 'lucide-react';
@@ -20,6 +21,7 @@ import {
   type ExportCounts,
   type PendingChanges,
 } from './exportContent';
+import { AcercaFormSheet } from './components/AcercaFormSheet';
 
 /* Panel de administración. Dos herramientas: publicar contenido y gestionar
    cuentas. La cola de revisión y los reportes se quitaron al dejar de existir
@@ -31,6 +33,7 @@ export function AdminHomePage() {
   const [exporting, setExporting] = useState(false);
   const [exported, setExported] = useState<ExportCounts | null>(null);
   const [pendingExport, setPendingExport] = useState<PendingChanges | null>(null);
+  const [acercaOpen, setAcercaOpen] = useState(false);
 
   /* Cuánto trabajo hay en este navegador que todavía no está en el proyecto.
      Se recalcula al entrar al panel y después de cada exportación. */
@@ -112,7 +115,29 @@ export function AdminHomePage() {
             </Link>
           </li>
         ))}
+
+        {/* No es una pantalla aparte: abre el formulario ahí mismo. */}
+        <li>
+          <button
+            type="button"
+            onClick={() => setAcercaOpen(true)}
+            className="flex w-full items-center gap-3.5 rounded-card border border-line bg-surface p-4 text-left transition hover:border-line-strong hover:shadow-raised"
+          >
+            <span className={cn('flex h-11 w-11 shrink-0 items-center justify-center rounded-xl', toneSoft.accent)}>
+              <Info size={20} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[14.5px] font-bold text-ink">"Acerca de"</span>
+              <span className="mt-0.5 block text-[12.5px] leading-relaxed text-ink-2">
+                Editar el recuadro final de Mi perfil: periodo, descripción y crédito.
+              </span>
+            </span>
+            <ChevronRight size={17} className="shrink-0 text-ink-3" />
+          </button>
+        </li>
       </ul>
+
+      <AcercaFormSheet open={acercaOpen} onClose={() => setAcercaOpen(false)} />
 
       {hasRole('admin') ? <ExportCard
         exporting={exporting}

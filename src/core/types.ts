@@ -231,6 +231,15 @@ export interface Benefit extends BaseEntity {
   active: boolean;
 }
 
+/** Los textos del recuadro "Acerca de" de Mi perfil, editables por el equipo. */
+export interface AcercaDe extends BaseEntity {
+  titulo: string;
+  subtitulo: string;
+  descripcion: string;
+  /** "Desarrollada por…". Se muestra destacado. */
+  credito: string;
+}
+
 /**
  * Las formas de canjear un convenio. Cada una la define el local, no la app:
  *   · codigo       un código que el local entregó, y que se dicta o se muestra.

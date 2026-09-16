@@ -1,4 +1,5 @@
 import type {
+  AcercaDe,
   Announcement,
   BaseEntity,
   Benefit,
@@ -44,6 +45,7 @@ export interface DataProvider {
   projects: Repository<Project>;
   casino: Repository<MinutaCasino>;
   apuntes: Repository<CarpetaApuntes>;
+  acerca: Repository<AcercaDe>;
 
   /** Restaura el contenido de ejemplo. Útil en demos y pruebas. */
   reset(): Promise<void>;
@@ -60,6 +62,7 @@ export const COLLECTIONS = [
   'projects',
   'casino',
   'apuntes',
+  'acerca',
 ] as const;
 
 export type CollectionName = (typeof COLLECTIONS)[number];

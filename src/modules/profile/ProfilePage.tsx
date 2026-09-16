@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Check,
+  Code2,
   ExternalLink,
   KeyRound,
   LogOut,
@@ -29,6 +30,7 @@ import {
 import { ChangePasswordSheet } from './components/ChangePasswordSheet';
 import { DeleteAccountSheet } from './components/DeleteAccountSheet';
 import { NotificationsSection } from './components/NotificationsSection';
+import { useAcercaDe } from './acerca';
 
 /* Perfil de usuario (§6.8): identidad de la cuenta, teléfono de contacto,
    apariencia y seguridad. El nombre, el curso y el correo los define la
@@ -40,6 +42,7 @@ export function ProfilePage() {
   const notify = useToast();
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const { textos: acerca } = useAcercaDe();
 
 
   if (!user) return null;
@@ -146,18 +149,13 @@ export function ProfilePage() {
         </Card>
       </section>
 
-      {/* Acerca de */}
+      {/* Acerca de. Los textos los edita el equipo desde Administración
+          (ver `acerca.ts`); el enlace a la política de privacidad es fijo. */}
       <Card className="mb-4">
-        <h2 className="text-[14.5px] font-bold text-ink">
-          {appConfig.organization.fullName}
-        </h2>
-        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">
-          {appConfig.organization.institution} · {appConfig.organization.term}
-        </p>
-        <p className="mt-3 text-[12.5px] leading-relaxed text-ink-3">
-          Plataforma administrada en conjunto por el Centro de Alumnos y los equipos designados por
-          la institución. El acceso está restringido a cuentas institucionales de la nómina oficial
-          del colegio.
+        <h2 className="text-[14.5px] font-bold text-ink">{acerca.titulo}</h2>
+        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{acerca.subtitulo}</p>
+        <p className="mt-3 whitespace-pre-line text-[12.5px] leading-relaxed text-ink-3">
+          {acerca.descripcion}
         </p>
         {/* Las dos tiendas piden que la política sea alcanzable desde la propia
             aplicación, no solo desde la ficha de la tienda. */}
@@ -170,10 +168,22 @@ export function ProfilePage() {
           Política de privacidad
           <ExternalLink size={12.5} />
         </a>
-        <p className="mt-4 border-t border-line pt-3 text-[12px] text-ink-3">
-          Desarrollada por <span className="font-semibold text-ink-2">Mateo Burgos</span> para el
-          Centro de Alumnos.
-        </p>
+
+        {/* El crédito, destacado: quién hizo la app. */}
+        <div className="relative mt-4 overflow-hidden rounded-2xl bg-brand-500 p-4 text-white">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -right-6 -top-8 size-24 rounded-full bg-brand-600"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-4 top-4 size-6 rounded-full border-4 border-accent-500"
+          />
+          <Code2 size={20} className="relative text-accent-500" />
+          <p className="relative mt-2 whitespace-pre-line text-[18px] font-extrabold leading-snug tracking-tight">
+            {acerca.credito}
+          </p>
+        </div>
       </Card>
 
       <div className="space-y-2">
