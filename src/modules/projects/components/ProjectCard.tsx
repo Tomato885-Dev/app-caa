@@ -20,7 +20,7 @@ export function ProjectCard({ project }: { project: Project }) {
   return (
     <CardLink to={`/proyectos/${project.id}`} flush>
       {project.imageKey ? (
-        <AppImage imageKey={project.imageKey} ratio="16/9" rounded={false} />
+        <AppImage imageKey={project.imageKey} ratio="16/9" rounded={false} fit="backdrop" />
       ) : null}
 
       <div className="p-4">

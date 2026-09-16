@@ -44,7 +44,7 @@ export function EventCard({ event }: { event: EventItem }) {
 export function EventHighlightCard({ event }: { event: EventItem }) {
   return (
     <CardLink to={`/eventos/${event.id}`} flush className="w-64 shrink-0 sm:w-72">
-      <AppImage imageKey={event.imageKey} ratio="16/9" rounded={false} />
+      <AppImage imageKey={event.imageKey} ratio="16/9" rounded={false} fit="backdrop" />
       <div className="p-3.5">
         <div className="mb-1 flex items-center gap-2">
           <Badge tone="brand">{event.category}</Badge>

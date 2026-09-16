@@ -52,8 +52,12 @@ interface AppImageProps {
    *   'natural' no hay marco. La imagen manda y se ve completa, con su propia
    *             proporción: un afiche vertical sale vertical y una foto
    *             apaisada sale apaisada, sin recorte ni franjas vacías.
+   *   'backdrop' la muestra entera dentro del marco, y el espacio que sobra
+   *             lo llena una copia desenfocada de la misma foto. Tarjetas
+   *             grandes de un listado: miden todas lo mismo, como con
+   *             'cover', pero un afiche vertical no pierde arriba y abajo.
    */
-  fit?: 'cover' | 'contain' | 'natural';
+  fit?: 'cover' | 'contain' | 'natural' | 'backdrop';
 }
 
 export function AppImage({
@@ -102,11 +106,40 @@ function LoadedImage({
   alt: string;
   shape: string;
   ausente: ReactNode;
-  fit: 'cover' | 'contain' | 'natural';
+  fit: 'cover' | 'contain' | 'natural' | 'backdrop';
 }) {
   const [failed, setFailed] = useState(false);
 
   if (failed) return <>{ausente}</>;
+
+  if (fit === 'backdrop') {
+    /* Las dos imágenes van en posición absoluta, y la altura la pone solo el
+       marco con su proporción. Es a propósito: en el carrusel de Inicio las
+       tarjetas se estiran a la misma altura, y una imagen que midiera su alto
+       por su cuenta volvería a tapar el título de abajo, como ya pasó.
+
+       La copia de fondo va oscurecida para que la foto se distinga de su
+       propio reflejo. Una foto que ya es 16:9 la tapa entera, y se ve igual
+       que con 'cover'. */
+    return (
+      <div className={cn('relative w-full overflow-hidden bg-surface-2', shape)}>
+        <img
+          src={src}
+          alt=""
+          aria-hidden
+          decoding="async"
+          className="absolute inset-0 h-full w-full scale-110 object-cover blur-xl brightness-75"
+        />
+        <img
+          src={src}
+          alt={alt}
+          decoding="async"
+          onError={() => setFailed(true)}
+          className="absolute inset-0 h-full w-full object-contain"
+        />
+      </div>
+    );
+  }
 
   /* `cn` concatena sin resolver conflictos, así que las clases de encaje se
      eligen aquí una sola vez en vez de superponerse. */
