@@ -18,10 +18,20 @@ export function AppShell() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-dvh bg-canvas">
+    <div className="relative isolate min-h-dvh bg-canvas">
+      {/* El fondo de la app: manchas de verde y amarillo que se mueven muy
+          despacio detrás de todo, y una trama de puntos. Queda fijo, así que
+          el contenido se desliza por encima como sobre un vidrio. */}
+      <div aria-hidden className="fondo-vivo">
+        <span className="mancha mancha-1" />
+        <span className="mancha mancha-2" />
+        <span className="mancha mancha-3" />
+        <span className="trama" />
+      </div>
+
       <SideNav />
 
-      <div className="lg:pl-64">
+      <div className="relative lg:pl-64">
         <TopBar />
         <main className="animate-fade" key={location.pathname}>
           <Outlet />

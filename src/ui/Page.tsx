@@ -11,7 +11,7 @@ import { toneVivid } from './tone';
  */
 export function Page({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn('mx-auto w-full max-w-3xl px-4 pb-28 pt-4 lg:pb-10', className)}>
+    <div className={cn('mx-auto w-full max-w-3xl px-4 pb-32 pt-4 lg:pb-10', className)}>
       {children}
     </div>
   );

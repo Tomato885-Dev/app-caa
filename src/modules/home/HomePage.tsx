@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
-import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
 import { approvedOnly } from '@/core/moderation/visibility';
 import { getVisibleModules } from '@/core/modules/registry';
-import { faltaPara, formatDayMonth } from '@/core/utils/date';
 import { nombreDePila } from '@/core/utils/nombres';
 import { AnnouncementCard } from '@/modules/announcements/components/AnnouncementCard';
 import {
@@ -16,7 +14,9 @@ import {
 } from '@/modules/announcements/api';
 import { EventHighlightCard } from '@/modules/events/components/EventCard';
 import { upcoming, useEventList } from '@/modules/events/api';
-import { HoyEnElCasino } from '@/modules/casino/components/HoyEnElCasino';
+import { useMenuDeHoy } from '@/modules/casino/components/HoyEnElCasino';
+import { useBenefitList, isRedeemable, sortBenefits } from '@/modules/benefits/api';
+import { Bento } from './components/Bento';
 import { NewsFeatureCard, NewsRowCard } from '@/modules/news/components/NewsCard';
 import { sortNews, useNewsList } from '@/modules/news/api';
 import {
@@ -86,6 +86,26 @@ export function HomePage() {
   const featuredNews = useMemo(() => sortNews(approvedOnly(news.data ?? [])).slice(0, 4), [news.data]);
   const nextEvents = useMemo(() => upcoming(approvedOnly(events.data ?? [])).slice(0, 6), [events.data]);
   const proximo = nextEvents[0];
+  const casino = useMenuDeHoy();
+  const beneficios = useBenefitList();
+  const colaboradores = useMemo(
+    () => sortBenefits((beneficios.data ?? []).filter(isRedeemable)),
+    [beneficios.data],
+  );
+
+  /* Para el bloque de avisos: cuántos salieron en los últimos 7 días, y el más
+     reciente. Contar da una razón para abrir la app: "hay 3 nuevos". */
+  const { ultimoAviso, avisosDeLaSemana } = useMemo(() => {
+    const todos = [...(announcements.data ?? [])].sort((a, b) =>
+      b.publishedAt.localeCompare(a.publishedAt),
+    );
+    const haceUnaSemana = Date.now() - 7 * 86_400_000;
+    return {
+      ultimoAviso: todos[0],
+      avisosDeLaSemana: todos.filter((item) => new Date(item.publishedAt).getTime() >= haceUnaSemana)
+        .length,
+    };
+  }, [announcements.data]);
 
   // Accesos directos: todos los módulos navegables menos Inicio y el perfil.
   const shortcuts = getVisibleModules(role).filter(
@@ -96,97 +116,52 @@ export function HomePage() {
 
   return (
     <Page>
-      {/* El saludo, en el verde del colegio, con lo que viene: el próximo evento
-          y cuánto falta. Es lo primero que se ve al abrir la app, y responde
-          la pregunta con que casi todos la abren.
-
-          La decoración es verde y amarilla plana, sin transparencias: dos
-          círculos, un aro amarillo y una grilla de puntos, para que la portada
-          se sienta viva sin competir con el texto. */}
-      <header className="animate-in-up relative mb-6 overflow-hidden rounded-[1.5rem] bg-brand-500 p-5 pb-4 text-white shadow-raised">
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-brand-600"
-        />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -bottom-14 right-20 size-28 rounded-full bg-brand-400"
-        />
-        <span
-          aria-hidden
-          className="aro-flotante pointer-events-none absolute right-6 top-5 size-14 rounded-full border-[6px] border-accent-500"
-        />
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute right-5 top-[5.5rem] text-brand-300"
-          width="54"
-          height="30"
-          viewBox="0 0 54 30"
-        >
-          {[0, 1, 2].map((fila) =>
-            [0, 1, 2, 3, 4].map((col) => (
-              <circle key={`${fila}-${col}`} cx={3 + col * 12} cy={3 + fila * 12} r="2" fill="currentColor" />
-            )),
-          )}
-        </svg>
-
-        <div className="relative">
-          <p className="inline-flex rounded-full bg-brand-700 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent-500">
-            {hoyEnPalabras()}
-          </p>
-          <p className="mt-3 text-[14px] font-medium text-brand-100">{greeting()},</p>
-          <h1 className="flex items-center gap-2 text-[30px] font-extrabold leading-tight tracking-tight text-white">
+      {/* EL SALUDO. Sin tarjeta: el nombre va grande directo sobre el fondo vivo
+          de la app, como la portada de una revista. La fecha en una cinta
+          amarilla y la mano que saluda le dan el tono. */}
+      <header className="animate-in-up relative mb-5 pt-1">
+        <p className="inline-flex -rotate-2 rounded-lg bg-accent-500 px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-on-accent shadow-card">
+          {hoyEnPalabras()}
+        </p>
+        <p className="mt-3 text-[15px] font-semibold text-ink-2">{greeting()},</p>
+        <h1 className="flex items-center gap-2 text-[40px] font-black leading-[0.95] tracking-tighter text-ink">
+          <span className="texto-degradado">
             {user ? nombreDePila(user.name, user.email) : appConfig.organization.shortName}
-            <span aria-hidden className="saludo-mano inline-block origin-[70%_70%] text-[26px]">
-              👋
-            </span>
-          </h1>
-
-          {proximo ? (
-            <Link
-              to={`/eventos/${proximo.id}`}
-              className="mt-4 flex items-center gap-3 rounded-xl bg-brand-700 p-3 transition active:scale-[0.98]"
-            >
-              <span className="shrink-0 rounded-lg bg-accent-500 px-2.5 py-1.5 text-[12px] font-extrabold leading-none text-on-accent">
-                {faltaPara(proximo.startsAt, proximo.endsAt) ?? formatDayMonth(proximo.startsAt)}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-[10.5px] font-bold uppercase tracking-wider text-brand-200">
-                  Próximo evento
-                </span>
-                <span className="block truncate text-[14px] font-bold text-white">
-                  {proximo.title}
-                </span>
-              </span>
-              <ChevronRight size={18} className="shrink-0 text-brand-200" />
-            </Link>
-          ) : (
-            <p className="mt-1 text-[13.5px] text-brand-100">
-              Esto es lo que está pasando en la comunidad.
-            </p>
-          )}
-        </div>
+          </span>
+          <span aria-hidden className="saludo-mano inline-block origin-[70%_70%] text-[32px]">
+            👋
+          </span>
+        </h1>
       </header>
 
-      {/* Accesos directos a las funcionalidades principales (§6.1). */}
-      <nav aria-label="Accesos directos" className="mb-8">
-        <ul className="lista-animada grid grid-cols-4 gap-x-2 gap-y-4">
+      <Bento
+        casino={casino}
+        proximo={proximo}
+        ultimoAviso={ultimoAviso}
+        avisosDeLaSemana={avisosDeLaSemana}
+        colaboradores={colaboradores}
+      />
+
+      {/* El resto de las secciones, en una tira que se desliza. Íconos en
+          color pleno, como una pantalla de inicio de teléfono. */}
+      <nav aria-label="Todas las secciones" className="mb-8">
+        <p className="mb-2.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-ink-3">
+          Todo en la app
+        </p>
+        <ul className="no-scrollbar lista-animada -mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
           {shortcuts.map((mod) => (
-            <li key={mod.id}>
-              {/* Íconos en color pleno, como los de una pantalla de inicio de
-                  teléfono: se reconocen de lejos y hacen que la portada invite
-                  a tocar. */}
+            <li key={mod.id} className="shrink-0">
               <Link
                 to={mod.path}
-                className="group flex flex-col items-center gap-1.5 transition active:scale-90"
+                className="group flex w-[4.25rem] flex-col items-center gap-1.5 transition active:scale-90"
               >
                 <span
                   className={cn(
-                    'flex size-14 items-center justify-center rounded-[1.1rem] shadow-card transition duration-200 group-hover:-translate-y-0.5 group-hover:shadow-raised',
+                    'flex size-[3.75rem] items-center justify-center rounded-[1.3rem] shadow-card transition duration-200 group-hover:-translate-y-1 group-hover:rotate-[-4deg] group-hover:shadow-raised',
                     toneVivid[mod.tone],
                   )}
                 >
-                  <mod.icon size={24} strokeWidth={2.1} />
+                  <mod.icon size={25} strokeWidth={2.1} />
                 </span>
                 <span className="text-center text-[11px] font-semibold leading-tight text-ink">
                   {mod.nav.shortLabel ?? mod.title}
@@ -196,9 +171,6 @@ export function HomePage() {
           ))}
         </ul>
       </nav>
-
-      {/* Lo que se come hoy: lo que más gente mira cada día. */}
-      <HoyEnElCasino />
 
       {/* Comunicados del día a día (lo más operativo va primero). */}
       <section className="mb-7">

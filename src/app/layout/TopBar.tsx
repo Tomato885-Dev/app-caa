@@ -30,7 +30,7 @@ export function TopBar() {
   const ThemeIcon = themeIcon[preference];
 
   return (
-    <header className="safe-top sticky top-0 z-30 border-b border-line bg-surface lg:hidden">
+    <header className="safe-top sticky top-0 z-30 bg-canvas/70 backdrop-blur-xl backdrop-saturate-150 lg:hidden">
       <div className="flex h-14 items-center gap-1 px-2">
         {isDetailPage ? (
           <>

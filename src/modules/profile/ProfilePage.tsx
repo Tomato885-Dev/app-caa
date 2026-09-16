@@ -170,6 +170,10 @@ export function ProfilePage() {
           Política de privacidad
           <ExternalLink size={12.5} />
         </a>
+        <p className="mt-4 border-t border-line pt-3 text-[12px] text-ink-3">
+          Desarrollada por <span className="font-semibold text-ink-2">Mateo Burgos</span> para el
+          Centro de Alumnos.
+        </p>
       </Card>
 
       <div className="space-y-2">

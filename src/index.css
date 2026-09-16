@@ -100,6 +100,84 @@
   .lista-animada > :nth-child(7) { animation-delay: 210ms; }
   .lista-animada > :nth-child(n + 8) { animation-delay: 245ms; }
 
+  /* EL FONDO VIVO. Tres manchas grandes y difusas, verde y amarilla, que se
+     desplazan muy lento, más una trama de puntos que se desvanece hacia
+     abajo. Todo fijo detrás del contenido y sin recibir toques. */
+  .fondo-vivo {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .fondo-vivo .mancha {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    will-change: transform;
+  }
+  .fondo-vivo .mancha-1 {
+    width: 22rem;
+    height: 22rem;
+    top: -8rem;
+    left: -7rem;
+    background: var(--color-brand-200);
+    opacity: 0.7;
+    animation: deriva-1 22s ease-in-out infinite alternate;
+  }
+  .fondo-vivo .mancha-2 {
+    width: 18rem;
+    height: 18rem;
+    top: 14rem;
+    right: -8rem;
+    background: var(--color-accent-300);
+    opacity: 0.55;
+    animation: deriva-2 26s ease-in-out infinite alternate;
+  }
+  .fondo-vivo .mancha-3 {
+    width: 20rem;
+    height: 20rem;
+    bottom: -9rem;
+    left: 10%;
+    background: var(--color-brand-100);
+    opacity: 0.8;
+    animation: deriva-1 30s ease-in-out infinite alternate-reverse;
+  }
+  [data-theme='dark'] .fondo-vivo .mancha-1 {
+    background: var(--color-brand-600);
+    opacity: 0.45;
+  }
+  [data-theme='dark'] .fondo-vivo .mancha-2 {
+    background: var(--color-accent-600);
+    opacity: 0.12;
+  }
+  [data-theme='dark'] .fondo-vivo .mancha-3 {
+    background: var(--color-brand-700);
+    opacity: 0.4;
+  }
+  .fondo-vivo .trama {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--sf-line-strong) 1.1px, transparent 1.1px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(to bottom, black, transparent 60%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 60%);
+    opacity: 0.7;
+  }
+
+  /* El nombre del saludo, en verde con un brillo hacia el verde claro. */
+  .texto-degradado {
+    background: linear-gradient(120deg, var(--color-brand-600), var(--color-brand-400) 70%, var(--color-accent-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  [data-theme='dark'] .texto-degradado {
+    background: linear-gradient(120deg, #ffffff, var(--color-brand-200) 60%, var(--color-accent-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
   /* La mano del saludo se mueve una vez al abrir Inicio, y el aro amarillo
      de la portada flota despacio. Detalles chicos que hacen que la app se
      sienta viva; nada que distraiga de leer. */
@@ -115,10 +193,21 @@
     .animate-fade,
     .lista-animada > *,
     .saludo-mano,
-    .aro-flotante {
+    .aro-flotante,
+    .fondo-vivo .mancha {
       animation: none;
     }
   }
+}
+
+@keyframes deriva-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(4rem, 3rem) scale(1.15); }
+}
+
+@keyframes deriva-2 {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-3rem, 5rem) scale(0.9); }
 }
 
 @keyframes saludar {

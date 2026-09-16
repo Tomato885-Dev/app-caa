@@ -25,17 +25,21 @@ export function BottomNav() {
 
   return (
     <>
+      {/* UNA ISLA FLOTANTE. La barra no va pegada al borde: flota sobre el
+          contenido en verde oscuro, en los dos temas. La sección donde estás
+          se abre en una píldora amarilla con su nombre; las demás quedan como
+          ícono. Se ve distinto a cualquier app del colegio, y se usa igual. */}
       <nav
         aria-label="Navegación principal"
-        className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface shadow-nav lg:hidden"
+        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.6rem)] z-40 lg:hidden"
       >
-        <ul className="flex items-stretch">
+        <ul className="mx-auto flex max-w-md items-center justify-between gap-1 rounded-[1.75rem] bg-brand-800 p-1.5 shadow-dock ring-1 ring-white/10 dark:bg-brand-900">
           {bottom.map((mod) => (
-            <li key={mod.id} className="flex-1">
+            <li key={mod.id} className="flex min-w-0 justify-center">
               <NavLink to={mod.path} className="block" end={mod.path === '/'}>
                 {({ isActive }) => (
                   <NavItem
-                    icon={<mod.icon size={21} strokeWidth={isActive ? 2.4 : 1.9} />}
+                    icon={<mod.icon size={21} strokeWidth={isActive ? 2.5 : 2} />}
                     label={mod.nav.shortLabel ?? mod.title}
                     active={isActive}
                   />
@@ -45,15 +49,15 @@ export function BottomNav() {
           ))}
 
           {overflow.length > 0 ? (
-            <li className="flex-1">
+            <li className="flex min-w-0 justify-center">
               <button
                 type="button"
                 onClick={() => setMoreOpen(true)}
                 aria-haspopup="dialog"
-                className="w-full"
+                className="block"
               >
                 <NavItem
-                  icon={<LayoutGrid size={21} strokeWidth={moreIsActive ? 2.4 : 1.9} />}
+                  icon={<LayoutGrid size={21} strokeWidth={moreIsActive ? 2.5 : 2} />}
                   label="Más"
                   active={moreIsActive}
                 />
@@ -80,23 +84,19 @@ function NavItem({
   return (
     <span
       className={cn(
-        'flex flex-col items-center gap-1 px-1 pb-2 pt-2 transition active:scale-95',
-        active ? 'text-brand-700 dark:text-brand-300' : 'text-ink-3',
+        'flex h-12 items-center justify-center gap-2 rounded-[1.35rem] transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-90',
+        active
+          ? 'bg-accent-500 px-4 text-on-accent shadow-card'
+          : 'w-12 text-brand-200 hover:bg-brand-700 hover:text-white',
       )}
     >
-      {/* La píldora crece desde el centro al elegir la sección: se nota dónde
-          estás sin tener que leer. */}
-      <span className="relative flex h-8 w-14 items-center justify-center">
-        <span
-          aria-hidden
-          className={cn(
-            'absolute inset-0 rounded-full bg-accent-500 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
-            active ? 'scale-100' : 'scale-0',
-          )}
-        />
-        <span className={cn('relative', active && 'text-on-accent')}>{icon}</span>
-      </span>
-      <span className={cn('text-[10.5px] leading-tight', active ? 'font-bold' : 'font-medium')}>
+      {icon}
+      <span
+        className={cn(
+          'whitespace-nowrap text-[13px] font-extrabold',
+          active ? 'animate-fade' : 'sr-only',
+        )}
+      >
         {label}
       </span>
     </span>
