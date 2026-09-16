@@ -19,7 +19,10 @@ export function SectionHeader({
   return (
     <div className="mb-3 flex items-end justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-[17px] font-bold leading-tight text-ink">{title}</h2>
+        <h2 className="flex items-center gap-2 text-[18px] font-extrabold leading-tight tracking-tight text-ink">
+          <span aria-hidden className="h-[18px] w-[5px] shrink-0 rounded-full bg-accent-500" />
+          {title}
+        </h2>
         {description ? <p className="mt-0.5 text-[13px] text-ink-2">{description}</p> : null}
       </div>
 

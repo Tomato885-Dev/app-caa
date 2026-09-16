@@ -30,7 +30,7 @@ export function CardLink({ to, children, className, flush }: CardProps & { to: s
       to={to}
       className={cn(
         'block rounded-card border border-line bg-surface shadow-card overflow-hidden',
-        'transition hover:border-line-strong hover:shadow-raised active:scale-[0.995]',
+        'transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-raised active:translate-y-0 active:scale-[0.98]',
         !flush && 'p-4',
         className,
       )}

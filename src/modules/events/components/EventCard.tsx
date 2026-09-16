@@ -9,9 +9,9 @@ function DateBlock({ iso }: { iso: string }) {
   const month = new Intl.DateTimeFormat('es-CL', { month: 'short' }).format(date).replace('.', '');
 
   return (
-    <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
-      <span className="text-[19px] font-extrabold leading-none">{date.getDate()}</span>
-      <span className="mt-0.5 text-[10.5px] font-bold uppercase tracking-wide">{month}</span>
+    <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-brand-500 text-white shadow-card">
+      <span className="text-[20px] font-extrabold leading-none">{date.getDate()}</span>
+      <span className="mt-1 text-[10px] font-extrabold uppercase tracking-wider text-accent-500">{month}</span>
     </div>
   );
 }

@@ -26,7 +26,7 @@ import {
   SectionHeader,
   Skeleton,
   cn,
-  toneSoft,
+  toneVivid,
 } from '@/ui';
 
 /* ============================================================================
@@ -38,6 +38,16 @@ import {
    Los accesos directos se generan desde el registro de módulos, de modo que un
    módulo nuevo aparece aquí sin editar esta pantalla.
    ========================================================================== */
+
+/** "Martes 16 de septiembre": ubica el día sin tener que mirar el reloj. */
+function hoyEnPalabras(): string {
+  const texto = new Intl.DateTimeFormat('es-CL', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  }).format(new Date());
+  return texto.charAt(0).toUpperCase() + texto.slice(1).replace(',', '');
+}
 
 function greeting(): string {
   const hour = new Date().getHours();
@@ -88,22 +98,48 @@ export function HomePage() {
     <Page>
       {/* El saludo, en el verde del colegio, con lo que viene: el próximo evento
           y cuánto falta. Es lo primero que se ve al abrir la app, y responde
-          la pregunta con que casi todos la abren. Los círculos del fondo son
-          verdes planos, sin transparencias, como el resto de la app. */}
-      <header className="relative mb-5 overflow-hidden rounded-card bg-brand-500 p-5 text-white shadow-raised">
+          la pregunta con que casi todos la abren.
+
+          La decoración es verde y amarilla plana, sin transparencias: dos
+          círculos, un aro amarillo y una grilla de puntos, para que la portada
+          se sienta viva sin competir con el texto. */}
+      <header className="animate-in-up relative mb-6 overflow-hidden rounded-[1.5rem] bg-brand-500 p-5 pb-4 text-white shadow-raised">
         <span
           aria-hidden
           className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-brand-600"
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute -bottom-12 right-16 size-24 rounded-full bg-brand-400"
+          className="pointer-events-none absolute -bottom-14 right-20 size-28 rounded-full bg-brand-400"
         />
+        <span
+          aria-hidden
+          className="aro-flotante pointer-events-none absolute right-6 top-5 size-14 rounded-full border-[6px] border-accent-500"
+        />
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute right-5 top-[5.5rem] text-brand-300"
+          width="54"
+          height="30"
+          viewBox="0 0 54 30"
+        >
+          {[0, 1, 2].map((fila) =>
+            [0, 1, 2, 3, 4].map((col) => (
+              <circle key={`${fila}-${col}`} cx={3 + col * 12} cy={3 + fila * 12} r="2" fill="currentColor" />
+            )),
+          )}
+        </svg>
 
         <div className="relative">
-          <p className="text-[13px] font-medium text-brand-100">{greeting()},</p>
-          <h1 className="text-[28px] font-extrabold leading-tight tracking-tight text-white">
+          <p className="inline-flex rounded-full bg-brand-700 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent-500">
+            {hoyEnPalabras()}
+          </p>
+          <p className="mt-3 text-[14px] font-medium text-brand-100">{greeting()},</p>
+          <h1 className="flex items-center gap-2 text-[30px] font-extrabold leading-tight tracking-tight text-white">
             {user ? nombreDePila(user.name, user.email) : appConfig.organization.shortName}
+            <span aria-hidden className="saludo-mano inline-block origin-[70%_70%] text-[26px]">
+              👋
+            </span>
           </h1>
 
           {proximo ? (
@@ -133,23 +169,26 @@ export function HomePage() {
       </header>
 
       {/* Accesos directos a las funcionalidades principales (§6.1). */}
-      <nav aria-label="Accesos directos" className="mb-7">
-        <ul className="grid grid-cols-4 gap-2.5">
+      <nav aria-label="Accesos directos" className="mb-8">
+        <ul className="lista-animada grid grid-cols-4 gap-x-2 gap-y-4">
           {shortcuts.map((mod) => (
             <li key={mod.id}>
+              {/* Íconos en color pleno, como los de una pantalla de inicio de
+                  teléfono: se reconocen de lejos y hacen que la portada invite
+                  a tocar. */}
               <Link
                 to={mod.path}
-                className="flex flex-col items-center gap-1.5 rounded-2xl border border-line bg-surface p-2.5 transition hover:border-line-strong active:scale-[0.97]"
+                className="group flex flex-col items-center gap-1.5 transition active:scale-90"
               >
                 <span
                   className={cn(
-                    'flex h-10 w-10 items-center justify-center rounded-xl',
-                    toneSoft[mod.tone],
+                    'flex size-14 items-center justify-center rounded-[1.1rem] shadow-card transition duration-200 group-hover:-translate-y-0.5 group-hover:shadow-raised',
+                    toneVivid[mod.tone],
                   )}
                 >
-                  <mod.icon size={19} />
+                  <mod.icon size={24} strokeWidth={2.1} />
                 </span>
-                <span className="text-center text-[10.5px] font-semibold leading-tight text-ink-2">
+                <span className="text-center text-[11px] font-semibold leading-tight text-ink">
                   {mod.nav.shortLabel ?? mod.title}
                 </span>
               </Link>

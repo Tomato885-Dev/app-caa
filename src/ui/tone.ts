@@ -37,6 +37,21 @@ export const toneSolid: Record<Tone, string> = {
   neutral: 'bg-ink-3',
 };
 
+/**
+ * Color pleno con el ícono en su contraste. Para los íconos que tienen que
+ * alegrar la pantalla: accesos de Inicio y títulos de sección. El amarillo
+ * lleva siempre el ícono oscuro.
+ */
+export const toneVivid: Record<Tone, string> = {
+  brand: 'bg-brand-500 text-white',
+  accent: 'bg-accent-500 text-on-accent',
+  info: 'bg-info-500 text-white',
+  success: 'bg-success-500 text-white',
+  warning: 'bg-warning-500 text-on-accent',
+  danger: 'bg-danger-500 text-white dark:bg-surface-3 dark:text-ink',
+  neutral: 'bg-ink-2 text-surface',
+};
+
 /** Solo color de texto. */
 export const toneText: Record<Tone, string> = {
   brand: 'text-brand-600 dark:text-brand-300',

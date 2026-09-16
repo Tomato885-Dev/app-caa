@@ -80,21 +80,25 @@ function NavItem({
   return (
     <span
       className={cn(
-        'flex flex-col items-center gap-0.5 px-1 pb-1.5 pt-2 transition',
-        active ? 'text-brand-600 dark:text-brand-300' : 'text-ink-3',
+        'flex flex-col items-center gap-1 px-1 pb-2 pt-2 transition active:scale-95',
+        active ? 'text-brand-700 dark:text-brand-300' : 'text-ink-3',
       )}
     >
-      {icon}
+      {/* La píldora crece desde el centro al elegir la sección: se nota dónde
+          estás sin tener que leer. */}
+      <span className="relative flex h-8 w-14 items-center justify-center">
+        <span
+          aria-hidden
+          className={cn(
+            'absolute inset-0 rounded-full bg-accent-500 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+            active ? 'scale-100' : 'scale-0',
+          )}
+        />
+        <span className={cn('relative', active && 'text-on-accent')}>{icon}</span>
+      </span>
       <span className={cn('text-[10.5px] leading-tight', active ? 'font-bold' : 'font-medium')}>
         {label}
       </span>
-      <span
-        aria-hidden
-        className={cn(
-          'mt-0.5 h-[3px] w-6 rounded-full transition',
-          active ? 'bg-accent-500' : 'bg-transparent',
-        )}
-      />
     </span>
   );
 }

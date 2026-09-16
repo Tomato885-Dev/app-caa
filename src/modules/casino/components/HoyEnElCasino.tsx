@@ -37,7 +37,7 @@ export function HoyEnElCasino() {
   return (
     <CardLink to="/casino" className="mb-7">
       <div className="flex items-center gap-3.5">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-accent-100 text-accent-700 dark:bg-accent-950 dark:text-accent-300">
+        <span className="flex size-12 shrink-0 -rotate-3 items-center justify-center rounded-xl bg-accent-500 text-on-accent shadow-card">
           <UtensilsCrossed size={22} />
         </span>
         <div className="min-w-0 flex-1">

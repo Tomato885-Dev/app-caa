@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { findModuleByPath } from '@/core/modules/registry';
 import { cn } from './cn';
-import { toneSoft } from './tone';
+import { toneVivid } from './tone';
 
 /**
  * Contenedor estándar de página. Fija el ancho máximo en escritorio y el
@@ -46,8 +46,8 @@ export function PageHeader({
           <span
             aria-hidden
             className={cn(
-              'mt-0.5 flex size-11 shrink-0 items-center justify-center rounded-2xl',
-              toneSoft[modulo.tone],
+              'mt-0.5 flex size-11 shrink-0 -rotate-3 items-center justify-center rounded-2xl shadow-card',
+              toneVivid[modulo.tone],
             )}
           >
             <Icono size={22} />

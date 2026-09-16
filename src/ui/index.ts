@@ -1,7 +1,7 @@
 /* Punto de entrada del sistema de diseño. Los módulos importan desde '@/ui'. */
 
 export { cn } from './cn';
-export { accentSolid, toneSoft, toneSolid, toneText, type Tone } from './tone';
+export { accentSolid, toneSoft, toneSolid, toneText, toneVivid, type Tone } from './tone';
 export { BrandLogo } from './BrandLogo';
 
 export { Button, ButtonLink, IconButton, type ButtonProps } from './Button';

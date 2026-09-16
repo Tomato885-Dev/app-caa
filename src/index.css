@@ -100,13 +100,37 @@
   .lista-animada > :nth-child(7) { animation-delay: 210ms; }
   .lista-animada > :nth-child(n + 8) { animation-delay: 245ms; }
 
+  /* La mano del saludo se mueve una vez al abrir Inicio, y el aro amarillo
+     de la portada flota despacio. Detalles chicos que hacen que la app se
+     sienta viva; nada que distraiga de leer. */
+  .saludo-mano {
+    animation: saludar 1.6s ease-in-out 0.4s 1 both;
+  }
+  .aro-flotante {
+    animation: flotar 6s ease-in-out infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-in-up,
     .animate-fade,
-    .lista-animada > * {
+    .lista-animada > *,
+    .saludo-mano,
+    .aro-flotante {
       animation: none;
     }
   }
+}
+
+@keyframes saludar {
+  0%, 100% { transform: rotate(0deg); }
+  15%, 45% { transform: rotate(16deg); }
+  30%, 60% { transform: rotate(-8deg); }
+  75% { transform: rotate(0deg); }
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 @keyframes in-up {

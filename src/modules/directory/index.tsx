@@ -12,7 +12,7 @@ export const directoryModule: AppModule = {
   title: 'Contactos',
   description: 'Busca a alguien de la comunidad y contáctalo.',
   icon: BookUser,
-  tone: 'neutral',
+  tone: 'brand',
   path: '/contactos',
   nav: { section: 'secondary', order: 80 },
   routes: [{ index: true, element: <DirectoryPage /> }],
