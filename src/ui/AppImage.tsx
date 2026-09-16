@@ -52,12 +52,11 @@ interface AppImageProps {
    *   'natural' no hay marco. La imagen manda y se ve completa, con su propia
    *             proporción: un afiche vertical sale vertical y una foto
    *             apaisada sale apaisada, sin recorte ni franjas vacías.
-   *   'backdrop' la muestra entera dentro del marco, y el espacio que sobra
-   *             lo llena una copia desenfocada de la misma foto. Tarjetas
-   *             grandes de un listado: miden todas lo mismo, como con
-   *             'cover', pero un afiche vertical no pierde arriba y abajo.
+   *   'full'    a todo el ancho, con la forma original de la foto: ni recorte
+   *             ni relleno. Tarjetas de un listado. Una foto vertical hace
+   *             más alta su tarjeta, y está bien: la foto se ve como es.
    */
-  fit?: 'cover' | 'contain' | 'natural' | 'backdrop';
+  fit?: 'cover' | 'contain' | 'natural' | 'full';
 }
 
 export function AppImage({
@@ -75,7 +74,8 @@ export function AppImage({
   /* El marcador de "imagen pendiente" conserva el marco siempre: no hay
      ninguna imagen que medir todavía, y sin proporción se quedaría sin altura
      y no se vería nada. Solo la imagen ya cargada puede prescindir de él. */
-  const shape = fit === 'natural' ? cn(rounded && 'rounded-xl', className) : marco;
+  const shape =
+    fit === 'natural' || fit === 'full' ? cn(rounded && 'rounded-xl', className) : marco;
 
   const ausente = fallback ?? (
     <PlaceholderBox
@@ -106,40 +106,11 @@ function LoadedImage({
   alt: string;
   shape: string;
   ausente: ReactNode;
-  fit: 'cover' | 'contain' | 'natural' | 'backdrop';
+  fit: 'cover' | 'contain' | 'natural' | 'full';
 }) {
   const [failed, setFailed] = useState(false);
 
   if (failed) return <>{ausente}</>;
-
-  if (fit === 'backdrop') {
-    /* Las dos imágenes van en posición absoluta, y la altura la pone solo el
-       marco con su proporción. Es a propósito: en el carrusel de Inicio las
-       tarjetas se estiran a la misma altura, y una imagen que midiera su alto
-       por su cuenta volvería a tapar el título de abajo, como ya pasó.
-
-       La copia de fondo va oscurecida para que la foto se distinga de su
-       propio reflejo. Una foto que ya es 16:9 la tapa entera, y se ve igual
-       que con 'cover'. */
-    return (
-      <div className={cn('relative w-full overflow-hidden bg-surface-2', shape)}>
-        <img
-          src={src}
-          alt=""
-          aria-hidden
-          decoding="async"
-          className="absolute inset-0 h-full w-full scale-110 object-cover blur-xl brightness-75"
-        />
-        <img
-          src={src}
-          alt={alt}
-          decoding="async"
-          onError={() => setFailed(true)}
-          className="absolute inset-0 h-full w-full object-contain"
-        />
-      </div>
-    );
-  }
 
   /* `cn` concatena sin resolver conflictos, así que las clases de encaje se
      eligen aquí una sola vez en vez de superponerse. */
@@ -157,7 +128,10 @@ function LoadedImage({
            `className="h-full"` y sigue funcionando igual. */
         fit === 'contain'
         ? 'w-full object-contain p-1.5'
-        : 'w-full object-cover';
+        : fit === 'full'
+          ? /* Todo el ancho y la altura que pida la foto: ni recorte ni relleno. */
+            'block h-auto w-full'
+          : 'w-full object-cover';
 
   return (
     <img

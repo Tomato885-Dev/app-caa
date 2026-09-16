@@ -7,7 +7,7 @@ import { AppImage, Badge, CardLink } from '@/ui';
 export function NewsFeatureCard({ post }: { post: NewsPost }) {
   return (
     <CardLink to={`/noticias/${post.id}`} flush>
-      <AppImage imageKey={post.imageKey} ratio="16/9" rounded={false} fit="backdrop" />
+      <AppImage imageKey={post.imageKey} ratio="16/9" rounded={false} fit="full" />
       <div className="p-4">
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <Badge tone="brand">{post.category}</Badge>

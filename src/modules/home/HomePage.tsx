@@ -169,7 +169,10 @@ export function HomePage() {
             <p className="text-[13.5px] text-ink-2">No hay eventos programados por ahora.</p>
           </Card>
         ) : (
-          <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+          /* `items-start`: cada tarjeta mide lo que mide su foto. Sin esto se
+             estiran todas hasta la mas alta, y la de foto baja queda con un
+             hueco vacio debajo del texto. */
+          <div className="no-scrollbar -mx-4 flex items-start gap-3 overflow-x-auto px-4 pb-1">
             {nextEvents.map((event) => (
               <EventHighlightCard key={event.id} event={event} />
             ))}
