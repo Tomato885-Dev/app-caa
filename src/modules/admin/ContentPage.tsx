@@ -3,6 +3,7 @@ import { Bell, FileStack, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { usingServer } from '@/core/data';
 import { AvisoDuplicado, enviarAviso } from '@/core/notifications/enviar';
+import { resumenDelAviso } from '@/core/notifications/resumen';
 import { sportDisciplineLabel, sportLevelLabel } from '@/content/taxonomies';
 import {
   ANNOUNCEMENT_PRIORITY_LABEL,
@@ -96,12 +97,8 @@ export function ContentPage() {
         ruta: `/comunicados/${item.id}`,
         origen: item.id,
       });
-      notify(
-        resultado.enviados === 0
-          ? 'Nadie tiene los avisos activados todavía.'
-          : `Aviso enviado a ${resultado.enviados} de ${resultado.total} dispositivos.`,
-        resultado.enviados === 0 ? 'info' : undefined,
-      );
+      const { texto, tipo } = resumenDelAviso(resultado);
+      notify(texto, tipo);
     } catch (caught) {
       notify(
         caught instanceof AvisoDuplicado
