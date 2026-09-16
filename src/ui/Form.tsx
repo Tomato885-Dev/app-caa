@@ -14,8 +14,12 @@ import { cn } from './cn';
    asociadas al control mediante `id`/`htmlFor`.
    ========================================================================== */
 
+/* 16 píxeles, y no menos. En iPhone, tocar un campo con letra más chica hace
+   que el sistema acerque la pantalla solo, y después no la vuelve a alejar:
+   "la app a veces hace zoom". Pasaba al escribir el correo para entrar, en
+   los buscadores y en todos los formularios. */
 const fieldBase =
-  'w-full rounded-field border border-line bg-surface px-3.5 text-[15px] text-ink ' +
+  'w-full rounded-field border border-line bg-surface px-3.5 text-[16px] text-ink ' +
   'placeholder:text-ink-3 transition outline-none ' +
   'focus:border-brand-400 focus:ring-4 focus:ring-brand-500/10 ' +
   'disabled:bg-surface-2 disabled:text-ink-3';
