@@ -22,6 +22,12 @@
 #                                   comprobar que todo funciona.
 #   compilar-y-subir                Ademas lo entrega a App Store Connect, y
 #                                   ahi queda listo para enviarlo a revision.
+#
+# LA VERSION
+#   Se escribe al lanzar el flujo: 1.1, 1.2, 2.0. Es el numero que ve la gente
+#   en la App Store, y Apple no acepta repetir uno ya publicado. El que dice el
+#   proyecto (1.0) queda solo como respaldo: este campo lo reemplaza siempre.
+#   El numero de compilacion, en cambio, no se escribe: lo pone GitHub solo.
 # ============================================================================
 
 name: Compilar para App Store
@@ -37,6 +43,10 @@ on:
         options:
           - solo-compilar
           - compilar-y-subir
+      version:
+        description: Version que ve la gente en la App Store, por ejemplo 1.1. Tiene que ser mayor que la publicada.
+        required: true
+        type: string
 
 jobs:
   compilar:
@@ -51,6 +61,23 @@ jobs:
     steps:
       - name: Traer el codigo
         uses: actions/checkout@v5
+
+      # La version la escribe una persona a mano al lanzar el flujo. Se revisa
+      # aqui, al principio: con una version mal escrita Apple rechaza la
+      # compilacion, pero el rechazo llega recien al final, despues de quince
+      # minutos de maquina.
+      #
+      # Llega por una variable y no pegada en el script: lo que se escribe en
+      # ese campo nunca se ejecuta como comando.
+      - name: Revisar la version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+(\.[0-9]+)?$'; then
+            echo "::error::La version '$VERSION' no sirve. Tiene que ser como 1.1 o 1.1.1, solo numeros y puntos."
+            exit 1
+          fi
+          echo "Se va a compilar la version $VERSION, compilacion ${{ github.run_number }}"
 
       # Apple exige compilar con un SDK reciente y rechaza el envio si no lo
       # es: "This app was built with the iOS 18.5 SDK". Las maquinas traen
@@ -198,6 +225,8 @@ jobs:
       # Apple exige que cada envio traiga uno distinto, y llevarlo a mano es la
       # forma mas facil de que un envio salga rechazado por repetido.
       - name: Archivar
+        env:
+          VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
           # Los ajustes de firma NO se pasan por aqui: xcodebuild los aplicaria
@@ -210,6 +239,7 @@ jobs:
             -configuration Release \
             -destination "generic/platform=iOS" \
             -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            MARKETING_VERSION="$VERSION" \
             CURRENT_PROJECT_VERSION=${{ github.run_number }}
 
       - name: Preparar las opciones de exportacion
