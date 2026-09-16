@@ -78,16 +78,34 @@ async function abrirNavegador(opciones = {}) {
   return chromium.launch({ ...opciones, ...(canal ? { channel: canal } : {}) });
 }
 
-/* Desde la 1.1 entran Casino, Eventos y Central de apuntes: son lo nuevo, y
-   la primera captura (Inicio) ya resume casino, eventos y avisos. */
+/* Desde la 1.1 entran Casino y Eventos: son lo nuevo, y la primera captura
+   (Inicio) ya resume casino, eventos y avisos.
+
+   `antes` deja la pantalla como tiene que salir. En Casino se va al día que
+   tiene minuta cargada (el 1 de septiembre de 2026): la semana de hoy puede
+   estar vacía, y una captura que dice "todavía no está la minuta" no sirve en
+   la tienda. Si cambia la minuta, cambiar el día aquí. */
+const DIA_DEL_CASINO = { semanasAtras: 2, etiqueta: /1 de septiembre/i };
+
 const PANTALLAS = [
   { archivo: '1-inicio', ruta: '/', espera: 'Comunicados' },
-  { archivo: '2-casino', ruta: '/casino', espera: 'Casino' },
+  {
+    archivo: '2-casino',
+    ruta: '/casino',
+    espera: 'Casino',
+    antes: async (pagina) => {
+      for (let i = 0; i < DIA_DEL_CASINO.semanasAtras; i += 1) {
+        await pagina.getByRole('button', { name: 'Semana anterior' }).click();
+        await pagina.waitForTimeout(300);
+      }
+      await pagina.getByRole('button', { name: DIA_DEL_CASINO.etiqueta }).first().click();
+      await pagina.waitForTimeout(500);
+    },
+  },
   { archivo: '3-eventos', ruta: '/eventos', espera: 'Eventos' },
   { archivo: '4-comunicados', ruta: '/comunicados', espera: 'Comunicados' },
   { archivo: '5-colaboradores', ruta: '/colaboradores', espera: 'Colaboradores' },
-  { archivo: '6-apuntes', ruta: '/apuntes', espera: 'Apuntes' },
-  { archivo: '7-noticias', ruta: '/noticias', espera: 'Noticias' },
+  { archivo: '6-noticias', ruta: '/noticias', espera: 'Noticias' },
 ];
 
 const args = process.argv.slice(2);
@@ -159,6 +177,7 @@ async function capturar(nombreTienda, medidas, sufijo) {
     /* Las imágenes entran después del primer dibujo. Sin esperarlas, la
        captura sale con huecos grises donde deberían ir las fotos. */
     await pagina.waitForTimeout(2500);
+    if (pantalla.antes) await pantalla.antes(pagina);
     await pagina.evaluate(() =>
       Promise.all(
         Array.from(document.images)
