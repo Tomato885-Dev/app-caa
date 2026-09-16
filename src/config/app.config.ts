@@ -104,7 +104,7 @@ export const appConfig: AppConfig = {
     term: 'Periodo 2027',
     privacyUrl: 'https://sites.google.com/view/appcaa',
     supportUrl: 'https://sites.google.com/view/appcaa/soporte',
-    instagramUrl: '',
+    instagramUrl: 'https://www.instagram.com/caacvd/',
   },
 
   auth: {
