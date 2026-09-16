@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { CalendarClock, FileQuestion, ScrollText, Store, Ticket } from 'lucide-react';
+import { CalendarClock, Clock, FileQuestion, ScrollText, Store, Ticket } from 'lucide-react';
 import { formatDate } from '@/core/utils/date';
 import {
   AppImage,
@@ -15,22 +15,20 @@ import {
   Skeleton,
 } from '@/ui';
 import { isRedeemable, useBenefit } from './api';
+import { diasParaVencer, terminoDelConvenio } from './canje';
+import { ComoCanjear } from './components/ComoCanjear';
 
 /* ============================================================================
-   FICHA DEL BENEFICIO
+   FICHA DEL COLABORADOR
    ----------------------------------------------------------------------------
-   Primero se explica de qué se trata y recién después se entrega el código.
+   Quién es, qué entrega, CÓMO SE CANJEA y hasta cuándo. Lo del canje va
+   antes que las condiciones porque es lo que se busca parado en la caja.
 
-   AQUÍ HUBO UN CÓDIGO QR
-   Durante un tiempo cada beneficio mostraba un QR a pantalla completa, pensado
-   para que el comercio lo escaneara. Ningún comercio escaneaba nada: no hay
-   lector al otro lado ni sistema que valide un canje, así que el estudiante
-   enseñaba un cuadro negro que no significaba nada y el cajero lo miraba sin
-   saber qué hacer.
-
-   Lo que sí funciona es lo que ya existía como respaldo: un código corto que
-   se muestra o se dicta en voz alta, y que el local reconoce porque se lo pasó
-   el Centro de Alumnos al cerrar el convenio. Eso es ahora lo único que hay.
+   AQUÍ HUBO UN CÓDIGO INVENTADO
+   Primero cada convenio tenía un QR que ningún local escaneaba, y después un
+   "código de canje" que inventaba el Centro de Alumnos y el local no conocía.
+   Ahora cada convenio dice su propia forma, la que definió el local: un
+   código, un QR, una tienda en línea o unos pasos (ver `canje.ts`).
    ========================================================================== */
 
 export function BenefitDetailPage() {
@@ -61,6 +59,8 @@ export function BenefitDetailPage() {
   }
 
   const available = isRedeemable(benefit);
+  const termino = terminoDelConvenio(benefit.validUntil);
+  const quedan = available ? diasParaVencer(benefit.validUntil) : null;
 
   return (
     <Page>
@@ -91,6 +91,11 @@ export function BenefitDetailPage() {
             ) : (
               <Badge tone="danger">No disponible</Badge>
             )}
+            {quedan !== null ? (
+              <Badge tone="warning" icon={Clock}>
+                {quedan === 0 ? 'Vence hoy' : quedan === 1 ? 'Vence mañana' : `Vence en ${quedan} días`}
+              </Badge>
+            ) : null}
           </div>
         </div>
       </header>
@@ -100,6 +105,8 @@ export function BenefitDetailPage() {
         <Prose text={benefit.description} />
       </section>
 
+      {available && benefit.redeem ? <ComoCanjear benefit={benefit} redeem={benefit.redeem} /> : null}
+
       {benefit.terms ? (
         <section className="mb-6">
           <SectionHeader title="Condiciones de uso" />
@@ -108,26 +115,6 @@ export function BenefitDetailPage() {
               <ScrollText size={17} className="mt-0.5 shrink-0 text-ink-3" />
               <p className="text-[13.5px] leading-relaxed text-ink-2">{benefit.terms}</p>
             </div>
-          </Card>
-        </section>
-      ) : null}
-
-      {/* El codigo de canje, cuando el convenio tiene uno. Va antes de los
-          datos del local porque es lo que la persona viene a buscar cuando
-          abre esta pantalla estando en la caja.
-
-          `select-all` hace que un toque lo seleccione entero: es mas facil
-          copiarlo que leerlo en voz alta sin equivocarse. */}
-      {available && benefit.code ? (
-        <section className="mb-6">
-          <SectionHeader title="Código de canje" />
-          <Card>
-            <p className="select-all break-all text-center font-mono text-[22px] font-bold tracking-wide text-ink">
-              {benefit.code}
-            </p>
-            <p className="mt-3 text-center text-[12.5px] leading-relaxed text-ink-2">
-              Muéstralo o dítalo en caja al pedir el beneficio.
-            </p>
           </Card>
         </section>
       ) : null}
@@ -146,8 +133,8 @@ export function BenefitDetailPage() {
           icon={CalendarClock}
           label="Vigencia"
           value={
-            benefit.validUntil
-              ? `Hasta el ${formatDate(benefit.validUntil)}`
+            termino
+              ? `Hasta el ${formatDate(termino)}`
               : 'Sin fecha de término definida'
           }
         />

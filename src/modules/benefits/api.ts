@@ -3,6 +3,7 @@ import type { CreateInput } from '@/core/data';
 import { useCollection, useDataMutation, useEntity } from '@/core/hooks/useData';
 import type { Benefit, ID } from '@/core/types';
 import { isPast } from '@/core/utils/date';
+import { terminoDelConvenio } from './canje';
 
 export function useBenefitList() {
   return useCollection('benefits', db.benefits);
@@ -17,7 +18,8 @@ export function useBenefit(id: ID | undefined) {
  * los administradores, pero deja de ofrecer el código a los estudiantes.
  */
 export function isRedeemable(benefit: Benefit): boolean {
-  return benefit.active && (!benefit.validUntil || !isPast(benefit.validUntil));
+  const termino = terminoDelConvenio(benefit.validUntil);
+  return benefit.active && (!termino || !isPast(termino));
 }
 
 /**

@@ -1,24 +1,58 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Globe, KeyRound, ListChecks, QrCode, Trash2, Upload, type LucideIcon } from 'lucide-react';
 import { benefitCategories } from '@/content/taxonomies';
-import type { Benefit } from '@/core/types';
+import { usingServer } from '@/core/data';
+import { subirFoto } from '@/core/images/subir';
+import type { Benefit, RedeemMethod } from '@/core/types';
 import { useCreateBenefit, useUpdateBenefit } from '@/modules/benefits/api';
-import { Button, Field, SelectField, Sheet, TextField, useToast } from '@/ui';
+import {
+  FORMAS_DE_CANJE,
+  aCampoDeFecha,
+  erroresDelCanje,
+  finDelDia,
+  limpiarCanje,
+} from '@/modules/benefits/canje';
+import { Button, Field, SelectField, Sheet, TextField, cn, useToast } from '@/ui';
 import { ImageKeyField } from './ImageKeyField';
-
-function toDateInput(iso: string | undefined): string {
-  return iso ? new Date(iso).toISOString().slice(0, 10) : '';
-}
 
 /* ============================================================================
    CARGA Y EDICION DE LOS CONVENIOS
    ----------------------------------------------------------------------------
-   Aqui habia un campo obligatorio con el contenido de un codigo QR. Se quito:
-   ningun local escaneaba nada, y exigirlo obligaba a inventar un dato que no
-   servia para cerrar un convenio.
+   Cada convenio dice COMO se canjea, con la forma que definio el local: un
+   codigo, un QR, una tienda en linea o unos pasos. Ya no existe el "codigo de
+   canje" que inventaba la app: al guardar un convenio antiguo, se borra.
 
-   Queda el codigo de canje, que ahora es opcional. Hay convenios que se
-   canjean solo diciendo que uno es del colegio, y antes no se podian cargar.
+   Lo que se pide depende de la forma elegida, y solo se guarda eso: si se
+   cambia de QR a codigo, la imagen del QR no queda dando vueltas.
    ========================================================================== */
+
+const ICONO: Record<RedeemMethod, LucideIcon> = {
+  codigo: KeyRound,
+  qr: QrCode,
+  enlace: Globe,
+  indicaciones: ListChecks,
+};
+
+const VACIO = {
+  name: '',
+  partner: '',
+  summary: '',
+  description: '',
+  terms: '',
+  category: benefitCategories[0] as string,
+  logoImageKey: '',
+  method: '' as RedeemMethod | '',
+  redeemCode: '',
+  qrImage: '',
+  qrValue: '',
+  url: '',
+  steps: '',
+  validUntil: '',
+  active: true,
+};
+
+type FormState = typeof VACIO;
+
 export function BenefitFormSheet({
   open,
   onClose,
@@ -32,20 +66,7 @@ export function BenefitFormSheet({
   const create = useCreateBenefit();
   const update = useUpdateBenefit();
 
-  const empty = {
-    name: '',
-    partner: '',
-    summary: '',
-    description: '',
-    terms: '',
-    category: benefitCategories[0] as string,
-    logoImageKey: '',
-    code: '',
-    validUntil: '',
-    active: true,
-  };
-
-  const [form, setForm] = useState(empty);
+  const [form, setForm] = useState<FormState>(VACIO);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -61,18 +82,21 @@ export function BenefitFormSheet({
             terms: editing.terms ?? '',
             category: editing.category,
             logoImageKey: editing.logoImageKey ?? '',
-            code: editing.code ?? '',
-            validUntil: toDateInput(editing.validUntil),
+            method: editing.redeem?.method ?? '',
+            redeemCode: editing.redeem?.code ?? '',
+            qrImage: editing.redeem?.qrImage ?? '',
+            qrValue: editing.redeem?.qrValue ?? '',
+            url: editing.redeem?.url ?? '',
+            steps: editing.redeem?.steps ?? '',
+            validUntil: aCampoDeFecha(editing.validUntil),
             active: editing.active,
           }
-        : empty,
+        : VACIO,
     );
-    // `empty` es una constante literal; no necesita entrar en las dependencias.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, editing]);
 
-  const set = (key: keyof typeof form, value: string | boolean) => {
-    setForm((current) => ({ ...current, [key]: value }));
+  const set = (key: keyof FormState | 'qr', value: string | boolean) => {
+    if (key !== 'qr') setForm((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: '' }));
   };
 
@@ -83,8 +107,30 @@ export function BenefitFormSheet({
     if (form.summary.trim().length < 10) nextErrors.summary = 'Resume el beneficio en una línea.';
     if (form.description.trim().length < 30)
       nextErrors.description = 'Explica de qué se trata el beneficio.';
+
+    const canje = form.method
+      ? limpiarCanje({
+          method: form.method,
+          code: form.redeemCode,
+          qrImage: form.qrImage,
+          qrValue: form.qrValue,
+          url: form.url,
+          steps: form.steps,
+        })
+      : null;
+
+    if (!canje) {
+      nextErrors.method = 'Elige cómo se canjea este beneficio.';
+    } else {
+      const delCanje = erroresDelCanje(canje);
+      if (delCanje.code) nextErrors.redeemCode = delCanje.code;
+      if (delCanje.qr) nextErrors.qr = delCanje.qr;
+      if (delCanje.url) nextErrors.url = delCanje.url;
+      if (delCanje.steps) nextErrors.steps = delCanje.steps;
+    }
+
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0 || !canje) return;
 
     const payload = {
       name: form.name.trim(),
@@ -94,8 +140,10 @@ export function BenefitFormSheet({
       terms: form.terms.trim() || undefined,
       category: form.category,
       logoImageKey: form.logoImageKey || undefined,
-      code: form.code.trim() || undefined,
-      validUntil: form.validUntil ? new Date(form.validUntil).toISOString() : undefined,
+      redeem: canje,
+      // El código inventado de antes se borra al guardar.
+      code: undefined,
+      validUntil: form.validUntil ? finDelDia(form.validUntil) : undefined,
       active: form.active,
     };
 
@@ -171,6 +219,13 @@ export function BenefitFormSheet({
           hint="Explicación completa del convenio. Separa los párrafos con un salto de línea."
         />
 
+        <FormaDeCanje
+          form={form}
+          errors={errors}
+          set={set}
+          legacy={Boolean(editing?.code && !editing.redeem)}
+        />
+
         <TextField
           label="Condiciones de uso (opcional)"
           multiline
@@ -189,19 +244,11 @@ export function BenefitFormSheet({
         />
 
         <TextField
-          label="Código de canje (opcional)"
-          value={form.code}
-          onChange={(event) => set('code', event.target.value)}
-          placeholder="CAA2027-COMBO-2X1"
-          hint="Lo que el estudiante muestra o dicta en caja. Tiene que ser el mismo que se acordó con el local. Si el convenio no usa código, déjalo vacío."
-        />
-
-        <TextField
           label="Vigente hasta (opcional)"
           type="date"
           value={form.validUntil}
           onChange={(event) => set('validUntil', event.target.value)}
-          hint="Al vencer, el beneficio deja de poder canjearse pero se mantiene en el listado."
+          hint="Vale hasta el final de ese día. Faltando dos semanas, los alumnos ven cuántos días quedan; al vencer, deja de poder canjearse."
         />
 
         <ImageKeyField
@@ -225,5 +272,222 @@ export function BenefitFormSheet({
         </Field>
       </div>
     </Sheet>
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   COMO SE CANJEA
+   Primero se elige la forma, y recien ahi aparecen sus campos. Para el QR
+   manda la imagen que mando el local; si lo mando como enlace o texto, se
+   pega y la app lo dibuja.
+   -------------------------------------------------------------------------- */
+
+function FormaDeCanje({
+  form,
+  errors,
+  set,
+  legacy,
+}: {
+  form: FormState;
+  errors: Record<string, string>;
+  set: (key: keyof FormState | 'qr', value: string | boolean) => void;
+  legacy: boolean;
+}) {
+  const entrada = useRef<HTMLInputElement>(null);
+  const [subiendo, setSubiendo] = useState(false);
+  const [errorSubida, setErrorSubida] = useState('');
+
+  const subirQr = async (archivo: File | undefined) => {
+    if (!archivo) return;
+    setErrorSubida('');
+    setSubiendo(true);
+    try {
+      const foto = await subirFoto(archivo);
+      set('qrImage', foto.url);
+      set('qr', '');
+    } catch (caught) {
+      setErrorSubida(caught instanceof Error ? caught.message : 'No se pudo subir la imagen.');
+    } finally {
+      setSubiendo(false);
+    }
+  };
+
+  const soloPasos = form.method === 'indicaciones';
+
+  return (
+    <Field label="Cómo se canjea" required error={errors.method}>
+      <div className="space-y-3.5">
+        {legacy ? (
+          <p className="rounded-field border border-line bg-surface-2 px-3 py-2.5 text-[12.5px] leading-relaxed text-ink-2">
+            Este convenio tenía un código inventado por la app, que ya no se muestra. Elige la forma
+            que usa el local de verdad.
+          </p>
+        ) : null}
+
+        <div role="radiogroup" aria-label="Forma de canje" className="grid grid-cols-2 gap-2">
+          {FORMAS_DE_CANJE.map((opcion) => {
+            const Icono = ICONO[opcion.value];
+            const elegida = form.method === opcion.value;
+            return (
+              <button
+                key={opcion.value}
+                type="button"
+                role="radio"
+                aria-checked={elegida}
+                onClick={() => set('method', opcion.value)}
+                className={cn(
+                  'rounded-field border p-3 text-left transition active:scale-[0.98]',
+                  elegida
+                    ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500 dark:bg-brand-950'
+                    : 'border-line hover:bg-surface-2',
+                )}
+              >
+                <Icono
+                  size={18}
+                  className={elegida ? 'text-brand-600 dark:text-brand-300' : 'text-ink-3'}
+                />
+                <p className="mt-1.5 text-[13.5px] font-semibold text-ink">{opcion.label}</p>
+                <p className="mt-0.5 text-[11.5px] leading-snug text-ink-3">{opcion.description}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        {form.method === 'codigo' ? (
+          <TextField
+            label="Código"
+            required
+            value={form.redeemCode}
+            error={errors.redeemCode}
+            onChange={(event) => set('redeemCode', event.target.value)}
+            placeholder="VERBO15"
+            hint="Exactamente el que te dio el local."
+            autoCapitalize="characters"
+            autoComplete="off"
+            maxLength={60}
+          />
+        ) : null}
+
+        {form.method === 'qr' ? (
+          <div className="space-y-3">
+            {form.qrImage ? (
+              <div className="flex items-center gap-3 rounded-field border border-line p-3">
+                <img
+                  src={form.qrImage}
+                  alt="QR del convenio"
+                  className="size-20 shrink-0 rounded-lg bg-white object-contain p-1"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-semibold text-ink">QR subido</p>
+                  <p className="text-[12px] text-ink-3">Los alumnos lo verán así, sobre blanco.</p>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={Trash2}
+                  onClick={() => set('qrImage', '')}
+                  aria-label="Quitar el QR"
+                />
+              </div>
+            ) : usingServer ? (
+              <div className="rounded-field border-2 border-dashed border-line bg-surface-2 p-4 text-center">
+                <QrCode size={20} className="mx-auto text-ink-3" />
+                <p className="mt-1.5 text-[12.5px] font-medium text-ink-2">
+                  Sube la imagen del QR que te mandó el local
+                </p>
+                <p className="mt-0.5 text-[11.5px] text-ink-3">
+                  Una captura sirve, si se ve el QR entero y nítido.
+                </p>
+                <input
+                  ref={entrada}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => {
+                    void subirQr(event.target.files?.[0]);
+                    event.target.value = '';
+                  }}
+                />
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={Upload}
+                  loading={subiendo}
+                  onClick={() => entrada.current?.click()}
+                  className="mt-2.5"
+                >
+                  {subiendo ? 'Subiendo…' : 'Elegir imagen'}
+                </Button>
+                {errorSubida ? (
+                  <p className="mt-2 text-[12px] font-medium text-danger-500">{errorSubida}</p>
+                ) : null}
+              </div>
+            ) : null}
+
+            {!form.qrImage ? (
+              <TextField
+                label={usingServer ? 'O pega lo que contiene el QR' : 'Contenido del QR'}
+                value={form.qrValue}
+                onChange={(event) => {
+                  set('qrValue', event.target.value);
+                  set('qr', '');
+                }}
+                placeholder="https://… o el texto que te dieron"
+                hint="Si el local te lo mandó como enlace o texto, la app dibuja el QR."
+                autoComplete="off"
+              />
+            ) : null}
+
+            {errors.qr ? (
+              <p className="text-[12.5px] font-medium text-danger-500">{errors.qr}</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {form.method === 'enlace' ? (
+          <>
+            <TextField
+              label="Enlace de la tienda"
+              required
+              type="url"
+              inputMode="url"
+              value={form.url}
+              error={errors.url}
+              onChange={(event) => set('url', event.target.value)}
+              placeholder="https://tienda.cl/verbo"
+              autoComplete="off"
+            />
+            <TextField
+              label="Cupón (opcional)"
+              value={form.redeemCode}
+              onChange={(event) => set('redeemCode', event.target.value)}
+              placeholder="VERBO15"
+              hint="El código de descuento que se pega al pagar, si lo hay."
+              autoCapitalize="characters"
+              autoComplete="off"
+              maxLength={60}
+            />
+          </>
+        ) : null}
+
+        {form.method ? (
+          <TextField
+            label={soloPasos ? 'Pasos para canjearlo' : 'Indicaciones extra (opcional)'}
+            required={soloPasos}
+            multiline
+            rows={soloPasos ? 4 : 3}
+            value={form.steps}
+            error={errors.steps}
+            onChange={(event) => set('steps', event.target.value)}
+            placeholder={
+              soloPasos
+                ? 'Muestra tu credencial del colegio en caja.\nPide el descuento antes de pagar.'
+                : 'Pídelo antes de pagar.'
+            }
+            hint="Un paso por línea. La app los numera sola."
+          />
+        ) : null}
+      </div>
+    </Field>
   );
 }

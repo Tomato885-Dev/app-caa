@@ -33,7 +33,7 @@ import { seedUsers } from './users';
    ========================================================================== */
 
 /** Versión del contenido de ejemplo. Subirla fuerza a re-sembrar. */
-const FALLBACK_VERSION = '2026-09-16.casino-y-apuntes';
+const FALLBACK_VERSION = '2026-09-16.formas-de-canje';
 
 interface ContentFile {
   version?: string;

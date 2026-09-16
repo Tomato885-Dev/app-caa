@@ -1,11 +1,22 @@
-import { Ticket } from 'lucide-react';
+import { Clock, Globe, KeyRound, ListChecks, QrCode, Ticket, type LucideIcon } from 'lucide-react';
+import type { RedeemMethod } from '@/core/types';
 import type { Benefit } from '@/core/types';
 import { AppImage, Avatar, Badge, CardLink } from '@/ui';
 import { isRedeemable } from '../api';
+import { ETIQUETA_DEL_CANJE, diasParaVencer } from '../canje';
+
+const ICONO_DEL_CANJE: Record<RedeemMethod, LucideIcon> = {
+  codigo: KeyRound,
+  qr: QrCode,
+  enlace: Globe,
+  indicaciones: ListChecks,
+};
 
 /** Tarjeta del listado de colaboradores: quién es y qué beneficio entrega. */
 export function BenefitCard({ benefit }: { benefit: Benefit }) {
   const available = isRedeemable(benefit);
+  const quedan = available ? diasParaVencer(benefit.validUntil) : null;
+  const forma = benefit.redeem?.method;
 
   return (
     <CardLink to={`/colaboradores/${benefit.id}`}>
@@ -38,13 +49,20 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
 
           <div className="mt-2.5 flex flex-wrap items-center gap-2">
             <Badge tone="neutral">{benefit.category}</Badge>
+            {/* Cómo se canjea, de un vistazo: así se sabe antes de ir al local
+                si hay que llevar un código, mostrar un QR o comprar en línea. */}
             {available ? (
-              <Badge tone="accent" icon={Ticket}>
-                Canjeable
+              <Badge tone="accent" icon={forma ? ICONO_DEL_CANJE[forma] : Ticket}>
+                {forma ? ETIQUETA_DEL_CANJE[forma] : 'Canjeable'}
               </Badge>
             ) : (
               <Badge tone="danger">No disponible</Badge>
             )}
+            {quedan !== null ? (
+              <Badge tone="warning" icon={Clock}>
+                {quedan === 0 ? 'Vence hoy' : quedan === 1 ? 'Vence mañana' : `Vence en ${quedan} días`}
+              </Badge>
+            ) : null}
           </div>
         </div>
       </div>

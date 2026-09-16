@@ -10,9 +10,10 @@ import type { Benefit } from '@/core/types';
    QUÉ EDITAR EN CADA UNO
      · El nombre del colaborador y qué beneficio entrega.
      · La descripción y las condiciones de uso.
-     · `code`: lo que el estudiante muestra o dicta en caja. Puede ser un
-       identificador o una dirección de validación. Debe ser distinto en cada
-       colaborador.
+     · `redeem`: cómo se canjea, con la forma que definió el local (un
+       código, un QR, una tienda en línea o unos pasos). Ver
+       `modules/benefits/canje.ts`. Los cuatro primeros traen un ejemplo de
+       cada forma; el resto queda sin definir, como un convenio recién cargado.
 
    Van sin logotipo. Para agregarlos se declaran en `content/images.ts` con
    claves que empiecen por `benefit.` y se eligen desde el mismo formulario.
@@ -31,7 +32,7 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-01',
-    code: 'CAA2026-COLAB-01',
+    redeem: { method: 'codigo', code: 'VERBO15', steps: 'Pídelo antes de pagar.' },
     active: true,
     createdAt: iso(1),
     updatedAt: iso(1),
@@ -46,7 +47,7 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-02',
-    code: 'CAA2026-COLAB-02',
+    redeem: { method: 'qr', qrValue: 'https://example.com/convenio-demo', steps: 'Muestra el QR en caja.' },
     active: true,
     createdAt: iso(2),
     updatedAt: iso(2),
@@ -61,7 +62,7 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-03',
-    code: 'CAA2026-COLAB-03',
+    redeem: { method: 'enlace', url: 'https://example.com/tienda', code: 'VERBO10' },
     active: true,
     createdAt: iso(3),
     updatedAt: iso(3),
@@ -76,7 +77,10 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-04',
-    code: 'CAA2026-COLAB-04',
+    redeem: {
+      method: 'indicaciones',
+      steps: 'Muestra tu credencial del colegio en caja.\nDi que vienes por el convenio del Centro de Alumnos.',
+    },
     active: true,
     createdAt: iso(4),
     updatedAt: iso(4),
@@ -91,7 +95,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-05',
-    code: 'CAA2026-COLAB-05',
     active: true,
     createdAt: iso(5),
     updatedAt: iso(5),
@@ -106,7 +109,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-06',
-    code: 'CAA2026-COLAB-06',
     active: true,
     createdAt: iso(6),
     updatedAt: iso(6),
@@ -121,7 +123,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-07',
-    code: 'CAA2026-COLAB-07',
     active: true,
     createdAt: iso(7),
     updatedAt: iso(7),
@@ -136,7 +137,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-08',
-    code: 'CAA2026-COLAB-08',
     active: true,
     createdAt: iso(8),
     updatedAt: iso(8),
@@ -151,7 +151,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-09',
-    code: 'CAA2026-COLAB-09',
     active: true,
     createdAt: iso(9),
     updatedAt: iso(9),
@@ -166,7 +165,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-10',
-    code: 'CAA2026-COLAB-10',
     active: true,
     createdAt: iso(10),
     updatedAt: iso(10),
@@ -181,7 +179,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-11',
-    code: 'CAA2026-COLAB-11',
     active: true,
     createdAt: iso(11),
     updatedAt: iso(11),
@@ -196,7 +193,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-12',
-    code: 'CAA2026-COLAB-12',
     active: true,
     createdAt: iso(12),
     updatedAt: iso(12),
@@ -211,7 +207,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-13',
-    code: 'CAA2026-COLAB-13',
     active: true,
     createdAt: iso(13),
     updatedAt: iso(13),
@@ -226,7 +221,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-14',
-    code: 'CAA2026-COLAB-14',
     active: true,
     createdAt: iso(14),
     updatedAt: iso(14),
@@ -241,7 +235,6 @@ export const seedBenefits: Benefit[] = [
     terms: 'Pendiente de completar: vigencia, tope de canjes y restricciones.',
     category: 'Otros',
     logoImageKey: 'benefit.colaborador-15',
-    code: 'CAA2026-COLAB-15',
     active: true,
     createdAt: iso(15),
     updatedAt: iso(15),

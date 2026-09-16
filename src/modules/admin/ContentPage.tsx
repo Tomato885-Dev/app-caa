@@ -27,6 +27,7 @@ import {
 import { ordenarCarpetas, useCarpetas, useDeleteCarpeta } from '@/modules/apuntes/api';
 import { cursoDeGeneracion } from '@/modules/apuntes/generacion';
 import { sortBenefits, useBenefitList, useDeleteBenefit } from '@/modules/benefits/api';
+import { ETIQUETA_DEL_CANJE, terminoDelConvenio } from '@/modules/benefits/canje';
 import { ordenarMinutas, useDeleteMinuta, useMinutas } from '@/modules/casino/api';
 import { nombreDelMes } from '@/modules/casino/fechas';
 import { useDeleteEvent, useEventList } from '@/modules/events/api';
@@ -347,8 +348,12 @@ export function ContentPage() {
               <ContentRow
                 key={benefit.id}
                 title={`${benefit.name} · ${benefit.partner}`}
-                meta={`${benefit.category} · ${benefit.active ? 'activo' : 'inactivo'}${
-                  benefit.validUntil ? ` · hasta el ${formatDate(benefit.validUntil)}` : ''
+                meta={`${benefit.redeem ? ETIQUETA_DEL_CANJE[benefit.redeem.method] : 'FALTA CÓMO SE CANJEA'} · ${
+                  benefit.active ? 'activo' : 'inactivo'
+                }${
+                  benefit.validUntil
+                    ? ` · hasta el ${formatDate(terminoDelConvenio(benefit.validUntil) ?? benefit.validUntil)}`
+                    : ''
                 }`}
                 onEdit={() => setBenefitForm({ open: true, editing: benefit })}
                 onDelete={() => {

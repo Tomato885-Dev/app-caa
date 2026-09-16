@@ -220,12 +220,39 @@ export interface Benefit extends BaseEntity {
   terms?: string;
   category: string;
   logoImageKey?: string;
-  /** Código que el estudiante muestra o dicta en caja. Opcional: hay
-   *  convenios que se canjean solo diciendo que uno es del colegio. */
+  /** Cómo se canjea. Cada local tiene su forma; si falta, la ficha no promete
+   *  nada y el panel avisa que hay que completarlo. */
+  redeem?: BenefitRedeem;
+  /** @deprecated Código de canje inventado por la app. Ya no se muestra ni se
+   *  guarda: al editar un convenio se borra. */
   code?: string;
   /** Fecha de término del convenio, ISO 8601. */
   validUntil?: string;
   active: boolean;
+}
+
+/**
+ * Las formas de canjear un convenio. Cada una la define el local, no la app:
+ *   · codigo       un código que el local entregó, y que se dicta o se muestra.
+ *   · qr           un QR que el local entregó, y que escanean en caja.
+ *   · enlace       una tienda en línea, con o sin cupón.
+ *   · indicaciones basta con seguir unos pasos: mostrar la credencial, decir
+ *                  que uno es del colegio…
+ */
+export type RedeemMethod = 'codigo' | 'qr' | 'enlace' | 'indicaciones';
+
+export interface BenefitRedeem {
+  method: RedeemMethod;
+  /** El código del local (forma `codigo`) o el cupón de la tienda (`enlace`). */
+  code?: string;
+  /** El QR como imagen, tal como lo mandó el local (forma `qr`). */
+  qrImage?: string;
+  /** O el contenido del QR, si el local lo mandó como texto o enlace. */
+  qrValue?: string;
+  /** Dirección de la tienda en línea (forma `enlace`). */
+  url?: string;
+  /** Pasos a seguir, uno por línea. En `indicaciones` es lo único que hay. */
+  steps?: string;
 }
 
 /* --- 365 · Resultados de las selecciones ------------------------------------
