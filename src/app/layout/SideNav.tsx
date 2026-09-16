@@ -18,7 +18,7 @@ export function SideNav() {
   const { all } = getNavGroups(role);
 
   return (
-    <aside className="fixed inset-y-0 left-0 hidden w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
       <div className="flex items-center gap-2.5 px-5 py-5">
         <BrandLogo size="md" />
         <div className="min-w-0 flex-1">

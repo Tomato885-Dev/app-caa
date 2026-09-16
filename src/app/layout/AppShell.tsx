@@ -31,7 +31,7 @@ export function AppShell() {
 
       <SideNav />
 
-      <div className="relative lg:pl-64">
+      <div className="lg:pl-64">
         <TopBar />
         <main className="animate-fade" key={location.pathname}>
           <Outlet />
