@@ -138,11 +138,32 @@ es el caso, así que no hay nada extra que hacer.
 Apple usa campos que Google no tiene. La descripcion larga de arriba sirve
 igual; estos son los que hay que escribir aparte.
 
-**Subtitulo** (maximo 30 caracteres, sale bajo el nombre):
+**Nombre** (maximo 30 caracteres). Desde la version 1.1:
 
 ```
-Colegio Del Verbo Divino
+CAA Verbo Divino
 ```
+
+En la 1.0 era "App CAA". Se cambio porque "CAA" tambien es la sigla de
+Comunicacion Aumentativa y Alternativa: buscando "App CAA", la app salia sexta,
+detras de cinco apps de autismo. "CAA Verbo Divino" ya salia primera. El nombre
+es lo que mas pesa en la busqueda.
+
+El nombre del icono en el telefono NO cambia: sigue diciendo "App CAA", porque
+ese sale del codigo (`appName` en `capacitor.config.ts`), no de la ficha.
+
+Apple no deja repetir el nombre de otra app. Si App Store Connect dice que ya
+esta usado, avisar antes de inventar otro.
+
+**Subtitulo** (maximo 30 caracteres, sale bajo el nombre). Desde la 1.1:
+
+```
+Centro de Alumnos
+```
+
+En la 1.0 era "Colegio Del Verbo Divino". Con "Verbo Divino" ya en el nombre,
+repetirlo aqui no suma: Apple junta nombre, subtitulo y palabras clave en un
+solo indice.
 
 **Texto promocional** (maximo 170, se puede cambiar sin publicar una version
 nueva):
@@ -151,11 +172,16 @@ nueva):
 Los comunicados, los eventos y los beneficios del Centro de Alumnos, en tu telefono. El acceso es solo para la comunidad del colegio, con correo @verbo.cl.
 ```
 
-**Palabras clave** (maximo 100 caracteres, separadas por coma y sin espacios):
+**Palabras clave** (maximo 100 caracteres, separadas por coma y sin espacios).
+Desde la 1.1:
 
 ```
-centro de alumnos,colegio,comunicados,eventos,estudiantes,escolar,caa,verbo divino
+colegio,comunicados,eventos,estudiantes,escolar,noticias,calendario,convenios,cursos,avisos
 ```
+
+La regla: **ninguna palabra que ya este en el nombre o el subtitulo**. Apple
+los junta, y repetir solo gasta espacio. Las de la 1.0 repetian "caa", "verbo
+divino", "centro" y "alumnos".
 
 **Categoria**: Educacion. Sin categoria secundaria.
 
@@ -190,4 +216,22 @@ base de contactos de la comunidad.
 
 Los estudiantes no pueden publicar contenido: solo la directiva del Centro de
 Alumnos y los equipos designados por el colegio.
+```
+
+Desde el 12 de septiembre de 2026, las notas completas para el revisor estan
+en `docs/apple/2-notas-app-review.txt`, en ingles. Esas son las que valen.
+
+---
+
+## Novedades de la version 1.1
+
+App Store lo pide en cada version nueva, en "Novedades de esta version". Lo lee
+la gente que ya tiene la app, antes de actualizar: por eso habla de lo que
+notan ellos y no de los arreglos internos.
+
+```
+• Los comunicados cortos ya se pueden publicar.
+• Las fotos de noticias, eventos y proyectos se ven completas en los listados, sin recortes.
+• Si llevas un tiempo usando la app, podemos preguntarte qué te parece.
+• El equipo del Centro de Alumnos se entera cuando una notificación no llega.
 ```
