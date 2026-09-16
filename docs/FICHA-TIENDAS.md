@@ -33,7 +33,9 @@ QUÉ ENCUENTRAS
 • Calendario — Todo el año, mes a mes.
 • 365 — Los resultados de las competencias entre cursos.
 • Proyectos — En qué está trabajando el Centro de Alumnos y cómo va cada cosa.
-• Colaboradores — Los convenios y descuentos vigentes, con sus requisitos.
+• Casino — La minuta de la semana, con lo que hay hoy.
+• Central de apuntes — Las carpetas de apuntes de tu generación.
+• Colaboradores — Los convenios y descuentos vigentes, y cómo canjear cada uno.
 • Contactos — La comunidad del colegio, para escribirle a alguien sin tener
   que preguntar su correo.
 
@@ -56,7 +58,15 @@ completa desde la propia aplicación, sin pedírselo a nadie.
 
 Política de privacidad: https://sites.google.com/view/appcaa
 Soporte: https://sites.google.com/view/appcaa/soporte
+
+Desarrollada por Mateo Burgos para el Centro de Alumnos.
 ```
+
+Desde la 1.1 la descripcion suma Casino y Central de apuntes, y la ultima
+linea con quien la desarrollo. El nombre que Apple muestra bajo la app (el
+"vendedor") es el del titular de la cuenta de desarrollador y no se puede
+cambiar desde la ficha: por eso el credito va aqui. La descripcion solo se
+puede editar al preparar una version nueva.
 
 ---
 
