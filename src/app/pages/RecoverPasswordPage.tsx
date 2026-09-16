@@ -7,6 +7,7 @@ import { checkPassword, passwordStrength } from '@/core/auth/passwordPolicy';
 import { CODE_MIN_LENGTH, normalizeCode } from '@/core/auth/verification';
 import { Button, Field, Input, PasswordField, SplashScreen } from '@/ui';
 import { AuthLayout } from './AuthLayout';
+import { EsperaDelCorreo } from './EsperaDelCorreo';
 
 /* ============================================================================
    RECUPERAR LA CONTRASEÑA
@@ -38,6 +39,7 @@ export function RecoverPasswordPage() {
   const [repeat, setRepeat] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [enviadoEn, setEnviadoEn] = useState(0);
 
   const check = useMemo(() => checkPassword(password, email), [password, email]);
   const strength = useMemo(() => passwordStrength(password), [password]);
@@ -51,6 +53,7 @@ export function RecoverPasswordPage() {
     setSubmitting(true);
     try {
       await requestPasswordReset(email);
+      setEnviadoEn(Date.now());
       setStep(2);
     } catch (caught) {
       setError(caught instanceof AuthError ? caught.message : 'No fue posible enviar el código.');
@@ -191,6 +194,8 @@ export function RecoverPasswordPage() {
               llegar un código. Revisa también la carpeta de spam.
             </p>
           </div>
+
+          <EsperaDelCorreo enviadoEn={enviadoEn} />
 
           <Field label="Código del correo" htmlFor="recover-code" required>
             <input

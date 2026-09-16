@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, ShieldCheck, UserCheck, X } from 'lucide-react';
+import { ArrowRight, Check, Clock, ShieldCheck, UserCheck, X } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { AuthError, useAuth, type AccountPreview } from '@/core/auth/AuthContext';
 import { checkPassword, passwordStrength } from '@/core/auth/passwordPolicy';
@@ -202,6 +202,14 @@ export function RegisterPage() {
             error={mismatch ? 'Las dos contraseñas no coinciden.' : undefined}
           />
 
+          <p className="flex gap-2 text-[12.5px] leading-relaxed text-ink-2">
+            <Clock size={15} className="mt-0.5 shrink-0 text-ink-3" />
+            <span>
+              Al apretar, te mandamos un código a tu correo.{' '}
+              <span className="font-semibold text-ink">Puede tardar hasta 3 minutos en llegar.</span>
+            </span>
+          </p>
+
           <Button
             type="submit"
             size="lg"
@@ -210,7 +218,7 @@ export function RegisterPage() {
             disabled={!check.valid || mismatch || repeat.length === 0}
             className="w-full"
           >
-            Activar cuenta y entrar
+            Activar cuenta
           </Button>
 
           <button
@@ -260,6 +268,8 @@ export function RegisterPage() {
           >
             Continuar
           </Button>
+
+          <ComoSeActiva />
         </form>
       )}
 
@@ -278,6 +288,38 @@ export function RegisterPage() {
         </Link>
       </div>
     </AuthLayout>
+  );
+}
+
+/* Lo que viene, dicho antes de empezar: así nadie se sorprende de que haya un
+   código, ni de que se demore, ni cree que tiene que activar la cuenta cada vez. */
+function ComoSeActiva() {
+  const pasos = [
+    ['Escribe tu correo del colegio', 'La app te muestra tu nombre para confirmar que eres tú.'],
+    ['Crea tu contraseña', 'La vas a usar siempre para entrar.'],
+    ['Escribe el código que llega a tu correo', 'Puede tardar hasta 3 minutos. Revisa también spam.'],
+  ];
+  return (
+    <div className="rounded-field border border-line bg-surface-2 p-4">
+      <p className="text-[12px] font-bold uppercase tracking-wider text-ink-3">Cómo se activa</p>
+      <ol className="mt-3 space-y-3">
+        {pasos.map(([titulo, detalle], indice) => (
+          <li key={titulo} className="flex gap-3">
+            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-500 text-[12px] font-bold text-white">
+              {indice + 1}
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[13px] font-semibold text-ink">{titulo}</span>
+              <span className="block text-[12.5px] leading-relaxed text-ink-3">{detalle}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+      <p className="mt-3 border-t border-line pt-3 text-[12.5px] leading-relaxed text-ink-2">
+        Se hace <span className="font-semibold text-ink">una sola vez</span>. Después entras
+        siempre desde Iniciar sesión.
+      </p>
+    </div>
   );
 }
 

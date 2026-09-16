@@ -82,6 +82,30 @@ export function LoginPage() {
       title="Iniciar sesión"
       description={`${appConfig.organization.institution} · Plataforma de participación estudiantil.`}
     >
+      {/* PRIMERO SE ACTIVA. Estaba al fondo, bajo el formulario, y mucha gente
+          intentaba iniciar sesión sin haber activado nunca su cuenta: no tenía
+          contraseña que escribir y la app le respondía "contraseña incorrecta". */}
+      <div className="mb-6 rounded-field border border-brand-200 bg-brand-50 p-4 dark:border-brand-500/40 dark:bg-brand-950">
+        <p className="text-[14px] font-bold text-brand-700 dark:text-brand-300">
+          ¿Primera vez en la app?
+        </p>
+        <p className="mt-1 text-[13px] leading-relaxed text-ink-2">
+          Antes de iniciar sesión tienes que <span className="font-semibold text-ink">activar tu
+          cuenta</span>. Se hace una sola vez y te llega un código al correo.
+        </p>
+        <Link
+          to="/registro"
+          className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-field bg-brand-500 px-4 text-sm font-semibold text-white transition hover:bg-brand-600 active:scale-[0.98]"
+        >
+          <UserPlus size={17} />
+          Activar mi cuenta
+        </Link>
+      </div>
+
+      <p className="mb-3 text-[12px] font-bold uppercase tracking-wider text-ink-3">
+        Ya activé mi cuenta
+      </p>
+
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -123,7 +147,14 @@ export function LoginPage() {
           aria-invalid={Boolean(error)}
         />
 
-        <Button type="submit" size="lg" icon={LogIn} loading={submitting} className="w-full">
+        <Button
+          type="submit"
+          size="lg"
+          variant="secondary"
+          icon={LogIn}
+          loading={submitting}
+          className="w-full"
+        >
           Entrar
         </Button>
       </form>
@@ -158,21 +189,6 @@ export function LoginPage() {
             ) : null}
           </>
         )}
-      </div>
-
-      {/* Puerta al registro: la primera vez nadie tiene contraseña todavía. */}
-      <div className="mt-6 rounded-field border border-line bg-surface-2 p-4 text-center">
-        <p className="text-[13px] font-semibold text-ink">¿Es tu primera vez?</p>
-        <p className="mt-1 text-[12.5px] leading-relaxed text-ink-2">
-          Si estás en la nómina del colegio, crea tu contraseña una sola vez.
-        </p>
-        <Link
-          to="/registro"
-          className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-field border border-line bg-surface px-4 text-sm font-semibold text-ink transition hover:bg-surface-3"
-        >
-          <UserPlus size={17} />
-          Activar mi cuenta
-        </Link>
       </div>
 
       <div className="mt-6 flex gap-2.5 rounded-field border border-line bg-surface-2 p-3.5">

@@ -123,11 +123,17 @@ export async function entrar(
   if (!error) return;
 
   if (/not confirmed/i.test(error.message)) {
-    throw new Error('Tu cuenta está a medio activar: falta escribir el código del correo.');
+    throw new Error(
+      'Tu cuenta está a medio activar: falta el código del correo. Ve a "Activar mi cuenta", ' +
+        'escribe tu correo y la misma contraseña, y te llegará un código nuevo.',
+    );
   }
   // Mismo mensaje para correo y clave equivocados: no confirma cuáles existen.
   if (/invalid login credentials/i.test(error.message)) {
-    throw new Error('Correo o contraseña incorrectos.');
+    throw new Error(
+      'Correo o contraseña incorrectos. Si nunca has entrado a la app, primero tienes que ' +
+        'activar tu cuenta.',
+    );
   }
   throw new Error(`No fue posible iniciar sesión: ${error.message}`);
 }

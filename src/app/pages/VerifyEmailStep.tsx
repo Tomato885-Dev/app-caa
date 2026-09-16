@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { MailCheck, RefreshCw, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { AuthError, useAuth, type PendingVerification } from '@/core/auth/AuthContext';
 import { CODE_MIN_LENGTH, normalizeCode, secondsUntilResend } from '@/core/auth/verification';
+import { usingServer } from '@/core/data';
 import { Button, Field } from '@/ui';
+import { DEMORA_DEL_CORREO, EsperaDelCorreo, segundosDesde } from './EsperaDelCorreo';
 
 /* ============================================================================
    PASO DE VERIFICACIÓN DEL CORREO
@@ -27,14 +29,23 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
   const [notice, setNotice] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [resending, setResending] = useState(false);
-  const [wait, setWait] = useState(() => secondsUntilResend(pending.id));
+  const [enviadoEn, setEnviadoEn] = useState(() => Date.now());
 
-  // Cuenta atrás del reenvío. Se reinicia con cada código nuevo.
+  /* Cuánto falta para poder pedir otro código. Con servidor se espera lo que
+     tarda el correo: pedir otro antes anula el que ya viene en camino, y la
+     persona termina escribiendo un código que ya no sirve. */
+  const faltaParaReenviar = () =>
+    usingServer
+      ? Math.max(0, DEMORA_DEL_CORREO - segundosDesde(enviadoEn))
+      : secondsUntilResend(pending.id);
+  const [wait, setWait] = useState(faltaParaReenviar);
+
   useEffect(() => {
-    setWait(secondsUntilResend(pending.id));
-    const timer = window.setInterval(() => setWait(secondsUntilResend(pending.id)), 1000);
+    setWait(faltaParaReenviar());
+    const timer = window.setInterval(() => setWait(faltaParaReenviar()), 1000);
     return () => window.clearInterval(timer);
-  }, [pending.id, pending.devCode, pending.sent]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pending.id, pending.devCode, pending.sent, enviadoEn]);
 
   const handleSubmit = async () => {
     if (code.length < CODE_MIN_LENGTH) {
@@ -67,6 +78,7 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
           : 'Generamos un código nuevo.',
       );
       setCode('');
+      setEnviadoEn(Date.now());
     } catch (caught) {
       setError(caught instanceof AuthError ? caught.message : 'No fue posible enviar otro código.');
     } finally {
@@ -99,6 +111,8 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
           {pending.expiresInMinutes} minutos.
         </p>
       </div>
+
+      {pending.sent ? <EsperaDelCorreo enviadoEn={enviadoEn} /> : null}
 
       {/* Modo desarrollo: sin servicio de correo, el código se muestra aquí. */}
       {pending.devCode ? (
@@ -164,7 +178,9 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
           disabled={wait > 0}
           onClick={() => void handleResend()}
         >
-          {wait > 0 ? `Reenviar en ${wait}s` : 'Enviar otro código'}
+          {wait > 0
+            ? `Otro código en ${Math.floor(wait / 60)}:${String(wait % 60).padStart(2, '0')}`
+            : 'Enviar otro código'}
         </Button>
 
         <button
@@ -177,8 +193,8 @@ export function VerifyEmailStep({ pending }: { pending: PendingVerification }) {
       </div>
 
       <p className="text-[12px] leading-relaxed text-ink-3">
-        ¿No te llega? Revisa la carpeta de spam. Si sigue sin aparecer, avísale al Centro de
-        Alumnos.
+        Si pides otro código, el anterior deja de servir: usa siempre el último que llegó. Si
+        después de eso no aparece, avísale al Centro de Alumnos.
       </p>
     </div>
   );
