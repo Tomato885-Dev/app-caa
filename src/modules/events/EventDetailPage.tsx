@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { CalendarDays, ClipboardList, Clock, FileQuestion, Mail, MapPin, User } from 'lucide-react';
-import { formatDate, formatTime } from '@/core/utils/date';
+import { dayKey, faltaPara, formatDate, formatTime } from '@/core/utils/date';
 import {
   AppImage,
   Badge,
@@ -41,9 +41,13 @@ export function EventDetailPage() {
     );
   }
 
-  const dateLabel = event.endsAt
-    ? `${formatDate(event.startsAt)} — ${formatDate(event.endsAt)}`
-    : formatDate(event.startsAt);
+  /* Solo se muestra un rango si de verdad son días distintos. Antes un evento
+     de una tarde decía "18 de septiembre — 18 de septiembre". */
+  const dateLabel =
+    event.endsAt && dayKey(event.endsAt) !== dayKey(event.startsAt)
+      ? `${formatDate(event.startsAt)} — ${formatDate(event.endsAt)}`
+      : formatDate(event.startsAt);
+  const falta = faltaPara(event.startsAt, event.endsAt);
 
   const timeLabel = event.endsAt
     ? `${formatTime(event.startsAt)} a ${formatTime(event.endsAt)}`
@@ -53,9 +57,10 @@ export function EventDetailPage() {
     <Page>
       <AppImage imageKey={event.imageKey} ratio="16/9" fit="natural" className="mb-5" />
 
-      <Badge tone="brand" className="mb-3">
-        {event.category}
-      </Badge>
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <Badge tone="brand">{event.category}</Badge>
+        {falta ? <Badge tone="accent">{falta}</Badge> : null}
+      </div>
 
       <h1 className="text-[25px] font-extrabold leading-[1.2] tracking-tight text-ink">
         {event.title}

@@ -1,6 +1,6 @@
 import { MapPin } from 'lucide-react';
 import type { EventItem } from '@/core/types';
-import { formatTime, parseDate } from '@/core/utils/date';
+import { faltaPara, formatTime, parseDate } from '@/core/utils/date';
 import { AppImage, Badge, CardLink } from '@/ui';
 
 /** Bloque de fecha: día grande + mes, como en un calendario impreso. */
@@ -17,6 +17,8 @@ function DateBlock({ iso }: { iso: string }) {
 }
 
 export function EventCard({ event }: { event: EventItem }) {
+  const falta = faltaPara(event.startsAt, event.endsAt);
+
   return (
     <CardLink to={`/eventos/${event.id}`}>
       <div className="flex gap-3.5">
@@ -25,6 +27,7 @@ export function EventCard({ event }: { event: EventItem }) {
         <div className="min-w-0 flex-1">
           <div className="mb-1.5 flex items-center gap-2">
             <Badge tone="neutral">{event.category}</Badge>
+            {falta ? <Badge tone="accent">{falta}</Badge> : null}
             <span className="text-[12px] font-medium text-ink-3">{formatTime(event.startsAt)}</span>
           </div>
 
@@ -42,12 +45,15 @@ export function EventCard({ event }: { event: EventItem }) {
 
 /** Variante ancha con imagen, usada en el carrusel de Inicio. */
 export function EventHighlightCard({ event }: { event: EventItem }) {
+  const falta = faltaPara(event.startsAt, event.endsAt);
+
   return (
     <CardLink to={`/eventos/${event.id}`} flush className="w-64 shrink-0 sm:w-72">
       <AppImage imageKey={event.imageKey} ratio="16/9" rounded={false} fit="full" />
       <div className="p-3.5">
         <div className="mb-1 flex items-center gap-2">
           <Badge tone="brand">{event.category}</Badge>
+          {falta ? <Badge tone="accent">{falta}</Badge> : null}
         </div>
         <h3 className="line-clamp-2 text-[14.5px] font-bold leading-snug text-ink">{event.title}</h3>
         <p className="mt-1 flex items-center gap-1.5 text-[12px] text-ink-2">

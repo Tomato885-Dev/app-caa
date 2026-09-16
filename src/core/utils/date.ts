@@ -66,6 +66,42 @@ export function formatCountdown(iso: string): string | null {
   return 'Cierra hoy';
 }
 
+/**
+ * Cuánto falta para un evento: "Hoy", "Mañana", "En 3 días", o "En curso" si
+ * dura varios días y ya empezó. Cuenta días del calendario y no horas: algo a
+ * las 9 de la mañana de pasado mañana es "En 2 días", aunque falten 40 horas.
+ *
+ * Más allá de `maxDias` devuelve `null`: a un mes de distancia, la fecha dice
+ * más que un "En 31 días".
+ */
+export function faltaPara(inicioISO: string, finISO?: string, maxDias = 7): string | null {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  const inicio = new Date(parseDate(inicioISO));
+  inicio.setHours(0, 0, 0, 0);
+
+  // Math.round y no floor: un cambio de horario deja días de 23 o 25 horas.
+  const dias = Math.round((inicio.getTime() - hoy.getTime()) / 86_400_000);
+
+  if (dias < 0) {
+    if (!finISO) return null;
+    const fin = new Date(parseDate(finISO));
+    fin.setHours(0, 0, 0, 0);
+    return fin.getTime() >= hoy.getTime() ? 'En curso' : null;
+  }
+  if (dias === 0) return 'Hoy';
+  if (dias === 1) return 'Mañana';
+  if (dias <= maxDias) return `En ${dias} días`;
+  return null;
+}
+
+/** "26 sept" — para un espacio chico, sin día de la semana ni hora. */
+export function formatDayMonth(iso: string): string {
+  return new Intl.DateTimeFormat(LOCALE, { day: 'numeric', month: 'short' })
+    .format(parseDate(iso))
+    .replace('.', '');
+}
+
 export function isPast(iso: string): boolean {
   return parseDate(iso).getTime() < Date.now();
 }

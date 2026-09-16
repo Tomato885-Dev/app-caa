@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
+import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
 import { approvedOnly } from '@/core/moderation/visibility';
 import { getVisibleModules } from '@/core/modules/registry';
+import { faltaPara, formatDayMonth } from '@/core/utils/date';
 import { nombreDePila } from '@/core/utils/nombres';
 import { AnnouncementCard } from '@/modules/announcements/components/AnnouncementCard';
 import {
@@ -72,6 +74,7 @@ export function HomePage() {
   );
   const featuredNews = useMemo(() => sortNews(approvedOnly(news.data ?? [])).slice(0, 4), [news.data]);
   const nextEvents = useMemo(() => upcoming(approvedOnly(events.data ?? [])).slice(0, 6), [events.data]);
+  const proximo = nextEvents[0];
 
   // Accesos directos: todos los módulos navegables menos Inicio y el perfil.
   const shortcuts = getVisibleModules(role).filter(
@@ -82,14 +85,50 @@ export function HomePage() {
 
   return (
     <Page>
-      <header className="mb-5">
-        <p className="text-[13px] font-medium text-ink-3">{greeting()},</p>
-        <h1 className="text-[26px] font-extrabold leading-tight tracking-tight text-ink">
-          {user ? nombreDePila(user.name, user.email) : appConfig.organization.shortName}
-        </h1>
-        <p className="mt-1 text-[13.5px] text-ink-2">
-          Esto es lo que está pasando en la comunidad.
-        </p>
+      {/* El saludo, en el verde del colegio, con lo que viene: el próximo evento
+          y cuánto falta. Es lo primero que se ve al abrir la app, y responde
+          la pregunta con que casi todos la abren. Los círculos del fondo son
+          verdes planos, sin transparencias, como el resto de la app. */}
+      <header className="relative mb-5 overflow-hidden rounded-card bg-brand-500 p-5 text-white shadow-raised">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-brand-600"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -bottom-12 right-16 size-24 rounded-full bg-brand-400"
+        />
+
+        <div className="relative">
+          <p className="text-[13px] font-medium text-brand-100">{greeting()},</p>
+          <h1 className="text-[28px] font-extrabold leading-tight tracking-tight text-white">
+            {user ? nombreDePila(user.name, user.email) : appConfig.organization.shortName}
+          </h1>
+
+          {proximo ? (
+            <Link
+              to={`/eventos/${proximo.id}`}
+              className="mt-4 flex items-center gap-3 rounded-xl bg-brand-700 p-3 transition active:scale-[0.98]"
+            >
+              <span className="shrink-0 rounded-lg bg-accent-500 px-2.5 py-1.5 text-[12px] font-extrabold leading-none text-on-accent">
+                {faltaPara(proximo.startsAt, proximo.endsAt) ?? formatDayMonth(proximo.startsAt)}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[10.5px] font-bold uppercase tracking-wider text-brand-200">
+                  Próximo evento
+                </span>
+                <span className="block truncate text-[14px] font-bold text-white">
+                  {proximo.title}
+                </span>
+              </span>
+              <ChevronRight size={18} className="shrink-0 text-brand-200" />
+            </Link>
+          ) : (
+            <p className="mt-1 text-[13.5px] text-brand-100">
+              Esto es lo que está pasando en la comunidad.
+            </p>
+          )}
+        </div>
       </header>
 
       {/* Accesos directos a las funcionalidades principales (§6.1). */}
