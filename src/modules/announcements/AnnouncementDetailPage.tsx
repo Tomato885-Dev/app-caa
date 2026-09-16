@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   CalendarClock,
@@ -9,6 +10,7 @@ import {
   Users,
 } from 'lucide-react';
 import { announcementPriorityTone } from '@/content/taxonomies';
+import { pedirCalificacionSiCorresponde } from '@/core/calificacion';
 import { ANNOUNCEMENT_PRIORITY_LABEL } from '@/core/types';
 import { formatDate, formatTime } from '@/core/utils/date';
 import {
@@ -27,6 +29,11 @@ import { isClosed, useAnnouncement } from './api';
 export function AnnouncementDetailPage() {
   const { id } = useParams();
   const { data: item, isLoading } = useAnnouncement(id);
+
+  /* Quien acaba de leer algo que le sirvió es quien mejor puede calificar la
+     app. Solo se pide si ya la usó varios días, y el sistema decide al final. */
+  const cargado = Boolean(item);
+  useEffect(() => (cargado ? pedirCalificacionSiCorresponde() : undefined), [cargado]);
 
   if (isLoading) {
     return (

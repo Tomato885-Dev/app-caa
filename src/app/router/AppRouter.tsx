@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import { RequireAuth, RequireRole } from '@/core/auth/guards';
+import { contarDiasDeUso } from '@/core/calificacion';
 import { escucharNativo } from '@/core/notifications/nativo';
 import { getModules, registerModules } from '@/core/modules/registry';
 import type { AppModule } from '@/core/modules/types';
@@ -66,6 +67,8 @@ const router = createBrowserRouter([
    ahorrar.
    -------------------------------------------------------------------------- */
 escucharNativo((ruta) => void router.navigate(ruta));
+// Para saber cuándo alguien ya usó la app lo suficiente como para calificarla.
+contarDiasDeUso();
 
 export function AppRouter() {
   return <RouterProvider router={router} />;

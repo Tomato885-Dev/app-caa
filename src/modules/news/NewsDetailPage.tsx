@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FileQuestion } from 'lucide-react';
+import { pedirCalificacionSiCorresponde } from '@/core/calificacion';
 import { formatDate } from '@/core/utils/date';
 import { AppImage, Avatar, Badge, ButtonLink, EmptyState, Page, Prose, Skeleton } from '@/ui';
 import { useNewsItem } from './api';
@@ -7,6 +9,11 @@ import { useNewsItem } from './api';
 export function NewsDetailPage() {
   const { id } = useParams();
   const { data: post, isLoading } = useNewsItem(id);
+
+  /* Quien acaba de leer algo que le sirvió es quien mejor puede calificar la
+     app. Solo se pide si ya la usó varios días, y el sistema decide al final. */
+  const cargado = Boolean(post);
+  useEffect(() => (cargado ? pedirCalificacionSiCorresponde() : undefined), [cargado]);
 
   if (isLoading) {
     return (
