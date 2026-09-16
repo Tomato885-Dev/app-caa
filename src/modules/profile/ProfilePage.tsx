@@ -79,6 +79,13 @@ export function ProfilePage() {
           </div>
         </div>
 
+        {/* Los estudiantes no editan su nombre: viene de la nómina y lo ve toda la
+            comunidad. Si está mal escrito, lo corrige el equipo desde Cuentas y
+            permisos. */}
+        <p className="mt-4 border-t border-line pt-3 text-[12.5px] leading-relaxed text-ink-3">
+          ¿Tu nombre o tu curso están mal escritos? Avísale al Centro de Alumnos y lo corregimos.
+        </p>
+
         {user.bio ? (
           <p className="mt-4 text-[13.5px] leading-relaxed text-ink-2">{user.bio}</p>
         ) : null}

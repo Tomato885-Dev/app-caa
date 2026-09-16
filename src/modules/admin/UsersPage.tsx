@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { EyeOff, KeyRound, Phone, Search, UserCog } from 'lucide-react';
+import { EyeOff, KeyRound, Pencil, Phone, Search, UserCog } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { clearPassword, hasPassword } from '@/core/auth/credentials';
 import { clearVerification, isVerified } from '@/core/auth/verification';
@@ -27,6 +27,7 @@ import {
   type ActivationSummary,
 } from './activaciones';
 import { ActivationSummaryCard } from './components/ActivationSummaryCard';
+import { NombreFormSheet } from './components/NombreFormSheet';
 
 /* Cuentas y permisos (§8). Define quién administra, quién modera y quién
    participa como estudiante. */
@@ -44,6 +45,7 @@ export function UsersPage() {
   const [activatedIds, setActivatedIds] = useState<Set<ID>>(() => new Set());
   const [verifiedIds, setVerifiedIds] = useState<Set<ID>>(() => new Set());
   const [summary, setSummary] = useState<ActivationSummary | null>(null);
+  const [renaming, setRenaming] = useState<User | null>(null);
 
   const updateUser = useDataMutation(
     ({ id, patch }: { id: ID; patch: Partial<User> }) => db.users.update(id, patch),
@@ -183,7 +185,17 @@ export function UsersPage() {
                   <div className="flex items-center gap-3">
                     <Avatar name={entry.name} avatarKey={entry.avatarKey} />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[14px] font-semibold text-ink">{entry.name}</p>
+                      {/* El nombre viene de la nómina y a veces viene mal escrito.
+                          Se corrige tocándolo. */}
+                      <button
+                        type="button"
+                        onClick={() => setRenaming(entry)}
+                        aria-label={`Corregir el nombre de ${entry.name}`}
+                        className="flex max-w-full items-center gap-1.5 text-left"
+                      >
+                        <span className="truncate text-[14px] font-semibold text-ink">{entry.name}</span>
+                        <Pencil size={13} className="shrink-0 text-ink-3" />
+                      </button>
                       <p className="truncate text-[12px] text-ink-3">
                         {entry.grade} · {entry.email}
                       </p>
@@ -276,6 +288,8 @@ export function UsersPage() {
           })}
         </ul>
       )}
+
+      <NombreFormSheet user={renaming} onClose={() => setRenaming(null)} />
     </Page>
   );
 }
