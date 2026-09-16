@@ -267,3 +267,48 @@ export interface SportsResult extends BaseEntity {
   author: AuthorRef;
 }
 
+/* --- Casino ------------------------------------------------------------------
+   La minuta del almuerzo. Al Centro de Alumnos le llega por mes, así que se
+   guarda un documento por mes con sus días adentro: se carga de una vez y se
+   corrige de una vez. Los alumnos solo la leen; no hay calificaciones ni
+   comentarios, porque la app no publica nada escrito por estudiantes.        */
+
+export interface MenuDelDia {
+  /** Día en hora local: "2026-09-18". */
+  fecha: string;
+  /** Plato de fondo. Vacío si ese día no hay servicio. */
+  principal: string;
+  entrada?: string;
+  /** Opción vegetariana o alternativa al plato de fondo. */
+  alternativa?: string;
+  postre?: string;
+  /** Feriado o jornada sin clases: ese día no se sirve almuerzo. */
+  sinServicio?: boolean;
+}
+
+export interface MinutaCasino extends BaseEntity {
+  /** Mes de la minuta: "2026-09". Hay una sola por mes. */
+  mes: string;
+  dias: MenuDelDia[];
+  /** Aviso general del mes, p. ej. "La minuta puede cambiar sin aviso". */
+  nota?: string;
+}
+
+/* --- Central de apuntes ------------------------------------------------------
+   Enlaces a las carpetas de Drive de cada generación. La app no guarda los
+   apuntes: solo lleva a la carpeta, y quién puede abrirla lo sigue decidiendo
+   Google con los permisos de esa carpeta.                                     */
+
+export interface CarpetaApuntes extends BaseEntity {
+  titulo: string;
+  /** Enlace a la carpeta. Solo se abren los que empiezan con https://. */
+  url: string;
+  /**
+   * Año de egreso de la generación: 2027. Se guarda el año y no el curso para
+   * que el enlace siga sirviendo cuando esa generación pase de curso: si fuera
+   * por curso, habría que cambiar todos los enlaces cada marzo. Sin año, la
+   * carpeta es para todas las generaciones.
+   */
+  generacion?: number;
+  descripcion?: string;
+}

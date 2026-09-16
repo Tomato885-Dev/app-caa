@@ -10,7 +10,9 @@ import {
   OUTCOME_LABEL,
   type Announcement,
   type Benefit,
+  type CarpetaApuntes,
   type EventItem,
+  type MinutaCasino,
   type NewsPost,
   type Project,
   type SportsResult,
@@ -22,7 +24,11 @@ import {
   useAnnouncementList,
   useDeleteAnnouncement,
 } from '@/modules/announcements/api';
+import { ordenarCarpetas, useCarpetas, useDeleteCarpeta } from '@/modules/apuntes/api';
+import { cursoDeGeneracion } from '@/modules/apuntes/generacion';
 import { sortBenefits, useBenefitList, useDeleteBenefit } from '@/modules/benefits/api';
+import { ordenarMinutas, useDeleteMinuta, useMinutas } from '@/modules/casino/api';
+import { nombreDelMes } from '@/modules/casino/fechas';
 import { useDeleteEvent, useEventList } from '@/modules/events/api';
 import { useDeleteNews, useNewsList, sortNews } from '@/modules/news/api';
 import { sortProjects, useDeleteProject, useProjectList, projectYears } from '@/modules/projects/api';
@@ -40,7 +46,9 @@ import {
 } from '@/ui';
 import { AnnouncementFormSheet } from './components/AnnouncementFormSheet';
 import { BenefitFormSheet } from './components/BenefitFormSheet';
+import { CarpetaFormSheet } from './components/CarpetaFormSheet';
 import { EventFormSheet } from './components/EventFormSheet';
+import { MinutaFormSheet } from './components/MinutaFormSheet';
 import { NewsFormSheet } from './components/NewsFormSheet';
 import { ProjectFormSheet } from './components/ProjectFormSheet';
 import { SportsResultFormSheet } from './components/SportsResultFormSheet';
@@ -62,7 +70,9 @@ type Tab =
   | 'eventos'
   | 'beneficios'
   | 'resultados'
-  | 'proyectos';
+  | 'proyectos'
+  | 'casino'
+  | 'apuntes';
 
 export function ContentPage() {
   const { user } = useAuth();
@@ -112,6 +122,8 @@ export function ContentPage() {
   const benefits = useBenefitList();
   const results = useSportsResults();
   const projects = useProjectList();
+  const minutas = useMinutas();
+  const carpetas = useCarpetas();
 
   const deleteAnnouncement = useDeleteAnnouncement();
   const deleteNews = useDeleteNews();
@@ -119,6 +131,8 @@ export function ContentPage() {
   const deleteBenefit = useDeleteBenefit();
   const deleteResult = useDeleteSportsResult();
   const deleteProject = useDeleteProject();
+  const deleteMinuta = useDeleteMinuta();
+  const deleteCarpeta = useDeleteCarpeta();
 
   const [announcementForm, setAnnouncementForm] = useState<{
     open: boolean;
@@ -144,6 +158,14 @@ export function ContentPage() {
     open: false,
     editing: null,
   });
+  const [minutaForm, setMinutaForm] = useState<{ open: boolean; editing: MinutaCasino | null }>({
+    open: false,
+    editing: null,
+  });
+  const [carpetaForm, setCarpetaForm] = useState<{ open: boolean; editing: CarpetaApuntes | null }>({
+    open: false,
+    editing: null,
+  });
 
   if (!user) return null;
 
@@ -154,6 +176,8 @@ export function ContentPage() {
     beneficios: benefits,
     resultados: results,
     proyectos: projects,
+    casino: minutas,
+    apuntes: carpetas,
   } as const;
 
   const current = queries[tab];
@@ -166,6 +190,8 @@ export function ContentPage() {
     if (tab === 'beneficios') setBenefitForm({ open: true, editing: null });
     if (tab === 'resultados') setResultForm({ open: true, editing: null });
     if (tab === 'proyectos') setProjectForm({ open: true, editing: null });
+    if (tab === 'casino') setMinutaForm({ open: true, editing: null });
+    if (tab === 'apuntes') setCarpetaForm({ open: true, editing: null });
   };
 
   const confirmDelete = (title: string) =>
@@ -194,6 +220,8 @@ export function ContentPage() {
           { value: 'beneficios', label: 'Colaboradores', count: benefits.data?.length ?? 0 },
           { value: 'resultados', label: '365', count: results.data?.length ?? 0 },
           { value: 'proyectos', label: 'Proyectos', count: projects.data?.length ?? 0 },
+          { value: 'casino', label: 'Casino', count: minutas.data?.length ?? 0 },
+          { value: 'apuntes', label: 'Apuntes', count: carpetas.data?.length ?? 0 },
         ]}
       />
 
@@ -280,6 +308,39 @@ export function ContentPage() {
               />
             ))}
 
+
+          {tab === 'casino' &&
+            ordenarMinutas(minutas.data ?? []).map((minuta) => (
+              <ContentRow
+                key={minuta.id}
+                title={`Minuta de ${nombreDelMes(minuta.mes)}`}
+                meta={`${minuta.dias.length} ${minuta.dias.length === 1 ? 'día cargado' : 'días cargados'}`}
+                onEdit={() => setMinutaForm({ open: true, editing: minuta })}
+                onDelete={() => {
+                  const nombre = `Minuta de ${nombreDelMes(minuta.mes)}`;
+                  if (!confirmDelete(nombre)) return;
+                  deleteMinuta.mutate(minuta.id, { onSuccess: () => notify('Minuta eliminada.', 'info') });
+                }}
+              />
+            ))}
+
+          {tab === 'apuntes' &&
+            ordenarCarpetas(carpetas.data ?? []).map((carpeta) => (
+              <ContentRow
+                key={carpeta.id}
+                title={carpeta.titulo}
+                meta={
+                  carpeta.generacion
+                    ? `Generación ${carpeta.generacion} · ${cursoDeGeneracion(carpeta.generacion) ?? 'ya egresó'}`
+                    : 'Todas las generaciones'
+                }
+                onEdit={() => setCarpetaForm({ open: true, editing: carpeta })}
+                onDelete={() => {
+                  if (!confirmDelete(carpeta.titulo)) return;
+                  deleteCarpeta.mutate(carpeta.id, { onSuccess: () => notify('Carpeta eliminada.', 'info') });
+                }}
+              />
+            ))}
 
           {tab === 'beneficios' &&
             sortBenefits(benefits.data ?? []).map((benefit) => (
@@ -373,6 +434,17 @@ export function ContentPage() {
         open={projectForm.open}
         editing={projectForm.editing}
         onClose={() => setProjectForm({ open: false, editing: null })}
+      />
+      <MinutaFormSheet
+        open={minutaForm.open}
+        editing={minutaForm.editing}
+        existentes={minutas.data ?? []}
+        onClose={() => setMinutaForm({ open: false, editing: null })}
+      />
+      <CarpetaFormSheet
+        open={carpetaForm.open}
+        editing={carpetaForm.editing}
+        onClose={() => setCarpetaForm({ open: false, editing: null })}
       />
     </Page>
   );

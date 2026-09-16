@@ -16,6 +16,7 @@ import {
 } from '@/modules/announcements/api';
 import { EventHighlightCard } from '@/modules/events/components/EventCard';
 import { upcoming, useEventList } from '@/modules/events/api';
+import { HoyEnElCasino } from '@/modules/casino/components/HoyEnElCasino';
 import { NewsFeatureCard, NewsRowCard } from '@/modules/news/components/NewsCard';
 import { sortNews, useNewsList } from '@/modules/news/api';
 import {
@@ -156,6 +157,9 @@ export function HomePage() {
           ))}
         </ul>
       </nav>
+
+      {/* Lo que se come hoy: lo que más gente mira cada día. */}
+      <HoyEnElCasino />
 
       {/* Comunicados del día a día (lo más operativo va primero). */}
       <section className="mb-7">

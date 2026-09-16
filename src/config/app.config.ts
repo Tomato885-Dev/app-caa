@@ -162,6 +162,8 @@ export const appConfig: AppConfig = {
     'sports',
     'benefits',
     'projects',
+    'casino',
+    'apuntes',
     'directory',
     'profile',
     'admin',

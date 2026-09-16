@@ -2,8 +2,10 @@ import type {
   Announcement,
   BaseEntity,
   Benefit,
+  CarpetaApuntes,
   EventItem,
   ID,
+  MinutaCasino,
   NewsPost,
   Project,
   SportsResult,
@@ -40,6 +42,8 @@ export interface DataProvider {
   benefits: Repository<Benefit>;
   sportsResults: Repository<SportsResult>;
   projects: Repository<Project>;
+  casino: Repository<MinutaCasino>;
+  apuntes: Repository<CarpetaApuntes>;
 
   /** Restaura el contenido de ejemplo. Útil en demos y pruebas. */
   reset(): Promise<void>;
@@ -54,6 +58,8 @@ export const COLLECTIONS = [
   'benefits',
   'sportsResults',
   'projects',
+  'casino',
+  'apuntes',
 ] as const;
 
 export type CollectionName = (typeof COLLECTIONS)[number];

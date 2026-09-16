@@ -1,8 +1,10 @@
 import type { AppModule } from '@/core/modules/types';
 import { adminModule } from './admin';
 import { announcementsModule } from './announcements';
+import { apuntesModule } from './apuntes';
 import { benefitsModule } from './benefits';
 import { calendarModule } from './calendar';
+import { casinoModule } from './casino';
 import { directoryModule } from './directory';
 import { eventsModule } from './events';
 import { homeModule } from './home';
@@ -33,6 +35,8 @@ export const appModules: AppModule[] = [
   sportsModule,
   benefitsModule,
   projectsModule,
+  casinoModule,
+  apuntesModule,
   directoryModule,
   profileModule,
   adminModule,

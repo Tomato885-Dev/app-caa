@@ -1,5 +1,7 @@
 import { seedAnnouncements } from './announcements';
+import { seedApuntes } from './apuntes';
 import { seedBenefits } from './benefits';
+import { seedCasino } from './casino';
 import { seedEvents } from './events';
 import { seedNews } from './news';
 import { seedProjects } from './projects';
@@ -31,7 +33,7 @@ import { seedUsers } from './users';
    ========================================================================== */
 
 /** Versión del contenido de ejemplo. Subirla fuerza a re-sembrar. */
-const FALLBACK_VERSION = '2026-08-31.proyectos-13-colaboradores-15';
+const FALLBACK_VERSION = '2026-09-16.casino-y-apuntes';
 
 interface ContentFile {
   version?: string;
@@ -41,6 +43,8 @@ interface ContentFile {
   benefits?: unknown[];
   sportsResults?: unknown[];
   projects?: unknown[];
+  casino?: unknown[];
+  apuntes?: unknown[];
 }
 
 /*
@@ -72,6 +76,8 @@ export const seedData = {
   benefits: pick(own?.benefits, seedBenefits),
   sportsResults: pick(own?.sportsResults, seedSportsResults),
   projects: pick(own?.projects, seedProjects),
+  casino: pick(own?.casino, seedCasino),
+  apuntes: pick(own?.apuntes, seedApuntes),
 };
 
 /** ¿La app está usando contenido propio en vez del de ejemplo? */
