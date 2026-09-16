@@ -87,7 +87,9 @@ export function AnnouncementFormSheet({
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
     if (form.title.trim().length < 2) nextErrors.title = 'El título es demasiado corto.';
-    if (form.body.trim().length < 20) nextErrors.body = 'Escribe el contenido del aviso.';
+    /* Basta con que tenga texto. Antes se exigian 20 caracteres, y eso dejaba
+       fuera justo los avisos mas urgentes, que suelen ser los mas cortos. */
+    if (!form.body.trim()) nextErrors.body = 'Escribe el contenido del aviso.';
     if (form.kind === 'inscripcion') {
       if (form.deadline && Number.isNaN(new Date(`${form.deadline}T12:00:00`).getTime())) {
         nextErrors.deadline = 'La fecha no es válida.';
