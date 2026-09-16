@@ -15,7 +15,7 @@ import {
   type Project,
   type SportsResult,
 } from '@/core/types';
-import { formatDate } from '@/core/utils/date';
+import { formatDate, formatDateTimeShort } from '@/core/utils/date';
 import { excerpt } from '@/core/utils/text';
 import {
   sortAnnouncements,
@@ -70,16 +70,16 @@ export function ContentPage() {
   const [tab, setTab] = useState<Tab>('comunicados');
   const [avisando, setAvisando] = useState(false);
 
-  /* Manda la notificación de un comunicado ya publicado.
+  /* Manda la notificación de un comunicado o un evento ya publicados.
      Se pregunta antes: llega a los teléfonos de todo el colegio y no se puede
-     deshacer. El `origen` hace que un segundo intento no le llegue a nadie. */
-  const avisarDe = async (item: Announcement) => {
+     deshacer. El `origen` hace que un segundo intento no le llegue a nadie; los
+     ids llevan prefijo (com_, evt_), así que un evento y un comunicado nunca
+     chocan entre sí. */
+  const avisarDe = async (aviso: { titulo: string; cuerpo: string; ruta: string; origen: string }) => {
     if (avisando) return;
     if (
       !window.confirm(
-        `¿Mandar una notificación de «${item.title}»?
-
-` +
+        `¿Mandar una notificación de «${aviso.titulo}»?\n\n` +
           'Les va a sonar el teléfono a todos los que tengan los avisos activados. ' +
           'Esto no se puede deshacer.',
       )
@@ -89,20 +89,13 @@ export function ContentPage() {
 
     setAvisando(true);
     try {
-      const resultado = await enviarAviso({
-        titulo: item.title,
-        // El cuerpo del comunicado, recortado: en la barra de notificaciones
-        // del telefono no cabe mas, y se corta igual pero sin avisar.
-        cuerpo: excerpt(item.body, 140),
-        ruta: `/comunicados/${item.id}`,
-        origen: item.id,
-      });
+      const resultado = await enviarAviso(aviso);
       const { texto, tipo } = resumenDelAviso(resultado);
       notify(texto, tipo);
     } catch (caught) {
       notify(
         caught instanceof AvisoDuplicado
-          ? 'Ese comunicado ya se avisó antes.'
+          ? 'Ya se mandó un aviso de esto antes.'
           : caught instanceof Error
             ? caught.message
             : 'No se pudo enviar el aviso.',
@@ -224,7 +217,19 @@ export function ContentPage() {
                   item.publishedAt,
                 )}${item.pinned ? ' · Fijado' : ''}`}
                 onEdit={() => setAnnouncementForm({ open: true, editing: item })}
-                onNotify={usingServer ? () => void avisarDe(item) : undefined}
+                onNotify={
+                  usingServer
+                    ? () =>
+                        void avisarDe({
+                          titulo: item.title,
+                          // El cuerpo recortado: en la barra de notificaciones del
+                          // teléfono no cabe más, y se corta igual pero sin avisar.
+                          cuerpo: excerpt(item.body, 140),
+                          ruta: `/comunicados/${item.id}`,
+                          origen: item.id,
+                        })
+                    : undefined
+                }
                 onDelete={() => {
                   if (!confirmDelete(item.title)) return;
                   deleteAnnouncement.mutate(item.id, {
@@ -255,6 +260,19 @@ export function ContentPage() {
                 title={event.title}
                 meta={`${event.category} · ${formatDate(event.startsAt)} · ${event.location}`}
                 onEdit={() => setEventForm({ open: true, editing: event })}
+                onNotify={
+                  usingServer
+                    ? () =>
+                        void avisarDe({
+                          titulo: event.title,
+                          /* De un evento lo que sirve en la notificación es
+                             cuándo y dónde, no el comienzo de la descripción. */
+                          cuerpo: `${formatDateTimeShort(event.startsAt)} · ${event.location}`,
+                          ruta: `/eventos/${event.id}`,
+                          origen: event.id,
+                        })
+                    : undefined
+                }
                 onDelete={() => {
                   if (!confirmDelete(event.title)) return;
                   deleteEvent.mutate(event.id, { onSuccess: () => notify('Evento eliminado.', 'info') });
