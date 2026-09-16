@@ -79,7 +79,7 @@ export function BenefitsListPage() {
           description="Cuando el Centro de Alumnos sume un colaborador, aparecerá aquí."
         />
       ) : (
-        <div className="space-y-2.5">
+        <div className="lista-animada space-y-2.5">
           {filtered.map((benefit) => (
             <BenefitCard key={benefit.id} benefit={benefit} />
           ))}

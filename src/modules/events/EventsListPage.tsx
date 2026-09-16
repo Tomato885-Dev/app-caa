@@ -85,7 +85,7 @@ export function EventsListPage() {
               <h2 className="mb-2.5 text-[12px] font-bold uppercase tracking-wider text-ink-3">
                 {group.label}
               </h2>
-              <div className="space-y-3">
+              <div className="lista-animada space-y-3">
                 {group.events.map((event) => (
                   <EventCard key={event.id} event={event} />
                 ))}

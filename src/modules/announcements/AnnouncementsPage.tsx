@@ -128,7 +128,7 @@ export function AnnouncementsPage() {
           }
         />
       ) : (
-        <div className="space-y-2.5">
+        <div className="lista-animada space-y-2.5">
           {filtered.map((item) => (
             <AnnouncementCard key={item.id} item={item} />
           ))}

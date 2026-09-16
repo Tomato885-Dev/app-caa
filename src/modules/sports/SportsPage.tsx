@@ -97,7 +97,7 @@ export function SportsPage() {
           description="Todavía no hay resultados publicados para esta selección."
         />
       ) : (
-        <div className="space-y-2.5">
+        <div className="lista-animada space-y-2.5">
           {filtered.map((result) => (
             <ResultCard key={result.id} result={result} />
           ))}

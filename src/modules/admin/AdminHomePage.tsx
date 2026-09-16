@@ -78,7 +78,7 @@ export function AdminHomePage() {
         description="Gestión compartida entre el Centro de Alumnos y los equipos designados por la institución."
       />
 
-      <ul className="space-y-2.5">
+      <ul className="lista-animada space-y-2.5">
         {visibleTools.map((tool) => (
           <li key={tool.to}>
             <Link

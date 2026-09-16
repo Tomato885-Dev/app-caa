@@ -107,7 +107,7 @@ export function DirectoryPage() {
           <p className="mb-2.5 text-[12px] font-medium text-ink-3">
             {filtered.length === 1 ? '1 persona' : `${filtered.length} personas`}
           </p>
-          <ul className="space-y-2.5">
+          <ul className="lista-animada space-y-2.5">
             {filtered.map((person) => (
               <li key={person.id}>
                 <ContactRow person={person} />

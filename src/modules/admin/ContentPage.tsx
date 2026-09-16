@@ -235,7 +235,7 @@ export function ContentPage() {
           action={<Button onClick={handleCreate}>Crear</Button>}
         />
       ) : (
-        <div className="space-y-2.5">
+        <div className="lista-animada space-y-2.5">
           {tab === 'comunicados' &&
             sortAnnouncements(announcements.data ?? []).map((item) => (
               <ContentRow

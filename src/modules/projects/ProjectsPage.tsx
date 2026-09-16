@@ -98,7 +98,7 @@ export function ProjectsPage() {
                 title="En marcha"
                 description="Proyectos que se implementarán en la comunidad escolar."
               />
-              <div className="space-y-3">
+              <div className="lista-animada space-y-3">
                 {activos.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
@@ -112,7 +112,7 @@ export function ProjectsPage() {
                 title="Ya terminados"
                 description="Proyectos ya realizados por el Centro de Alumnos."
               />
-              <div className="space-y-3">
+              <div className="lista-animada space-y-3">
                 {historicos.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}

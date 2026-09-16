@@ -171,7 +171,7 @@ export function UsersPage() {
       ) : users.length === 0 ? (
         <EmptyState icon={UserCog} title="Sin resultados" description="Prueba con otra búsqueda." />
       ) : (
-        <ul className="space-y-2.5">
+        <ul className="lista-animada space-y-2.5">
           {users.map((entry) => {
             const isSelf = entry.id === current?.id;
             const activated = activatedIds.has(entry.id);

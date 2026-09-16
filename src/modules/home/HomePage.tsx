@@ -175,7 +175,7 @@ export function HomePage() {
             <p className="text-[13.5px] text-ink-2">No hay comunicados publicados por ahora.</p>
           </Card>
         ) : (
-          <div className="space-y-2.5">
+          <div className="lista-animada space-y-2.5">
             {latestAnnouncements.map((item) => (
               <AnnouncementCard key={item.id} item={item} />
             ))}
@@ -239,7 +239,7 @@ export function HomePage() {
             </p>
           </Card>
         ) : (
-          <div className="space-y-2.5">
+          <div className="lista-animada space-y-2.5">
             {openInscriptions.map((item) => (
               <AnnouncementCard key={item.id} item={item} />
             ))}

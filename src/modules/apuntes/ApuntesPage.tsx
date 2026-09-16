@@ -69,7 +69,7 @@ export function ApuntesPage() {
                 description={`Tu generación${cursoDeGeneracion(miGeneracion) ? ` · ${cursoDeGeneracion(miGeneracion)}` : ''}`}
               />
               {mias.length ? (
-                <div className="space-y-2.5">
+                <div className="lista-animada space-y-2.5">
                   {mias.map((carpeta) => (
                     <CarpetaCard key={carpeta.id} carpeta={carpeta} destacada />
                   ))}
@@ -88,7 +88,7 @@ export function ApuntesPage() {
           {paraTodos.length ? (
             <section className="mb-6">
               <SectionHeader title="Para todos" description="Material que sirve a cualquier generación." />
-              <div className="space-y-2.5">
+              <div className="lista-animada space-y-2.5">
                 {paraTodos.map((carpeta) => (
                   <CarpetaCard key={carpeta.id} carpeta={carpeta} />
                 ))}
@@ -103,7 +103,7 @@ export function ApuntesPage() {
                     title={`Generación ${generacion}`}
                     description={cursoDeGeneracion(generacion) ?? 'Ya egresó'}
                   />
-                  <div className="space-y-2.5">
+                  <div className="lista-animada space-y-2.5">
                     {carpetas.map((carpeta) => (
                       <CarpetaCard key={carpeta.id} carpeta={carpeta} />
                     ))}

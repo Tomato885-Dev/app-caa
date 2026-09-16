@@ -94,7 +94,7 @@ export function NewsListPage() {
         />
       ) : (
         <>
-          <div className="space-y-3">
+          <div className="lista-animada space-y-3">
             {lead ? <NewsFeatureCard post={lead} /> : null}
             {rest.map((post) => (
               <NewsRowCard key={post.id} post={post} />
