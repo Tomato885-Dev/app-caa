@@ -6,6 +6,7 @@ import { findModuleByPath } from '@/core/modules/registry';
 import { useTheme } from '@/app/theme/ThemeContext';
 import { Avatar, BrandLogo, IconButton } from '@/ui';
 import { Link } from 'react-router-dom';
+import { InstagramLink } from './InstagramLink';
 
 /* ============================================================================
    BARRA SUPERIOR (MÓVIL)
@@ -51,6 +52,9 @@ export function TopBar() {
             </div>
           </div>
         )}
+
+        {/* Solo en las pantallas principales: en una ficha, la barra es para volver. */}
+        {isDetailPage ? null : <InstagramLink />}
 
         <IconButton
           icon={ThemeIcon}

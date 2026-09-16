@@ -30,6 +30,8 @@ export interface AppConfig {
      * tiene que ser una direccion web que abra sin iniciar sesion.
      */
     supportUrl: string;
+    /** Perfil de Instagram. Vacío = no se muestra el ícono de la barra. */
+    instagramUrl?: string;
   };
 
   /** Reglas de acceso (§5 y §7 del documento). */
@@ -102,6 +104,7 @@ export const appConfig: AppConfig = {
     term: 'Periodo 2027',
     privacyUrl: 'https://sites.google.com/view/appcaa',
     supportUrl: 'https://sites.google.com/view/appcaa/soporte',
+    instagramUrl: '',
   },
 
   auth: {

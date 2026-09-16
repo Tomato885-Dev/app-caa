@@ -4,6 +4,7 @@ import { useAuth } from '@/core/auth/AuthContext';
 import { getNavGroups } from '@/core/modules/registry';
 import { ROLE_LABEL } from '@/core/types';
 import { Avatar, BrandLogo, cn } from '@/ui';
+import { InstagramLink } from './InstagramLink';
 
 /* ============================================================================
    MENÚ LATERAL (ESCRITORIO)
@@ -20,12 +21,13 @@ export function SideNav() {
     <aside className="fixed inset-y-0 left-0 hidden w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
       <div className="flex items-center gap-2.5 px-5 py-5">
         <BrandLogo size="md" />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate text-[14px] font-bold leading-tight text-ink">
             {appConfig.organization.shortName}
           </p>
           <p className="truncate text-[11.5px] text-ink-3">{appConfig.organization.term}</p>
         </div>
+        <InstagramLink className="-mr-2" />
       </div>
 
       <nav aria-label="Navegación principal" className="flex-1 overflow-y-auto px-3 pb-4">
