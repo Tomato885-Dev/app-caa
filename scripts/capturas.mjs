@@ -78,13 +78,16 @@ async function abrirNavegador(opciones = {}) {
   return chromium.launch({ ...opciones, ...(canal ? { channel: canal } : {}) });
 }
 
+/* Desde la 1.1 entran Casino, Eventos y Central de apuntes: son lo nuevo, y
+   la primera captura (Inicio) ya resume casino, eventos y avisos. */
 const PANTALLAS = [
   { archivo: '1-inicio', ruta: '/', espera: 'Comunicados' },
-  { archivo: '2-comunicados', ruta: '/comunicados', espera: 'Comunicados' },
-  { archivo: '3-noticias', ruta: '/noticias', espera: 'Noticias' },
-  { archivo: '4-proyectos', ruta: '/proyectos', espera: 'Proyectos' },
+  { archivo: '2-casino', ruta: '/casino', espera: 'Casino' },
+  { archivo: '3-eventos', ruta: '/eventos', espera: 'Eventos' },
+  { archivo: '4-comunicados', ruta: '/comunicados', espera: 'Comunicados' },
   { archivo: '5-colaboradores', ruta: '/colaboradores', espera: 'Colaboradores' },
-  { archivo: '6-365', ruta: '/365', espera: '365' },
+  { archivo: '6-apuntes', ruta: '/apuntes', espera: 'Apuntes' },
+  { archivo: '7-noticias', ruta: '/noticias', espera: 'Noticias' },
 ];
 
 const args = process.argv.slice(2);

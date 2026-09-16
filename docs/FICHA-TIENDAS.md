@@ -240,8 +240,14 @@ la gente que ya tiene la app, antes de actualizar: por eso habla de lo que
 notan ellos y no de los arreglos internos.
 
 ```
-• Los comunicados cortos ya se pueden publicar.
-• Las fotos de noticias, eventos y proyectos se ven completas en los listados, sin recortes.
-• Si llevas un tiempo usando la app, podemos preguntarte qué te parece.
-• El equipo del Centro de Alumnos se entera cuando una notificación no llega.
+¡La app se renovó entera!
+
+• Diseño nuevo: portada con lo que pasa hoy, más color y una barra de navegación flotante.
+• Casino: la minuta de la semana y lo que se come hoy, apenas abres la app.
+• Central de apuntes: las carpetas de apuntes de tu generación, en un solo lugar.
+• Colaboradores: cada descuento dice cómo se canjea (código, QR, en línea o en el local) y avisa cuando está por vencer.
+• Te preguntamos si quieres recibir avisos, para que no te pierdas nada.
+• Acceso más claro: se explica cómo activar tu cuenta y que el correo con el código puede tardar unos minutos.
+• Instagram del Centro de Alumnos a un toque.
+• Arreglos: la pantalla ya no se agranda al escribir y las fotos se ven completas.
 ```
