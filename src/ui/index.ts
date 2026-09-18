@@ -20,4 +20,5 @@ export { FilterChips, SegmentedTabs, type ChipOption } from './FilterChips';
 export { SplashScreen } from './SplashScreen';
 export { ToastProvider, useToast } from './Toast';
 export { QrCode } from './QrCode';
+export { VideoIncrustado } from './VideoIncrustado';
 export { IconoWhatsApp } from './IconoWhatsApp';

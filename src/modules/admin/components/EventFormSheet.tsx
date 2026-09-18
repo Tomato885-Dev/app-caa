@@ -4,6 +4,7 @@ import { toAuthorRef } from '@/content/seed/users';
 import type { EventItem, User } from '@/core/types';
 import { useCreateEvent, useUpdateEvent } from '@/modules/events/api';
 import { Button, SelectField, Sheet, TextField, useToast } from '@/ui';
+import { CampoDeVideo } from './CampoDeVideo';
 import { ImageKeyField } from './ImageKeyField';
 
 /** Convierte ISO ↔ valor de un input datetime-local. */
@@ -39,6 +40,7 @@ export function EventFormSheet({
     description: '',
     category: eventCategories[0] as string,
     imageKey: '',
+    videoUrl: '',
     startsAt: '',
     endsAt: '',
     location: '',
@@ -60,6 +62,7 @@ export function EventFormSheet({
             description: editing.description,
             category: editing.category,
             imageKey: editing.imageKey ?? '',
+            videoUrl: editing.videoUrl ?? '',
             startsAt: toLocalInput(editing.startsAt),
             endsAt: toLocalInput(editing.endsAt),
             location: editing.location,
@@ -93,6 +96,7 @@ export function EventFormSheet({
       description: form.description.trim(),
       category: form.category,
       imageKey: form.imageKey || undefined,
+      videoUrl: form.videoUrl.trim() || undefined,
       startsAt: fromLocalInput(form.startsAt),
       endsAt: form.endsAt ? fromLocalInput(form.endsAt) : undefined,
       location: form.location.trim(),
@@ -209,6 +213,11 @@ export function EventFormSheet({
           onChange={(value) => set('imageKey', value)}
           prefix="event."
         />
+
+        {/* El video va al final: casi ningun evento lleva, y el que lleva
+            —una transmision— lo agrega al terminar. */}
+        <CampoDeVideo value={form.videoUrl} onChange={(valor) => set('videoUrl', valor)} />
+
       </div>
     </Sheet>
   );

@@ -10,7 +10,9 @@ import {
   MetaRow,
   Page,
   Prose,
+  SectionHeader,
   Skeleton,
+  VideoIncrustado,
 } from '@/ui';
 import { useEventItem } from './api';
 
@@ -94,6 +96,14 @@ export function EventDetailPage() {
 
       <h2 className="mb-2 text-[15px] font-bold text-ink">Sobre la actividad</h2>
       <Prose text={event.description} />
+
+      {/* La transmision del evento, si la hay. */}
+      {event.videoUrl ? (
+        <section className="mt-6">
+          <SectionHeader title="Video" />
+          <VideoIncrustado url={event.videoUrl} titulo={`Video de ${event.title}`} />
+        </section>
+      ) : null}
 
     </Page>
   );

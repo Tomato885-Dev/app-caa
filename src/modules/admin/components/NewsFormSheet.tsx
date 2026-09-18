@@ -4,6 +4,7 @@ import { toAuthorRef } from '@/content/seed/users';
 import type { NewsPost, User } from '@/core/types';
 import { useCreateNews, useUpdateNews } from '@/modules/news/api';
 import { Button, Field, SelectField, Sheet, TextField, useToast } from '@/ui';
+import { CampoDeVideo } from './CampoDeVideo';
 import { ImageKeyField } from './ImageKeyField';
 
 /** Publicación y edición de noticias oficiales (§8.1). */
@@ -28,6 +29,7 @@ export function NewsFormSheet({
     body: '',
     category: newsCategories[0] as string,
     imageKey: '',
+    videoUrl: '',
     featured: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -48,6 +50,7 @@ export function NewsFormSheet({
             body: editing.body,
             category: editing.category,
             imageKey: editing.imageKey ?? '',
+            videoUrl: editing.videoUrl ?? '',
             featured: editing.featured,
           }
         : {
@@ -56,6 +59,7 @@ export function NewsFormSheet({
             body: '',
             category: newsCategories[0],
             imageKey: '',
+            videoUrl: '',
             featured: false,
           },
     );
@@ -78,6 +82,7 @@ export function NewsFormSheet({
       body: form.body.trim(),
       category: form.category,
       imageKey: form.imageKey || undefined,
+      videoUrl: form.videoUrl.trim() || undefined,
       featured: form.featured,
     };
 
@@ -170,6 +175,11 @@ export function NewsFormSheet({
           onChange={(value) => set('imageKey', value)}
           prefix="news."
         />
+
+        {/* El video va al final: casi ninguna publicacion lleva, y la que
+            lleva lo agrega al terminar. */}
+        <CampoDeVideo value={form.videoUrl} onChange={(valor) => set('videoUrl', valor)} />
+
 
         {editing ? (
           <Field label="Fecha">

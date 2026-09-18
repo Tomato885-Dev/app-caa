@@ -3,7 +3,18 @@ import { useParams } from 'react-router-dom';
 import { FileQuestion } from 'lucide-react';
 import { pedirCalificacionSiCorresponde } from '@/core/calificacion';
 import { formatDate } from '@/core/utils/date';
-import { AppImage, Avatar, Badge, ButtonLink, EmptyState, Page, Prose, Skeleton } from '@/ui';
+import {
+  AppImage,
+  Avatar,
+  Badge,
+  ButtonLink,
+  EmptyState,
+  Page,
+  Prose,
+  SectionHeader,
+  Skeleton,
+  VideoIncrustado,
+} from '@/ui';
 import { useNewsItem } from './api';
 
 export function NewsDetailPage() {
@@ -64,6 +75,15 @@ export function NewsDetailPage() {
         </div>
 
         <Prose text={post.body} />
+
+        {/* El video, despues del texto: primero se lee de que se trata y
+            despues se mira. Si no hay enlace, no se dibuja nada. */}
+        {post.videoUrl ? (
+          <section className="mt-6">
+            <SectionHeader title="Video" />
+            <VideoIncrustado url={post.videoUrl} titulo={`Video de ${post.title}`} />
+          </section>
+        ) : null}
       </article>
     </Page>
   );

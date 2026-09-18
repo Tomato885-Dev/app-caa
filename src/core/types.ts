@@ -121,6 +121,13 @@ export interface NewsPost extends BaseEntity, Moderatable {
   category: string;
   imageKey?: string;
   author: AuthorRef;
+  /**
+   * Enlace a un video: la transmision del colegio, el video de campana. Se
+   * pega el enlace tal como se copia de YouTube, Vimeo o Drive y la app lo
+   * muestra adentro; si el sitio no se deja incrustar, queda un boton que lo
+   * abre. Ver `core/video/incrustar.ts`.
+   */
+  videoUrl?: string;
   /** Fija la noticia arriba en Inicio y Noticias. */
   featured: boolean;
   publishedAt: string;
@@ -139,6 +146,13 @@ export interface EventItem extends BaseEntity, Moderatable {
   location: string;
   /** Requisitos de participación (§6.3). */
   requirements?: string;
+  /**
+   * Enlace a un video: la transmision del colegio, el video de campana. Se
+   * pega el enlace tal como se copia de YouTube, Vimeo o Drive y la app lo
+   * muestra adentro; si el sitio no se deja incrustar, queda un boton que lo
+   * abre. Ver `core/video/incrustar.ts`.
+   */
+  videoUrl?: string;
   contactName?: string;
   contactEmail?: string;
   organizer: AuthorRef;
