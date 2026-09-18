@@ -12,7 +12,7 @@ export const projectsModule: AppModule = {
   title: 'Proyectos',
   description: 'Los proyectos del Centro de Alumnos para este periodo.',
   icon: Lightbulb,
-  tone: 'accent',
+  tone: 'brand',
   path: '/proyectos',
   nav: { section: 'secondary', order: 45, shortLabel: 'Proyectos' },
   routes: [

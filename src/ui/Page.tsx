@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { findModuleByPath } from '@/core/modules/registry';
 import { cn } from './cn';
-import { toneVivid } from './tone';
+import { toneVivid, toneWash } from './tone';
 
 /**
  * Contenedor estándar de página. Fija el ancho máximo en escritorio y el
@@ -38,31 +38,55 @@ export function PageHeader({
 }) {
   const modulo = findModuleByPath(useLocation().pathname);
   const Icono = modulo?.icon;
+  const tono = modulo?.tone ?? 'brand';
 
   return (
-    <header className={cn('mb-5 flex items-start justify-between gap-4', className)}>
-      <div className="flex min-w-0 items-start gap-3.5">
-        {Icono && modulo ? (
-          <span
-            aria-hidden
-            className={cn(
-              'mt-0.5 flex size-11 shrink-0 -rotate-3 items-center justify-center rounded-2xl shadow-card',
-              toneVivid[modulo.tone],
-            )}
-          >
-            <Icono size={22} />
-          </span>
-        ) : null}
-        <div className="min-w-0">
-          <h1 className="text-[26px] font-extrabold leading-[1.15] tracking-tight text-ink">
-            {title}
-          </h1>
-          {description ? (
-            <p className="mt-1.5 text-[14px] leading-relaxed text-ink-2">{description}</p>
+    <header
+      className={cn(
+        'relative mb-5 overflow-hidden rounded-card border border-line bg-surface p-4 shadow-card',
+        className,
+      )}
+    >
+      {/* El bano de color de la seccion. Es lo que hace que Noticias no se vea
+          igual que Proyectos ni que Casino, sin tener que dibujar una portada
+          distinta en cada pantalla. */}
+      <span
+        aria-hidden
+        className={cn(
+          'pointer-events-none absolute inset-0 bg-gradient-to-br to-transparent',
+          toneWash[tono],
+        )}
+      />
+      {/* Un aro, del mismo gesto que la portada de Inicio. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -right-10 -top-12 size-32 rounded-full border-[10px] border-current opacity-[0.07]"
+      />
+
+      <div className="relative flex items-start justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-3.5">
+          {Icono && modulo ? (
+            <span
+              aria-hidden
+              className={cn(
+                'mt-0.5 flex size-12 shrink-0 -rotate-3 items-center justify-center rounded-2xl shadow-raised',
+                toneVivid[modulo.tone],
+              )}
+            >
+              <Icono size={23} />
+            </span>
           ) : null}
+          <div className="min-w-0">
+            <h1 className="text-[26px] font-extrabold leading-[1.15] tracking-tight text-ink">
+              {title}
+            </h1>
+            {description ? (
+              <p className="mt-1.5 text-[14px] leading-relaxed text-ink-2">{description}</p>
+            ) : null}
+          </div>
         </div>
+        {action ? <div className="shrink-0">{action}</div> : null}
       </div>
-      {action ? <div className="shrink-0 pt-1">{action}</div> : null}
     </header>
   );
 }

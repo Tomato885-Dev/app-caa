@@ -126,12 +126,15 @@
    preferencia del sistema y escribe ese atributo, por lo que aquí no hace
    falta duplicar la lógica con media queries.                               */
 [data-theme='dark'] {
-  --sf-canvas: #080d0a;
-  --sf-surface: #101714;
-  --sf-surface-2: #17201b;
-  --sf-surface-3: #1f2b24;
-  --sf-line: #1f2b24;
-  --sf-line-strong: #2f3e35;
+  /* El negro casi puro dejaba la app sin color de noche: el verde de la marca
+     no aparecia por ninguna parte. Estos tonos son igual de oscuros para leer
+     de noche, pero verdes, y separan mejor el lienzo de las tarjetas. */
+  --sf-canvas: #0a1310;
+  --sf-surface: #121b16;
+  --sf-surface-2: #18231d;
+  --sf-surface-3: #22302a;
+  --sf-line: #25322b;
+  --sf-line-strong: #36473c;
   --sf-ink: #f2f7f4;
   --sf-ink-2: #a3b0a9;
   --sf-ink-3: #6f7d75;

@@ -27,7 +27,7 @@ import { AnnouncementsPage } from './AnnouncementsPage';
 const inscriptionsCalendar: CalendarSource = {
   id: 'inscriptions',
   label: 'Inscripciones',
-  tone: 'accent',
+  tone: 'brand',
   icon: ClipboardList,
   fetch: async () => {
     const items = (await db.announcements.list()).filter(

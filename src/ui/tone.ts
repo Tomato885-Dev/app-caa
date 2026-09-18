@@ -11,6 +11,17 @@
    claro, y `ink` cuando el fondo es el amarillo pleno.
 
    TODOS los fondos son colores planos: no se usan superposiciones con alfa.
+
+   QUE COLOR LLEVA CADA SECCION
+   Los iconos de seccion iban en verde y amarillo sin una regla, y la app se
+   veia desordenada. Desde la 1.11 la regla es una sola:
+
+     · amarillo (`accent`)  lo que te sirve HOY: Casino y Colaboradores.
+     · verde    (`brand`)   todo lo demas, que es informacion del Centro.
+     · rojo     (`danger`)  Administracion, que publica para todo el colegio.
+     · gris     (`neutral`) Mi perfil, que es tuyo y no del Centro.
+
+   Se define en el `tone` de cada modulo, en su archivo index.tsx.
    ========================================================================== */
 
 export type Tone = 'brand' | 'accent' | 'info' | 'success' | 'warning' | 'danger' | 'neutral';
@@ -50,6 +61,22 @@ export const toneVivid: Record<Tone, string> = {
   warning: 'bg-warning-500 text-on-accent',
   danger: 'bg-danger-500 text-white dark:bg-surface-3 dark:text-ink',
   neutral: 'bg-ink-2 text-surface',
+};
+
+/**
+ * Un bano de color muy suave, para el fondo de una portada de seccion. No es
+ * un relleno: es un degradado que arranca en la esquina y se va. Da el color
+ * de la seccion sin pelear con el texto que va encima, y de noche se nota
+ * igual que de dia, que era el reclamo.
+ */
+export const toneWash: Record<Tone, string> = {
+  brand: 'from-brand-500/22 via-brand-500/5 dark:from-brand-500/28 dark:via-brand-500/8',
+  accent: 'from-accent-500/28 via-accent-500/6 dark:from-accent-500/22 dark:via-accent-500/6',
+  info: 'from-info-500/20 via-info-500/5 dark:from-info-500/25 dark:via-info-500/6',
+  success: 'from-success-500/20 via-success-500/5 dark:from-success-500/25 dark:via-success-500/6',
+  warning: 'from-warning-500/24 via-warning-500/6 dark:from-warning-500/22 dark:via-warning-500/6',
+  danger: 'from-danger-500/18 via-danger-500/4 dark:from-danger-500/22 dark:via-danger-500/6',
+  neutral: 'from-ink-3/18 via-ink-3/4 dark:from-ink-3/22 dark:via-ink-3/6',
 };
 
 /** Solo color de texto. */
