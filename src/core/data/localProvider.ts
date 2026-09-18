@@ -192,6 +192,7 @@ export const localProvider: DataProvider = {
   casino: new LocalRepository('casino', 'cas'),
   apuntes: new LocalRepository('apuntes', 'apu'),
   acerca: new LocalRepository('acerca', 'ace'),
+  ajustes: new LocalRepository('ajustes', 'aju'),
 
   async reset() {
     seedAll();

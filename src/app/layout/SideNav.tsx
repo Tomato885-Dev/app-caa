@@ -4,6 +4,7 @@ import { useAuth } from '@/core/auth/AuthContext';
 import { getNavGroups } from '@/core/modules/registry';
 import { ROLE_LABEL } from '@/core/types';
 import { Avatar, BrandLogo, cn } from '@/ui';
+import { Conectados } from './Conectados';
 import { InstagramLink } from './InstagramLink';
 
 /* ============================================================================
@@ -27,6 +28,7 @@ export function SideNav() {
           </p>
           <p className="truncate text-[11.5px] text-ink-3">{appConfig.organization.term}</p>
         </div>
+        <Conectados />
         <InstagramLink className="-mr-2" />
       </div>
 

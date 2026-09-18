@@ -237,6 +237,7 @@ const PREFIJOS: Record<CollectionName, string> = {
   casino: 'cas',
   apuntes: 'apu',
   acerca: 'ace',
+  ajustes: 'aju',
 };
 
 export function createSupabaseProvider(client: SupabaseClient): DataProvider {

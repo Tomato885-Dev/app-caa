@@ -6,6 +6,7 @@ import { findModuleByPath } from '@/core/modules/registry';
 import { useTheme } from '@/app/theme/ThemeContext';
 import { Avatar, BrandLogo, IconButton } from '@/ui';
 import { Link } from 'react-router-dom';
+import { Conectados } from './Conectados';
 import { InstagramLink } from './InstagramLink';
 
 /* ============================================================================
@@ -54,6 +55,7 @@ export function TopBar() {
         )}
 
         {/* Solo en las pantallas principales: en una ficha, la barra es para volver. */}
+        {isDetailPage ? null : <Conectados className="mr-0.5" />}
         {isDetailPage ? null : <InstagramLink />}
 
         <IconButton

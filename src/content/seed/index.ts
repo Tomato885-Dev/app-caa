@@ -1,5 +1,5 @@
 import { seedAnnouncements } from './announcements';
-import type { AcercaDe } from '@/core/types';
+import type { AcercaDe, Ajustes } from '@/core/types';
 import { seedApuntes } from './apuntes';
 import { seedBenefits } from './benefits';
 import { seedCasino } from './casino';
@@ -47,6 +47,7 @@ interface ContentFile {
   casino?: unknown[];
   apuntes?: unknown[];
   acerca?: unknown[];
+  ajustes?: unknown[];
 }
 
 /*
@@ -82,6 +83,8 @@ export const seedData = {
   apuntes: pick(own?.apuntes, seedApuntes),
   // Vacío: mientras nadie lo edite, Mi perfil muestra los textos de siempre.
   acerca: pick<AcercaDe>(own?.acerca, []),
+  // Vacio: mientras nadie lo toque, rigen los valores de siempre.
+  ajustes: pick<Ajustes>(own?.ajustes, []),
 };
 
 /** ¿La app está usando contenido propio en vez del de ejemplo? */

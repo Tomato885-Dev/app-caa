@@ -6,6 +6,7 @@ import {
   Download,
   FileStack,
   Info,
+  SlidersHorizontal,
   UserCog,
   type LucideIcon,
 } from 'lucide-react';
@@ -22,6 +23,7 @@ import {
   type PendingChanges,
 } from './exportContent';
 import { AcercaFormSheet } from './components/AcercaFormSheet';
+import { AjustesFormSheet } from './components/AjustesFormSheet';
 
 /* Panel de administración. Dos herramientas: publicar contenido y gestionar
    cuentas. La cola de revisión y los reportes se quitaron al dejar de existir
@@ -34,6 +36,7 @@ export function AdminHomePage() {
   const [exported, setExported] = useState<ExportCounts | null>(null);
   const [pendingExport, setPendingExport] = useState<PendingChanges | null>(null);
   const [acercaOpen, setAcercaOpen] = useState(false);
+  const [ajustesOpen, setAjustesOpen] = useState(false);
 
   /* Cuánto trabajo hay en este navegador que todavía no está en el proyecto.
      Se recalcula al entrar al panel y después de cada exportación. */
@@ -135,9 +138,33 @@ export function AdminHomePage() {
             <ChevronRight size={17} className="shrink-0 text-ink-3" />
           </button>
         </li>
+
+        {/* Los interruptores de la app. Solo administradores: cambian lo que
+            ve todo el colegio. */}
+        {hasRole('admin') ? (
+          <li>
+            <button
+              type="button"
+              onClick={() => setAjustesOpen(true)}
+              className="flex w-full items-center gap-3.5 rounded-card border border-line bg-surface p-4 text-left transition hover:border-line-strong hover:shadow-raised"
+            >
+              <span className={cn('flex h-11 w-11 shrink-0 items-center justify-center rounded-xl', toneSoft.brand)}>
+                <SlidersHorizontal size={20} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[14.5px] font-bold text-ink">Ajustes de la app</span>
+                <span className="mt-0.5 block text-[12.5px] leading-relaxed text-ink-2">
+                  Encender o apagar el número de personas conectadas.
+                </span>
+              </span>
+              <ChevronRight size={17} className="shrink-0 text-ink-3" />
+            </button>
+          </li>
+        ) : null}
       </ul>
 
       <AcercaFormSheet open={acercaOpen} onClose={() => setAcercaOpen(false)} />
+      <AjustesFormSheet open={ajustesOpen} onClose={() => setAjustesOpen(false)} />
 
       {hasRole('admin') ? <ExportCard
         exporting={exporting}

@@ -251,6 +251,15 @@ export interface Benefit extends BaseEntity {
   active: boolean;
 }
 
+/**
+ * Los interruptores de la app que decide el equipo, sin sacar version nueva.
+ * Vive como UN solo documento en la coleccion `ajustes`.
+ */
+export interface Ajustes extends BaseEntity {
+  /** Mostrar arriba cuanta gente tiene la app abierta ahora. */
+  mostrarConectados: boolean;
+}
+
 /** Los textos del recuadro "Acerca de" de Mi perfil, editables por el equipo. */
 export interface AcercaDe extends BaseEntity {
   titulo: string;
