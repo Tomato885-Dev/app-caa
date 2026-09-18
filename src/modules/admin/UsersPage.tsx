@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { EyeOff, KeyRound, Pencil, Phone, Search, UserCog } from 'lucide-react';
+import {
+  ChevronDown,
+  EyeOff,
+  KeyRound,
+  Pencil,
+  Phone,
+  Search,
+  ShieldQuestion,
+  UserCog,
+  UserPlus,
+} from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { clearPassword, hasPassword } from '@/core/auth/credentials';
 import { clearVerification, isVerified } from '@/core/auth/verification';
@@ -19,6 +29,7 @@ import {
   Page,
   PageHeader,
   Select,
+  cn,
   useToast,
 } from '@/ui';
 import {
@@ -28,6 +39,7 @@ import {
 } from './activaciones';
 import { ActivationSummaryCard } from './components/ActivationSummaryCard';
 import { NombreFormSheet } from './components/NombreFormSheet';
+import { NominaFormSheet } from './components/NominaFormSheet';
 
 /* Cuentas y permisos (§8). Define quién administra, quién modera y quién
    participa como estudiante. */
@@ -46,6 +58,7 @@ export function UsersPage() {
   const [verifiedIds, setVerifiedIds] = useState<Set<ID>>(() => new Set());
   const [summary, setSummary] = useState<ActivationSummary | null>(null);
   const [renaming, setRenaming] = useState<User | null>(null);
+  const [agregando, setAgregando] = useState(false);
 
   const updateUser = useDataMutation(
     ({ id, patch }: { id: ID; patch: Partial<User> }) => db.users.update(id, patch),
@@ -144,7 +157,16 @@ export function UsersPage() {
       <PageHeader
         title="Cuentas y permisos"
         description="Administra los perfiles de acceso y los datos de contacto de la comunidad."
+        action={
+          <Button size="sm" icon={UserPlus} onClick={() => setAgregando(true)}>
+            Agregar
+          </Button>
+        }
       />
+
+      <QuePuedeCadaRango />
+
+      <NominaFormSheet open={agregando} onClose={() => setAgregando(false)} />
 
       {summary ? (
         <ActivationSummaryCard
@@ -291,5 +313,68 @@ export function UsersPage() {
 
       <NombreFormSheet user={renaming} onClose={() => setRenaming(null)} />
     </Page>
+  );
+}
+
+/* ============================================================================
+   QUÉ PUEDE HACER CADA RANGO
+   ----------------------------------------------------------------------------
+   Los tres rangos existían desde el principio, pero en ninguna parte decía qué
+   podía hacer cada uno: el desplegable ofrecía tres palabras y había que
+   adivinar. Se explica aquí, al lado de donde se cambian, porque es donde
+   aparece la duda.
+
+   No hay un cuarto rango para las autoridades del colegio a propósito: un
+   profesor que solo mira la app es "Estudiante", y uno que publica es
+   "Moderador". Lo que cambia es lo que puede hacer, no quién es.
+   ========================================================================== */
+
+const QUE_PUEDE: { rol: Role; puede: string }[] = [
+  { rol: 'student', puede: 'Mira toda la app y edita su perfil. No publica nada.' },
+  { rol: 'moderator', puede: 'Publica contenido y manda avisos. No toca las cuentas.' },
+  { rol: 'admin', puede: 'Todo lo anterior, más esta pantalla: rangos y cuentas.' },
+];
+
+function QuePuedeCadaRango() {
+  const [abierto, setAbierto] = useState(false);
+
+  return (
+    <Card className="mb-5">
+      <button
+        type="button"
+        onClick={() => setAbierto((estaba) => !estaba)}
+        aria-expanded={abierto}
+        className="flex w-full items-center gap-3 text-left"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+          <ShieldQuestion size={18} />
+        </span>
+        <span className="min-w-0 flex-1 text-[13.5px] font-bold text-ink">
+          ¿Qué puede hacer cada rango?
+        </span>
+        <ChevronDown
+          size={18}
+          className={cn('shrink-0 text-ink-3 transition', abierto && 'rotate-180')}
+        />
+      </button>
+
+      {abierto ? (
+        <ul className="mt-3 space-y-2.5 border-t border-line pt-3">
+          {QUE_PUEDE.map((fila) => (
+            <li key={fila.rol} className="flex gap-3">
+              <Badge tone={fila.rol === 'student' ? 'neutral' : 'brand'} className="mt-0.5 shrink-0">
+                {ROLE_LABEL[fila.rol]}
+              </Badge>
+              <p className="text-[12.5px] leading-relaxed text-ink-2">{fila.puede}</p>
+            </li>
+          ))}
+          <li className="pt-1 text-[12px] leading-relaxed text-ink-3">
+            Los profesores y las autoridades del colegio usan estos mismos rangos: quien solo mira
+            la app entra como <span className="font-semibold text-ink-2">Estudiante</span>, y quien
+            publica, como <span className="font-semibold text-ink-2">Moderador</span>.
+          </li>
+        </ul>
+      ) : null}
+    </Card>
   );
 }
