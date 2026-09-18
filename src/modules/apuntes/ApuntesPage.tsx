@@ -5,6 +5,7 @@ import type { CarpetaApuntes } from '@/core/types';
 import { Card, CardListSkeleton, EmptyState, Page, PageHeader, SectionHeader } from '@/ui';
 import { ordenarCarpetas, useCarpetas } from './api';
 import { cursoDeGeneracion, esEnlaceSeguro, generacionDe } from './generacion';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
 /* ============================================================================
    CENTRAL DE APUNTES
@@ -20,6 +21,9 @@ import { cursoDeGeneracion, esEnlaceSeguro, generacionDe } from './generacion';
    ========================================================================== */
 
 export function ApuntesPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('apuntes');
+
   const { user, role } = useAuth();
   const { data, isLoading } = useCarpetas();
 

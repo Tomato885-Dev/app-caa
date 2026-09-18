@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { LayoutGrid } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import { getNavGroups } from '@/core/modules/registry';
+import { useNovedadesDe, useNovedadesDeVarias } from '@/app/novedades/NovedadesContext';
 import { cn } from '@/ui';
 import { MoreSheet } from './MoreSheet';
 
@@ -19,6 +20,9 @@ export function BottomNav() {
   const [moreOpen, setMoreOpen] = useState(false);
 
   const { bottom, overflow } = getNavGroups(role);
+  /* Lo que hay sin ver en las secciones que no caben en la barra: si no, algo
+     nuevo en Colaboradores no se anunciaría en ninguna parte. */
+  const novedadesDeMas = useNovedadesDeVarias(overflow.map((mod) => mod.id));
   const moreIsActive = overflow.some(
     (mod) => location.pathname === mod.path || location.pathname.startsWith(`${mod.path}/`),
   );
@@ -42,6 +46,7 @@ export function BottomNav() {
                     icon={<mod.icon size={21} strokeWidth={isActive ? 2.5 : 2} />}
                     label={mod.nav.shortLabel ?? mod.title}
                     active={isActive}
+                    modulo={mod.id}
                   />
                 )}
               </NavLink>
@@ -60,6 +65,7 @@ export function BottomNav() {
                   icon={<LayoutGrid size={21} strokeWidth={moreIsActive ? 2.5 : 2} />}
                   label="Más"
                   active={moreIsActive}
+                  novedades={novedadesDeMas}
                 />
               </button>
             </li>
@@ -76,21 +82,31 @@ function NavItem({
   icon,
   label,
   active,
+  modulo,
+  novedades,
 }: {
   icon: React.ReactNode;
   label: string;
   active: boolean;
+  /** Para leer sus novedades. El botón "Más" pasa el total en `novedades`. */
+  modulo?: string;
+  novedades?: number;
 }) {
+  const propias = useNovedadesDe(modulo ?? '');
+  /* En la sección donde ya estás no se muestra: la estás mirando. */
+  const cuantas = active ? 0 : (novedades ?? propias);
+
   return (
     <span
       className={cn(
-        'flex h-12 items-center justify-center gap-2 rounded-[1.35rem] transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-90',
+        'relative flex h-12 items-center justify-center gap-2 rounded-[1.35rem] transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-90',
         active
           ? 'bg-accent-500 px-4 text-on-accent shadow-card'
           : 'w-12 text-brand-200 hover:bg-brand-700 hover:text-white',
       )}
     >
       {icon}
+      {cuantas > 0 ? <Cuantas cuantas={cuantas} /> : null}
       <span
         className={cn(
           'whitespace-nowrap text-[13px] font-extrabold',
@@ -99,6 +115,22 @@ function NavItem({
       >
         {label}
       </span>
+    </span>
+  );
+}
+
+/**
+ * El número de lo que no has visto. Va en amarillo y no en rojo: el rojo en
+ * esta app significa "cuidado", y aquí no hay nada de qué preocuparse, solo
+ * algo nuevo que mirar.
+ */
+function Cuantas({ cuantas }: { cuantas: number }) {
+  return (
+    <span
+      aria-label={cuantas > 8 ? 'más de nueve sin ver' : `${cuantas} sin ver`}
+      className="absolute -right-0.5 -top-0.5 flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-accent-500 px-1 text-[11px] font-extrabold tabular-nums text-on-accent ring-2 ring-brand-800 dark:ring-brand-900"
+    >
+      {cuantas > 8 ? '+9' : cuantas}
     </span>
   );
 }

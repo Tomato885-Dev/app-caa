@@ -7,6 +7,7 @@ import type { EventItem } from '@/core/types';
 import { CardListSkeleton, EmptyState, FilterChips, Page, PageHeader, SegmentedTabs } from '@/ui';
 import { past, upcoming, useEventList } from './api';
 import { EventCard } from './components/EventCard';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
 const ALL = 'todas';
 
@@ -21,6 +22,9 @@ function groupByMonth(items: EventItem[]): { label: string; events: EventItem[] 
 }
 
 export function EventsListPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('events');
+
   const { data, isLoading } = useEventList();
   const [view, setView] = useState<'proximos' | 'pasados'>('proximos');
   const [category, setCategory] = useState(ALL);

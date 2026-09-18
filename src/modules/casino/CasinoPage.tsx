@@ -13,6 +13,7 @@ import type { MenuDelDia } from '@/core/types';
 import { dayKey, formatDayLong, isToday } from '@/core/utils/date';
 import { Badge, Card, IconButton, Page, PageHeader, Skeleton, cn } from '@/ui';
 import { menusPorFecha, useMinutas } from './api';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 import {
   diaHabilDeReferencia,
   diasDeLaSemana,
@@ -36,6 +37,9 @@ import {
 const INICIALES = ['L', 'M', 'M', 'J', 'V'];
 
 export function CasinoPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('casino');
+
   const { data, isLoading } = useMinutas();
   const menus = useMemo(() => menusPorFecha(data ?? []), [data]);
 

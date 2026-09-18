@@ -5,6 +5,7 @@ import { matchesSearch } from '@/core/utils/text';
 import { CardListSkeleton, EmptyState, FilterChips, Input, Page, PageHeader } from '@/ui';
 import { sortBenefits, useBenefitList } from './api';
 import { BenefitCard } from './components/BenefitCard';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
 /* ============================================================================
    BENEFICIOS
@@ -19,6 +20,9 @@ import { BenefitCard } from './components/BenefitCard';
 const ALL = 'todos';
 
 export function BenefitsListPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('benefits');
+
   const { data, isLoading } = useBenefitList();
   const [category, setCategory] = useState(ALL);
   const [query, setQuery] = useState('');

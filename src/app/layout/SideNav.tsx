@@ -2,6 +2,8 @@ import { NavLink } from 'react-router-dom';
 import { appConfig } from '@/config/app.config';
 import { useAuth } from '@/core/auth/AuthContext';
 import { getNavGroups } from '@/core/modules/registry';
+import type { AppModule } from '@/core/modules/types';
+import { useNovedadesDe } from '@/app/novedades/NovedadesContext';
 import { ROLE_LABEL } from '@/core/types';
 import { Avatar, BrandLogo, cn } from '@/ui';
 import { Conectados } from './Conectados';
@@ -36,22 +38,7 @@ export function SideNav() {
         <ul className="space-y-0.5">
           {all.map((mod) => (
             <li key={mod.id}>
-              <NavLink
-                to={mod.path}
-                end={mod.path === '/'}
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-3 rounded-field px-3 py-2.5 text-[14px] font-semibold transition',
-                    isActive
-                      ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                      : 'text-ink-2 hover:bg-surface-2 hover:text-ink',
-                  )
-                }
-              >
-                <mod.icon size={19} />
-                <span className="flex-1 truncate">{mod.title}</span>
-                
-              </NavLink>
+              <Enlace mod={mod} />
             </li>
           ))}
         </ul>
@@ -72,5 +59,37 @@ export function SideNav() {
         </NavLink>
       ) : null}
     </aside>
+  );
+}
+
+/** Un acceso del menú, con el número de lo que no has visto. */
+function Enlace({ mod }: { mod: AppModule }) {
+  const novedades = useNovedadesDe(mod.id);
+
+  return (
+    <NavLink
+      to={mod.path}
+      end={mod.path === '/'}
+      className={({ isActive }) =>
+        cn(
+          'flex items-center gap-3 rounded-field px-3 py-2.5 text-[14px] font-semibold transition',
+          isActive
+            ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
+            : 'text-ink-2 hover:bg-surface-2 hover:text-ink',
+        )
+      }
+    >
+      {({ isActive }) => (
+        <>
+          <mod.icon size={19} />
+          <span className="flex-1 truncate">{mod.title}</span>
+          {!isActive && novedades > 0 ? (
+            <span className="flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-accent-500 px-1 text-[11px] font-extrabold tabular-nums text-on-accent">
+              {novedades > 8 ? '+9' : novedades}
+            </span>
+          ) : null}
+        </>
+      )}
+    </NavLink>
   );
 }

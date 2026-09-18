@@ -12,6 +12,7 @@ import {
 } from '@/ui';
 import { sortNews, useNewsList } from './api';
 import { NewsFeatureCard, NewsRowCard } from './components/NewsCard';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
 /* ============================================================================
    NOTICIAS
@@ -31,6 +32,9 @@ const ALL = 'todas';
 const PAGE_SIZE = 8;
 
 export function NewsListPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('news');
+
   const { data, isLoading } = useNewsList();
   const [category, setCategory] = useState(ALL);
   const [visible, setVisible] = useState(PAGE_SIZE);

@@ -14,6 +14,7 @@ import {
 } from '@/ui';
 import { sortAnnouncements, sortInscriptions, useAnnouncementList } from './api';
 import { AnnouncementCard } from './components/AnnouncementCard';
+import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
 /* ============================================================================
    COMUNICADOS
@@ -34,6 +35,9 @@ import { AnnouncementCard } from './components/AnnouncementCard';
 const ALL = 'todos';
 
 export function AnnouncementsPage() {
+  /* Al abrir esta seccion, lo que habia sin ver deja de estar sin ver. */
+  useMarcarVisto('announcements');
+
   const { data, isLoading } = useAnnouncementList();
   const [kind, setKind] = useState<AnnouncementKind>('general');
   const [priority, setPriority] = useState(ALL);

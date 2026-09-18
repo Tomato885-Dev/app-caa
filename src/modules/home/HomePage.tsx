@@ -19,6 +19,7 @@ import { useBenefitList, isRedeemable, sortBenefits } from '@/modules/benefits/a
 import { Bento } from './components/Bento';
 import { NewsFeatureCard, NewsRowCard } from '@/modules/news/components/NewsCard';
 import { sortNews, useNewsList } from '@/modules/news/api';
+import { useNovedadesDe } from '@/app/novedades/NovedadesContext';
 import {
   Card,
   CardListSkeleton,
@@ -157,11 +158,12 @@ export function HomePage() {
               >
                 <span
                   className={cn(
-                    'flex size-[3.75rem] items-center justify-center rounded-[1.3rem] shadow-card transition duration-200 group-hover:-translate-y-1 group-hover:rotate-[-4deg] group-hover:shadow-raised',
+                    'relative flex size-[3.75rem] items-center justify-center rounded-[1.3rem] shadow-card transition duration-200 group-hover:-translate-y-1 group-hover:rotate-[-4deg] group-hover:shadow-raised',
                     toneVivid[mod.tone],
                   )}
                 >
                   <mod.icon size={25} strokeWidth={2.1} />
+                  <Novedades modulo={mod.id} />
                 </span>
                 <span className="text-center text-[11px] font-semibold leading-tight text-ink">
                   {mod.nav.shortLabel ?? mod.title}
@@ -258,5 +260,24 @@ export function HomePage() {
         )}
       </section>
     </Page>
+  );
+}
+
+/**
+ * El punto de "hay algo nuevo aqui" sobre el icono de una seccion. Es el mismo
+ * dato que la barra de abajo; aqui se muestra sin numero, porque el icono ya
+ * es chico y el numero exacto se ve al tocar.
+ */
+function Novedades({ modulo }: { modulo: string }) {
+  const cuantas = useNovedadesDe(modulo);
+  if (cuantas < 1) return null;
+
+  return (
+    <span
+      aria-label="hay algo nuevo"
+      className="absolute -right-1 -top-1 flex h-[21px] min-w-[21px] items-center justify-center rounded-full bg-accent-500 px-1 text-[11.5px] font-extrabold tabular-nums text-on-accent ring-[3px] ring-canvas"
+    >
+      {cuantas > 8 ? '+9' : cuantas}
+    </span>
   );
 }
