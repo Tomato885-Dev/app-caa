@@ -317,6 +317,21 @@ export function ContentPage() {
                 title={`Minuta de ${nombreDelMes(minuta.mes)}`}
                 meta={`${minuta.dias.length} ${minuta.dias.length === 1 ? 'día cargado' : 'días cargados'}`}
                 onEdit={() => setMinutaForm({ open: true, editing: minuta })}
+                /* El aviso del casino es del MES entero, no de un día: se manda
+                   una vez, cuando ya está cargada la minuta completa. El
+                   `origen` es el id de la minuta, así que un segundo intento
+                   sobre el mismo mes no le llega a nadie. */
+                onNotify={
+                  usingServer
+                    ? () =>
+                        void avisarDe({
+                          titulo: 'Ya subimos la comida del mes',
+                          cuerpo: `Mira lo que se sirve en el casino durante ${nombreDelMes(minuta.mes)}.`,
+                          ruta: '/casino',
+                          origen: minuta.id,
+                        })
+                    : undefined
+                }
                 onDelete={() => {
                   const nombre = `Minuta de ${nombreDelMes(minuta.mes)}`;
                   if (!confirmDelete(nombre)) return;

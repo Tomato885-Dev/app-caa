@@ -160,7 +160,13 @@ export function MinutaFormSheet({
 
     const payload = { mes, dias: resultado, nota: nota.trim() || undefined };
     const listo = () => {
-      notify(editing ? 'Minuta actualizada.' : `Minuta de ${nombreDelMes(mes)} publicada.`);
+      /* Al publicar un mes nuevo se recuerda la campanita: si nadie la toca,
+         los alumnos no se enteran de que ya está la comida del mes. */
+      notify(
+        editing
+          ? 'Minuta actualizada.'
+          : `Minuta de ${nombreDelMes(mes)} publicada. Toca la campanita para avisarles.`,
+      );
       onClose();
     };
 
