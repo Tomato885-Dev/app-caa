@@ -148,19 +148,22 @@ es el caso, así que no hay nada extra que hacer.
 Apple usa campos que Google no tiene. La descripcion larga de arriba sirve
 igual; estos son los que hay que escribir aparte.
 
-**Nombre** (maximo 30 caracteres). Desde la version 1.1:
+**Nombre** (maximo 30 caracteres). Desde la version 1.1, y comprobado en
+App Store Connect:
 
 ```
-CAA Verbo Divino
+CAA Verbo
 ```
 
 En la 1.0 era "App CAA". Se cambio porque "CAA" tambien es la sigla de
 Comunicacion Aumentativa y Alternativa: buscando "App CAA", la app salia sexta,
-detras de cinco apps de autismo. "CAA Verbo Divino" ya salia primera. El nombre
+detras de cinco apps de autismo. "CAA Verbo" ya salia primera. El nombre
 es lo que mas pesa en la busqueda.
 
-El nombre del icono en el telefono NO cambia: sigue diciendo "App CAA", porque
-ese sale del codigo (`appName` en `capacitor.config.ts`), no de la ficha.
+El nombre del icono en el telefono tambien dice "CAA Verbo" desde la 1.11: ese
+sale del codigo, no de la ficha, y estaba quedado en "App CAA". Se cambia en
+`capacitor.config.ts`, `android/.../strings.xml`, `ios/App/App/Info.plist`,
+`index.html` y `public/manifest.webmanifest`.
 
 Apple no deja repetir el nombre de otra app. Si App Store Connect dice que ya
 esta usado, avisar antes de inventar otro.

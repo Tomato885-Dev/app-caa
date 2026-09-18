@@ -22,7 +22,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'cl.verbo.centroalumnos',
-  appName: 'App CAA',
+  appName: 'CAA Verbo',
   webDir: 'dist',
   android: {
     /* La aplicación se ve mejor en oscuro y así está pensada, pero se respeta

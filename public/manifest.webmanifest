@@ -1,6 +1,6 @@
 {
-  "name": "App CAA · Centro de Alumnos",
-  "short_name": "App CAA",
+  "name": "CAA Verbo · Centro de Alumnos",
+  "short_name": "CAA Verbo",
   "description": "Comunicados, noticias, eventos, proyectos y colaboradores del Centro de Alumnos.",
   "start_url": "./",
   "scope": "./",

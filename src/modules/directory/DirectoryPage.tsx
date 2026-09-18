@@ -14,8 +14,10 @@ import {
   Input,
   Page,
   PageHeader,
+  cn,
+  IconoWhatsApp,
 } from '@/ui';
-import { listedInDirectory, telHref, useDirectory } from './api';
+import { listedInDirectory, telHref, useDirectory, whatsappHref } from './api';
 
 /* ============================================================================
    BASE DE CONTACTOS
@@ -144,12 +146,18 @@ function ContactRow({ person }: { person: User }) {
           href={`mailto:${person.email}`}
         />
         {person.phone ? (
-          <ContactLink
-            icon={Phone}
-            label="Teléfono"
-            value={person.phone}
-            href={telHref(person.phone)}
-          />
+          /* El teléfono y WhatsApp van juntos, como una sola pieza: tocar el
+             número llama, y el botón verde de al lado abre la conversación. */
+          <div className="flex items-stretch gap-2">
+            <ContactLink
+              icon={Phone}
+              label="Teléfono"
+              value={person.phone}
+              href={telHref(person.phone)}
+              className="min-w-0 flex-1"
+            />
+            <BotonWhatsApp phone={person.phone} name={person.name} />
+          </div>
         ) : (
           <div className="flex items-center gap-2.5 rounded-field border border-dashed border-line px-3 py-2.5">
             <Phone size={16} className="shrink-0 text-ink-3" />
@@ -161,21 +169,52 @@ function ContactRow({ person }: { person: User }) {
   );
 }
 
+/**
+ * Botón de WhatsApp. No aparece si el número no es un celular: ver
+ * `whatsappHref`. Abre fuera de la app, así el teléfono lo pasa directo a
+ * WhatsApp con la conversación ya abierta.
+ */
+function BotonWhatsApp({ phone, name }: { phone: string; name: string }) {
+  const href = whatsappHref(phone);
+  if (!href) return null;
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Escribirle a ${name} por WhatsApp`}
+      title="Escribir por WhatsApp"
+      className={cn(
+        'flex w-12 shrink-0 items-center justify-center rounded-field transition active:scale-95',
+        'bg-[#25D366] text-white hover:brightness-95',
+      )}
+    >
+      <IconoWhatsApp size={20} />
+    </a>
+  );
+}
+
 function ContactLink({
   icon: Icon,
   label,
   value,
   href,
+  className,
 }: {
   icon: typeof Mail;
   label: string;
   value: string;
   href: string;
+  className?: string;
 }) {
   return (
     <a
       href={href}
-      className="flex items-center gap-2.5 rounded-field border border-line px-3 py-2.5 transition hover:border-line-strong hover:bg-surface-2"
+      className={cn(
+        'flex items-center gap-2.5 rounded-field border border-line px-3 py-2.5 transition hover:border-line-strong hover:bg-surface-2',
+        className,
+      )}
     >
       <Icon size={16} className="shrink-0 text-brand-600 dark:text-brand-300" />
       <span className="min-w-0">

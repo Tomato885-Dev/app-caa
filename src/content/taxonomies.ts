@@ -77,6 +77,7 @@ export const announcementAudiences = [
 /* --- Beneficios y convenios -------------------------------------------------- */
 export const benefitCategories = [
   'Alimentación',
+  'Ropa',
   'Entretención',
   'Deporte',
   'Librería y útiles',
