@@ -1,84 +1,83 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { Check, Copy, ExternalLink, Maximize2, QrCode as QrIcon, Sun, X } from 'lucide-react';
+import { Check, Copy, ExternalLink, QrCode as QrIcon, Sun, X } from 'lucide-react';
 import type { Benefit, BenefitRedeem } from '@/core/types';
-import { Card, QrCode, SectionHeader, useToast } from '@/ui';
+import { QrCode, cn, useToast } from '@/ui';
 import { esEnlaceSeguro, pasosDe } from '../canje';
 
 /* ============================================================================
-   CÓMO CANJEARLO
+   CÓMO SE CANJEA, INTEGRADO EN LA FICHA
    ----------------------------------------------------------------------------
-   Es lo que el alumno viene a buscar cuando abre la ficha parado en la caja,
-   así que va arriba y cambia según la forma que definió el local:
+   Antes esto era una sección aparte, con su título y su recuadro, y ocupaba
+   media pantalla para decir una línea. Ahora es la acción de la ficha: una
+   sola pieza bajo la portada, con lo justo para usarlo parado en la caja.
 
-     · Código        grande, con botón para copiarlo.
-     · QR            sobre blanco fijo, y a pantalla completa con un toque.
-     · En línea      botón a la tienda, y el cupón si lo hay.
-     · Indicaciones  los pasos, numerados.
+     · Código        se lee y se copia de un toque.
+     · QR            un botón; el QR sale a pantalla completa, que es como se
+                     muestra de verdad. Antes iba incrustado y chico.
+     · En línea      el botón a la tienda, y el cupón si lo hay.
+     · Indicaciones  los pasos, sin nada más.
 
    Los pasos extra ("pídelo antes de pagar") se muestran en todas las formas.
    ========================================================================== */
 
 export function ComoCanjear({ benefit, redeem }: { benefit: Benefit; redeem: BenefitRedeem }) {
   const pasos = pasosDe(redeem.steps);
+  const enlaceUtil = redeem.method === 'enlace' && redeem.url && esEnlaceSeguro(redeem.url);
+  const hayQr = redeem.method === 'qr' && (redeem.qrImage || redeem.qrValue);
+
+  /* Sin nada que mostrar no se dibuja el bloque: un recuadro vacío que dice
+     "cómo canjearlo" y no lo explica es peor que no ponerlo. */
+  if (!redeem.code && !enlaceUtil && !hayQr && pasos.length === 0) return null;
 
   return (
-    <section className="mb-6">
-      <SectionHeader title="Cómo canjearlo" />
-      <Card>
-        {redeem.method === 'codigo' && redeem.code ? (
-          <CodigoParaCopiar codigo={redeem.code} ayuda="Dícelo o muéstralo en caja." />
-        ) : null}
+    <section className="mb-5 rounded-card border border-line bg-surface p-4 shadow-card">
+      {redeem.method === 'codigo' && redeem.code ? (
+        <Codigo codigo={redeem.code} etiqueta="Código" ayuda="Dícelo o muéstralo en caja." />
+      ) : null}
 
-        {redeem.method === 'qr' ? <QrDelConvenio benefit={benefit} redeem={redeem} /> : null}
+      {hayQr ? <BotonDelQr benefit={benefit} redeem={redeem} /> : null}
 
-        {redeem.method === 'enlace' && redeem.url && esEnlaceSeguro(redeem.url) ? (
-          <div className="space-y-4">
-            <a
-              href={redeem.url.trim()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-field bg-brand-500 px-4 text-[14.5px] font-semibold text-white transition hover:bg-brand-600 active:scale-[0.98]"
-            >
-              Ir a la tienda
-              <ExternalLink size={16} />
-            </a>
-            {redeem.code ? (
-              <CodigoParaCopiar codigo={redeem.code} ayuda="Pégalo como cupón al pagar." titulo="Cupón" />
-            ) : null}
-          </div>
-        ) : null}
-
-        {pasos.length ? (
-          <ol
-            className={
-              redeem.method === 'indicaciones' ? 'space-y-3' : 'mt-4 space-y-3 border-t border-line pt-4'
-            }
+      {enlaceUtil ? (
+        <div className="space-y-3">
+          <a
+            href={redeem.url!.trim()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-field bg-brand-500 px-4 text-[14.5px] font-semibold text-white transition hover:bg-brand-600 active:scale-[0.98]"
           >
-            {pasos.map((paso, indice) => (
-              <li key={indice} className="flex gap-3">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-500 text-[12px] font-bold text-[#101a15]">
-                  {indice + 1}
-                </span>
-                <span className="pt-0.5 text-[14px] leading-relaxed text-ink-2">{paso}</span>
-              </li>
-            ))}
-          </ol>
-        ) : null}
-      </Card>
+            Ir a la tienda
+            <ExternalLink size={16} />
+          </a>
+          {redeem.code ? (
+            <Codigo codigo={redeem.code} etiqueta="Cupón" ayuda="Pégalo al pagar." />
+          ) : null}
+        </div>
+      ) : null}
+
+      {pasos.length ? (
+        <ol
+          className={cn(
+            'space-y-2.5',
+            redeem.method !== 'indicaciones' && 'mt-4 border-t border-line pt-4',
+          )}
+        >
+          {pasos.map((paso, indice) => (
+            <li key={indice} className="flex gap-2.5">
+              <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-500/12 text-[11px] font-bold text-brand-600 dark:text-brand-300">
+                {indice + 1}
+              </span>
+              <span className="text-[13.5px] leading-relaxed text-ink-2">{paso}</span>
+            </li>
+          ))}
+        </ol>
+      ) : null}
     </section>
   );
 }
 
-function CodigoParaCopiar({
-  codigo,
-  ayuda,
-  titulo,
-}: {
-  codigo: string;
-  ayuda: string;
-  titulo?: string;
-}) {
+/** El código en una sola línea, con el botón de copiar al lado. */
+function Codigo({ codigo, etiqueta, ayuda }: { codigo: string; etiqueta: string; ayuda: string }) {
   const notify = useToast();
   const [copiado, setCopiado] = useState(false);
 
@@ -94,27 +93,35 @@ function CodigoParaCopiar({
   };
 
   return (
-    <div className="text-center">
-      {titulo ? (
-        <p className="mb-1 text-[11.5px] font-bold uppercase tracking-wide text-ink-3">{titulo}</p>
-      ) : null}
-      <p className="select-all break-all font-mono text-[24px] font-bold tracking-wide text-ink">
-        {codigo}
-      </p>
-      <p className="mt-1.5 text-[12.5px] text-ink-2">{ayuda}</p>
-      <button
-        type="button"
-        onClick={() => void copiar()}
-        className="mt-3 inline-flex h-9 items-center gap-2 rounded-field border border-line px-3.5 text-[13px] font-semibold text-ink-2 transition hover:bg-surface-2 active:scale-[0.98]"
-      >
-        {copiado ? <Check size={15} /> : <Copy size={15} />}
-        {copiado ? 'Copiado' : 'Copiar código'}
-      </button>
+    <div>
+      <div className="flex items-center gap-3 rounded-field border border-dashed border-line-strong bg-surface-2 px-3.5 py-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[10.5px] font-bold uppercase tracking-[0.08em] text-ink-3">
+            {etiqueta}
+          </p>
+          <p className="select-all break-all font-mono text-[19px] font-bold leading-tight tracking-wide text-ink">
+            {codigo}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => void copiar()}
+          aria-label="Copiar el código"
+          className="flex size-10 shrink-0 items-center justify-center rounded-field bg-brand-500 text-white transition hover:bg-brand-600 active:scale-95"
+        >
+          {copiado ? <Check size={17} /> : <Copy size={17} />}
+        </button>
+      </div>
+      <p className="mt-2 text-[12.5px] text-ink-3">{ayuda}</p>
     </div>
   );
 }
 
-function QrDelConvenio({ benefit, redeem }: { benefit: Benefit; redeem: BenefitRedeem }) {
+/**
+ * El QR no va incrustado: va a pantalla completa, sobre blanco y con el
+ * brillo arriba, que es como se deja escanear de verdad.
+ */
+function BotonDelQr({ benefit, redeem }: { benefit: Benefit; redeem: BenefitRedeem }) {
   const [grande, setGrande] = useState(false);
   const etiqueta = `Código QR de ${benefit.partner}`;
 
@@ -124,35 +131,19 @@ function QrDelConvenio({ benefit, redeem }: { benefit: Benefit; redeem: BenefitR
     <QrCode value={redeem.qrValue} label={etiqueta} />
   ) : null;
 
-  if (!dibujo) {
-    return (
-      <p className="flex items-center justify-center gap-2 text-[13px] text-ink-3">
-        <QrIcon size={16} /> El QR todavía no está cargado.
-      </p>
-    );
-  }
+  if (!dibujo) return null;
 
   return (
-    <div className="text-center">
-      {/* Blanco fijo también en modo oscuro: los lectores necesitan un QR
-          oscuro sobre claro. */}
+    <div>
       <button
         type="button"
         onClick={() => setGrande(true)}
-        aria-label="Ver el QR en pantalla completa"
-        className="mx-auto block w-full max-w-[240px] rounded-2xl bg-white p-3 shadow-card"
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-field bg-brand-500 px-4 text-[14.5px] font-semibold text-white transition hover:bg-brand-600 active:scale-[0.98]"
       >
-        {dibujo}
+        <QrIcon size={17} />
+        Mostrar el código QR
       </button>
-      <p className="mt-3 text-[12.5px] text-ink-2">Muéstralo en caja para que lo escaneen.</p>
-      <button
-        type="button"
-        onClick={() => setGrande(true)}
-        className="mt-3 inline-flex h-9 items-center gap-2 rounded-field border border-line px-3.5 text-[13px] font-semibold text-ink-2 transition hover:bg-surface-2 active:scale-[0.98]"
-      >
-        <Maximize2 size={15} />
-        Ver en grande
-      </button>
+      <p className="mt-2 text-[12.5px] text-ink-3">Se lo muestras en caja para que lo escaneen.</p>
 
       {grande ? <QrEnGrande onClose={() => setGrande(false)}>{dibujo}</QrEnGrande> : null}
     </div>

@@ -12,7 +12,7 @@ import {
   finDelDia,
   limpiarCanje,
 } from '@/modules/benefits/canje';
-import { Button, Field, SelectField, Sheet, TextField, cn, useToast } from '@/ui';
+import { AppImage, Button, Field, SelectField, Sheet, TextField, cn, useToast } from '@/ui';
 import { ImageKeyField } from './ImageKeyField';
 
 /* ============================================================================
@@ -41,6 +41,7 @@ const VACIO = {
   terms: '',
   category: benefitCategories[0] as string,
   logoImageKey: '',
+  logoFondoBlanco: true,
   method: '' as RedeemMethod | '',
   redeemCode: '',
   qrImage: '',
@@ -82,6 +83,10 @@ export function BenefitFormSheet({
             terms: editing.terms ?? '',
             category: editing.category,
             logoImageKey: editing.logoImageKey ?? '',
+            /* Los convenios cargados antes de que existiera la opcion no la
+               traen: se asume el fondo blanco, que es lo que deja la lista
+               pareja. */
+            logoFondoBlanco: editing.logoFondoBlanco !== false,
             method: editing.redeem?.method ?? '',
             redeemCode: editing.redeem?.code ?? '',
             qrImage: editing.redeem?.qrImage ?? '',
@@ -137,6 +142,7 @@ export function BenefitFormSheet({
       terms: form.terms.trim() || undefined,
       category: form.category,
       logoImageKey: form.logoImageKey || undefined,
+      logoFondoBlanco: form.logoFondoBlanco,
       redeem: canje,
       // El código inventado de antes se borra al guardar.
       code: undefined,
@@ -248,6 +254,16 @@ export function BenefitFormSheet({
           onChange={(value) => set('logoImageKey', value)}
           prefix="benefit."
         />
+
+        {/* La pregunta aparece sola al haber logo: los locales lo mandan como
+            les llega, y sin esto la lista queda despareja. */}
+        {form.logoImageKey ? (
+          <FondoDelLogo
+            imageKey={form.logoImageKey}
+            valor={form.logoFondoBlanco}
+            onChange={(valor) => set('logoFondoBlanco', valor)}
+          />
+        ) : null}
 
         <Field label="Disponibilidad">
           <label className="flex cursor-pointer items-center gap-2.5 rounded-field border border-line p-3">
@@ -477,6 +493,72 @@ function FormaDeCanje({
             hint="Un paso por línea. La app los numera sola."
           />
         ) : null}
+      </div>
+    </Field>
+  );
+}
+
+/* ============================================================================
+   ¿EL LOGO VA SOBRE BLANCO?
+   ----------------------------------------------------------------------------
+   Se pregunta siempre que haya logo, y se ve el resultado antes de guardar.
+   El motivo es que los locales mandan el logo como les llega: unos con el
+   fondo blanco pegado a la imagen y otros en PNG transparente. Puestos uno al
+   lado del otro parecían de dos apps distintas —Açaí junto a Starbucks era el
+   caso—, y el fondo blanco los deja parejos.
+
+   Se deja apagar porque hay logos claros o blancos que sobre blanco
+   desaparecen.
+   ========================================================================== */
+
+function FondoDelLogo({
+  imageKey,
+  valor,
+  onChange,
+}: {
+  imageKey: string;
+  valor: boolean;
+  onChange: (valor: boolean) => void;
+}) {
+  const opciones = [
+    { blanco: true, titulo: 'Con fondo blanco', ayuda: 'Lo normal. Todos quedan parejos.' },
+    { blanco: false, titulo: 'Tal como viene', ayuda: 'Para un logo claro o ya con fondo.' },
+  ];
+
+  return (
+    <Field label="¿Cómo se ve el logo?" hint="Toca el que se vea mejor. Así queda en la app.">
+      <div role="radiogroup" aria-label="Fondo del logo" className="grid grid-cols-2 gap-2.5">
+        {opciones.map((opcion) => {
+          const elegida = valor === opcion.blanco;
+          return (
+            <button
+              key={String(opcion.blanco)}
+              type="button"
+              role="radio"
+              aria-checked={elegida}
+              onClick={() => onChange(opcion.blanco)}
+              className={cn(
+                'rounded-field border p-3 text-left transition',
+                elegida
+                  ? 'border-brand-500 bg-brand-50 ring-1 ring-brand-500 dark:bg-brand-950'
+                  : 'border-line hover:border-line-strong',
+              )}
+            >
+              <div
+                className={cn(
+                  'mx-auto mb-2.5 w-20 overflow-hidden rounded-2xl',
+                  opcion.blanco
+                    ? 'bg-white p-2 ring-1 ring-black/10'
+                    : 'bg-surface-2 p-1.5 ring-1 ring-line',
+                )}
+              >
+                <AppImage imageKey={imageKey} ratio="1/1" compact fit="contain" rounded={false} />
+              </div>
+              <p className="text-[12.5px] font-bold text-ink">{opcion.titulo}</p>
+              <p className="mt-0.5 text-[11.5px] leading-relaxed text-ink-3">{opcion.ayuda}</p>
+            </button>
+          );
+        })}
       </div>
     </Field>
   );

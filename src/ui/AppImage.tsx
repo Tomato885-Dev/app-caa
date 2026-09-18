@@ -88,7 +88,20 @@ export function AppImage({
 
   if (!asset?.src) return <>{ausente}</>;
 
-  return <LoadedImage src={asset.src} alt={asset.alt} shape={shape} ausente={ausente} fit={fit} />;
+  return (
+    <LoadedImage
+      src={asset.src}
+      alt={asset.alt}
+      shape={shape}
+      ausente={ausente}
+      fit={fit}
+      /* El fondo gris tapa el hueco mientras la imagen carga, pero estorba
+         cuando quien la usa ya puso uno: un logotipo transparente sobre
+         blanco terminaba con un cuadrado oscuro detras. Si viene un fondo
+         propio, manda ese. */
+      conFondo={!className?.includes('bg-')}
+    />
+  );
 }
 
 /**
@@ -101,12 +114,14 @@ function LoadedImage({
   shape,
   ausente,
   fit,
+  conFondo,
 }: {
   src: string;
   alt: string;
   shape: string;
   ausente: ReactNode;
   fit: 'cover' | 'contain' | 'natural' | 'full';
+  conFondo: boolean;
 }) {
   const [failed, setFailed] = useState(false);
 
@@ -139,7 +154,7 @@ function LoadedImage({
       alt={alt}
       decoding="async"
       onError={() => setFailed(true)}
-      className={cn(encaje, 'bg-surface-2', shape)}
+      className={cn(encaje, conFondo && 'bg-surface-2', shape)}
     />
   );
 }

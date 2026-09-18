@@ -220,6 +220,12 @@ export interface Benefit extends BaseEntity {
   terms?: string;
   category: string;
   logoImageKey?: string;
+  /**
+   * Si el logo se muestra sobre un recuadro blanco. Es lo normal: los locales
+   * mandan el logo como les llega —unos con fondo pegado, otros transparente—
+   * y sin esto la lista se ve despareja. Se apaga cuando el logo ya es claro.
+   */
+  logoFondoBlanco?: boolean;
   /** Cómo se canjea. Cada local tiene su forma; si falta, la ficha no promete
    *  nada y el panel avisa que hay que completarlo. */
   redeem?: BenefitRedeem;
