@@ -1,4 +1,5 @@
 import { chromium, devices } from 'playwright';
+import { FRASES, paginaDelMarco } from './marco.mjs';
 import { mkdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -32,8 +33,12 @@ import path from 'node:path';
    corresponde hacer, así que no está en la lista y no debe agregarse.
    ========================================================================== */
 
-const SERVIDOR = 'http://localhost:5173';
-const CARPETA = 'capturas';
+/* El servidor y la carpeta se pueden cambiar sin tocar el archivo, con
+   CAPTURAS_SERVIDOR y CAPTURAS_CARPETA. Sirve para probar un marco nuevo
+   contra el servidor de demostracion sin pisar las capturas buenas: ojo que
+   la carpeta se borra entera al empezar. */
+const SERVIDOR = process.env.CAPTURAS_SERVIDOR ?? 'http://localhost:5173';
+const CARPETA = process.env.CAPTURAS_CARPETA ?? 'capturas';
 const SESION = 'scripts/.sesion.json';
 
 /** iPhone 16 Pro Max: 440x956 puntos por 3 = 1320x2868 píxeles. Es la medida
@@ -111,6 +116,10 @@ const PANTALLAS = [
 const args = process.argv.slice(2);
 const modoDemo = args.includes('--demo');
 const modoEntrar = args.includes('--entrar');
+/* Por defecto salen las dos versiones de cada pantalla: la pelada, por si
+   hace falta, y la de la ficha, con fondo y frase. Con --simples se saltan
+   las segundas. */
+const soloSimples = args.includes('--simples');
 
 async function entrarAMano() {
   console.log('\nSe va a abrir una ventana del navegador.');
@@ -155,6 +164,9 @@ async function capturar(nombreTienda, medidas, sufijo) {
   const destino = path.join(CARPETA, nombreTienda);
   await mkdir(destino, { recursive: true });
 
+  const destinoConMarco = path.join(CARPETA, `${nombreTienda}-con-marco`);
+  if (!soloSimples) await mkdir(destinoConMarco, { recursive: true });
+
   /* Se entra con la cuenta de ESTUDIANTE, no con la de administrador.
 
      Quien mira la ficha de la tienda tiene que ver lo que va a recibir: un
@@ -187,11 +199,47 @@ async function capturar(nombreTienda, medidas, sufijo) {
     );
 
     const archivo = path.join(destino, `${pantalla.archivo}${sufijo}.png`);
-    await pagina.screenshot({ path: archivo });
+    const imagen = await pagina.screenshot({ path: archivo });
     console.log(`  ${archivo}`);
+
+    /* La misma captura, montada en el marco de la tienda. Se hace aquí y no
+       en otro paso para no volver a abrir el navegador ni releer archivos. */
+    if (!soloSimples && FRASES[pantalla.archivo]) {
+      const conMarco = path.join(
+        destinoConMarco,
+        `${pantalla.archivo}${sufijo}.png`,
+      );
+      await componerMarco(contexto, imagen, FRASES[pantalla.archivo], medidas, conMarco);
+      console.log(`  ${conMarco}`);
+    }
   }
 
   await navegador.close();
+}
+
+/**
+ * Monta una captura en el marco de la tienda y la fotografia.
+ *
+ * Se dibuja en una pestana aparte, del mismo tamano en puntos que la captura,
+ * y con la misma densidad: por eso el texto del marco sale tan nitido como el
+ * de la app y la imagen final mide exactamente lo que pide la tienda.
+ */
+async function componerMarco(contexto, imagen, frase, medidas, destino) {
+  const pagina = await contexto.newPage();
+  await pagina.setViewportSize(medidas.viewport);
+  await pagina.setContent(
+    paginaDelMarco(imagen.toString('base64'), frase, medidas.viewport),
+    { waitUntil: 'load' },
+  );
+  await pagina.evaluate(() =>
+    Promise.all(
+      Array.from(document.images)
+        .filter((img) => !img.complete)
+        .map((img) => new Promise((listo) => { img.onload = listo; img.onerror = listo; })),
+    ),
+  );
+  await pagina.screenshot({ path: destino });
+  await pagina.close();
 }
 
 if (modoEntrar) {
