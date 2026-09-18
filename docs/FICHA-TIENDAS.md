@@ -236,6 +236,26 @@ en `docs/apple/2-notas-app-review.txt`, en ingles. Esas son las que valen.
 
 ---
 
+## Novedades de la version 1.11
+
+La 1.1 fue la renovacion grande; esta son los detalles que quedaron fuera. Por
+eso el numero: 1.11 y no 1.2.
+
+```
+Los detalles que faltaban.
+
+• Colaboradores renovado: los logos se ven parejos y cada descuento dice cómo se canjea sin ocupar media pantalla.
+• Ahora se nota lo nuevo: las secciones con algo que no has visto llevan un número.
+• Más color en toda la app, y el modo oscuro por fin se ve tan bien como el claro.
+• Videos: las noticias y los eventos pueden traer un video para verlo dentro de la app.
+• WhatsApp: escríbele directo a quien busques en Contactos.
+• Te avisamos cuando subimos la comida del mes.
+• Nueva categoría de descuentos: Ropa.
+• La app ahora se llama "CAA Verbo" también bajo el ícono de tu teléfono.
+```
+
+---
+
 ## Novedades de la version 1.1
 
 App Store lo pide en cada version nueva, en "Novedades de esta version". Lo lee
