@@ -83,7 +83,9 @@ export function BenefitsListPage() {
           description="Cuando el Centro de Alumnos sume un colaborador, aparecerá aquí."
         />
       ) : (
-        <div className="lista-animada space-y-2.5">
+        /* Dos columnas: una vitrina, no una planilla. En pantallas grandes
+           entran tres sin que las tarjetas queden enormes. */
+        <div className="lista-animada grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           {filtered.map((benefit) => (
             <BenefitCard key={benefit.id} benefit={benefit} />
           ))}

@@ -37,6 +37,11 @@ const GRACIA_MS = 5000;
 const escuchas = new Set<Escucha>();
 let canal: RealtimeChannel | null = null;
 let cierrePendiente: ReturnType<typeof setTimeout> | null = null;
+let latido: ReturnType<typeof setInterval> | null = null;
+
+/* Cada cuánto se vuelve a mirar el número por si acaso. Los avisos de quién
+   entra y quién sale llegan solos; esto es la red por si alguno se pierde. */
+const LATIDO_MS = 12000;
 
 /** Llave anónima de este teléfono, para esta sesión. */
 function llaveAlAzar(): string {
@@ -90,13 +95,50 @@ function abrir(): void {
           }
         }
       });
+
+    encenderVigilancia();
   } catch {
     canal = null;
     avisar(null);
   }
 }
 
+/**
+ * Al volver a la app. El teléfono corta la conexión cuando se bloquea la
+ * pantalla o se cambia de aplicación, y al volver el número se quedaba
+ * congelado en lo que era hace rato. Si la conexión murió, se rehace; y si
+ * sigue viva, se vuelve a contar por si se perdió algún aviso.
+ */
+function alVolverALaApp(): void {
+  if (typeof document === 'undefined' || document.visibilityState !== 'visible') return;
+  if (!canal) return;
+
+  if (canal.state !== 'joined') {
+    cerrar();
+    abrir();
+    return;
+  }
+  avisar(cuantosHay());
+}
+
+function encenderVigilancia(): void {
+  if (latido) return;
+  latido = setInterval(() => {
+    if (canal) avisar(cuantosHay());
+  }, LATIDO_MS);
+  document.addEventListener('visibilitychange', alVolverALaApp);
+}
+
+function apagarVigilancia(): void {
+  if (latido) {
+    clearInterval(latido);
+    latido = null;
+  }
+  document.removeEventListener('visibilitychange', alVolverALaApp);
+}
+
 function cerrar(): void {
+  apagarVigilancia();
   const viejo = canal;
   canal = null;
   avisar(null);

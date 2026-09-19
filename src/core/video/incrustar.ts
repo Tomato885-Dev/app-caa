@@ -14,14 +14,29 @@
    Es el mismo reproductor, pero no deja cookies de publicidad hasta que
    alguien le da play. La app la usan menores de edad y no hay razón para
    entregar más de lo necesario.
+
+   EN EL TELÉFONO NO SE PUEDE INCRUSTAR, Y NO ES UN ERROR NUESTRO
+   Dentro de la app instalada, las páginas viven en `capacitor://localhost`.
+   YouTube no reconoce esa dirección como un sitio web y se niega a reproducir:
+   eso es el "error 153" que aparecía en pantalla. No se arregla con un
+   permiso; habría que cambiarle la dirección interna a la app, y eso cerraría
+   la sesión de los 694 alumnos.
+
+   Por eso en el teléfono el video se abre en un navegador ENCIMA de la app
+   —se cierra con un botón y se vuelve donde estabas—, y en la web, donde sí
+   funciona, se sigue incrustando. Ver `ui/VideoIncrustado.tsx`.
    ========================================================================== */
 
 export type TipoDeVideo = 'youtube' | 'vimeo' | 'drive';
 
 export interface VideoIncrustable {
   tipo: TipoDeVideo;
-  /** La dirección para el marco del reproductor. */
+  /** La dirección para el marco del reproductor, en la web. */
   incrustar: string;
+  /** El enlace original, para abrirlo fuera del marco. Ver abajo. */
+  original: string;
+  /** La foto de portada del video, cuando el sitio la da sin pedir permiso. */
+  miniatura?: string;
 }
 
 /** El id de YouTube: once caracteres de letras, números, guion y guion bajo. */
@@ -56,36 +71,46 @@ export function incrustarVideo(url: string): VideoIncrustable | null {
      Cinco formas de copiar el mismo video: el enlace corto, el normal, el de
      una transmisión en vivo, el de un short y el de incrustar. */
   if (host === 'youtu.be' && ID_YOUTUBE.test(partes[0] ?? '')) {
-    return youtube(partes[0], direccion);
+    return youtube(partes[0], direccion, limpio);
   }
   if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
     const parametro = direccion.searchParams.get('v');
-    if (parametro && ID_YOUTUBE.test(parametro)) return youtube(parametro, direccion);
+    if (parametro && ID_YOUTUBE.test(parametro)) return youtube(parametro, direccion, limpio);
 
     const [seccion, id] = partes;
     if (['live', 'shorts', 'embed', 'v'].includes(seccion ?? '') && ID_YOUTUBE.test(id ?? '')) {
-      return youtube(id, direccion);
+      return youtube(id, direccion, limpio);
     }
   }
 
   /* --- Vimeo -------------------------------------------------------------- */
   if (host === 'vimeo.com' || host === 'player.vimeo.com') {
     const id = partes.find((parte) => /^\d{6,}$/.test(parte));
-    if (id) return { tipo: 'vimeo', incrustar: `https://player.vimeo.com/video/${id}` };
+    if (id) {
+      return {
+        tipo: 'vimeo',
+        incrustar: `https://player.vimeo.com/video/${id}`,
+        original: limpio,
+      };
+    }
   }
 
   /* --- Un archivo de Drive ------------------------------------------------
      El colegio graba y lo deja en Drive: /file/d/ID/view se incrusta con
      /preview. Quién puede verlo lo sigue decidiendo Google. */
   if (host === 'drive.google.com' && partes[0] === 'file' && partes[1] === 'd' && partes[2]) {
-    return { tipo: 'drive', incrustar: `https://drive.google.com/file/d/${partes[2]}/preview` };
+    return {
+      tipo: 'drive',
+      incrustar: `https://drive.google.com/file/d/${partes[2]}/preview`,
+      original: limpio,
+    };
   }
 
   return null;
 }
 
 /** Arma la dirección de YouTube, respetando el minuto desde el que empieza. */
-function youtube(id: string, original: URL): VideoIncrustable {
+function youtube(id: string, original: URL, enlace: string): VideoIncrustable {
   const incrustar = new URL(`https://www.youtube-nocookie.com/embed/${id}`);
   /* `playsinline` es lo que evita que el iPhone se lo lleve a pantalla
      completa apenas parte, y `rel=0` deja las sugerencias del final dentro
@@ -96,7 +121,14 @@ function youtube(id: string, original: URL): VideoIncrustable {
   const desde = segundosDelEnlace(original);
   if (desde) incrustar.searchParams.set('start', String(desde));
 
-  return { tipo: 'youtube', incrustar: incrustar.toString() };
+  return {
+    tipo: 'youtube',
+    incrustar: incrustar.toString(),
+    original: enlace,
+    /* La portada del video. Es una imagen suelta, no el reproductor, así que
+       esta sí se ve dentro de la app. */
+    miniatura: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+  };
 }
 
 /** "?t=90", "?t=1m30s" o "?start=90" — el momento donde empieza el video. */

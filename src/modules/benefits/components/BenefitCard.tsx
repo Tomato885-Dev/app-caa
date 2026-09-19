@@ -16,13 +16,14 @@ const ICONO_DEL_CANJE: Record<RedeemMethod, LucideIcon> = {
 /* ============================================================================
    TARJETA DE UN COLABORADOR
    ----------------------------------------------------------------------------
-   Quién es, qué entrega y cómo se canjea, en ese orden. El logo manda: es lo
-   que se reconoce de una pasada, así que va grande, parejo y sobre blanco
-   (ver `LogoDelColaborador`).
+   En dos columnas y con el logo grande arriba, como una vitrina. Antes era una
+   lista de filas y se leía como una planilla: todas iguales, el logo chico a
+   un costado y el ojo sin dónde detenerse.
 
-   Las etiquetas de abajo se dejaron en un solo tono tranquilo. Antes el canje
-   iba en amarillo fuerte y se comía la tarjeta entera; lo que importa ahí es
-   el nombre del local, no cómo se canjea.
+   Lo que se reconoce de un convenio es la marca, así que el logo manda: va
+   centrado, sobre blanco y del mismo porte en todas (ver
+   `LogoDelColaborador`). Debajo, el beneficio en grande —que es lo que se
+   busca— y al pie, en una franja, cómo se canjea.
    ========================================================================== */
 
 export function BenefitCard({ benefit }: { benefit: Benefit }) {
@@ -30,61 +31,51 @@ export function BenefitCard({ benefit }: { benefit: Benefit }) {
   const quedan = available ? diasParaVencer(benefit.validUntil) : null;
   const forma = benefit.redeem?.method;
   const IconoCanje = forma ? ICONO_DEL_CANJE[forma] : Ticket;
+  const porVencer = quedan !== null && quedan <= 3;
 
   return (
-    <CardLink to={`/colaboradores/${benefit.id}`} className="group">
-      <div className="flex items-center gap-3.5">
+    <CardLink to={`/colaboradores/${benefit.id}`} flush className="group flex h-full flex-col">
+      <div className="flex flex-1 flex-col items-center px-3 pb-3 pt-4 text-center">
         <LogoDelColaborador
           benefit={benefit}
-          className="w-[72px] transition group-hover:scale-[1.03]"
+          className="w-[76px] transition duration-200 group-hover:-translate-y-0.5 group-hover:rotate-[-3deg]"
         />
 
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[11px] font-bold uppercase tracking-[0.08em] text-ink-3">
-            {benefit.partner}
+        <p className="mt-3 line-clamp-1 text-[10.5px] font-bold uppercase tracking-[0.1em] text-ink-3">
+          {benefit.partner}
+        </p>
+        <h3 className="mt-0.5 line-clamp-2 text-[14.5px] font-extrabold leading-tight tracking-tight text-ink">
+          {benefit.name}
+        </h3>
+
+        {/* La vigencia solo cuando aprieta: si falta un mes, no es noticia. */}
+        {porVencer ? (
+          <p className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-danger-500">
+            <Clock size={11} />
+            {quedan === 0 ? 'Vence hoy' : quedan === 1 ? 'Vence mañana' : `Quedan ${quedan} días`}
           </p>
-
-          <h3 className="mt-0.5 line-clamp-2 text-[15.5px] font-bold leading-snug text-ink">
-            {benefit.name}
-          </h3>
-
-          {benefit.summary ? (
-            <p className="mt-1 line-clamp-2 text-[12.5px] leading-relaxed text-ink-2">
-              {benefit.summary}
-            </p>
-          ) : null}
-
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11.5px] font-medium text-ink-3">
-            <span className="inline-flex items-center gap-1.5">
-              <span aria-hidden className="size-1.5 rounded-full bg-brand-500" />
-              {benefit.category}
-            </span>
-
-            {/* Cómo se canjea, de un vistazo: así se sabe antes de ir al local
-                si hay que llevar un código, mostrar un QR o comprar en línea. */}
-            {available ? (
-              <span className="inline-flex items-center gap-1.5">
-                <IconoCanje size={13} />
-                {forma ? ETIQUETA_DEL_CANJE[forma] : 'Canjeable'}
-              </span>
-            ) : (
-              <span className="font-semibold text-danger-500">No disponible</span>
-            )}
-
-            {quedan !== null ? (
-              <span
-                className={cn(
-                  'inline-flex items-center gap-1.5 font-semibold',
-                  quedan <= 3 ? 'text-danger-500' : 'text-ink-3',
-                )}
-              >
-                <Clock size={13} />
-                {quedan === 0 ? 'Vence hoy' : quedan === 1 ? 'Vence mañana' : `Vence en ${quedan} días`}
-              </span>
-            ) : null}
-          </div>
-        </div>
+        ) : null}
       </div>
+
+      {/* La franja del pie: de un vistazo se sabe si hay que llevar un código,
+          mostrar un QR o comprar en línea. */}
+      <p
+        className={cn(
+          'flex items-center justify-center gap-1.5 px-2 py-2 text-[11.5px] font-bold',
+          available
+            ? 'bg-accent-500/15 text-accent-700 dark:bg-accent-500/12 dark:text-accent-300'
+            : 'bg-surface-3 text-ink-3',
+        )}
+      >
+        {available ? (
+          <>
+            <IconoCanje size={13} />
+            {forma ? ETIQUETA_DEL_CANJE[forma] : 'Canjeable'}
+          </>
+        ) : (
+          'No disponible'
+        )}
+      </p>
     </CardLink>
   );
 }

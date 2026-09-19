@@ -14,6 +14,7 @@
     "@capacitor-community/in-app-review": "^7.1.0",
     "@capacitor-firebase/messaging": "^7.5.0",
     "@capacitor/android": "^7.6.9",
+    "@capacitor/browser": "^7.0.5",
     "@capacitor/core": "^7.6.9",
     "@capacitor/ios": "^7.6.9",
     "@supabase/supabase-js": "^2.114.0",
