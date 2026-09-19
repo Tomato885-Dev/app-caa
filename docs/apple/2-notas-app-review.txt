@@ -65,8 +65,11 @@ There is no MDM and no managed Apple Accounts, so custom distribution through
 Apple Business Manager would leave the intended users unable to install it. It
 is a school community app, free and with no commercial purpose.
 
-WHAT IS NEW IN 1.1
-Visual redesign, plus: Cafeteria (weekly lunch menu), Notes Hub (links to the
-school's Google Drive folders for each class year), and partner discounts that
-explain how to redeem each one (code, QR, partner website or in store). All of
-it is published by the Student Council; students still publish nothing.
+WHAT IS NEW IN 1.11
+Refinements over 1.1: new app icon, redesigned lists and a dark theme at parity
+with the light one. News and events may now carry a video, published by the
+Student Council only; on device it opens in an in-app browser at its source
+(YouTube, Vimeo or Google Drive). Contacts gained a WhatsApp button that hands
+the number to the phone's own app. An optional counter shows how many people
+have the app open right now: it is an anonymous count, no identity is ever
+transmitted. Students still publish nothing.
