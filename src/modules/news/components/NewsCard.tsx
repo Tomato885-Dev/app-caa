@@ -25,7 +25,11 @@ export function NewsFeatureCard({ post }: { post: NewsPost }) {
     <CardLink to={`/noticias/${post.id}`} flush className="group relative block">
       {hayFoto ? (
         <>
-          <AppImage imageKey={post.imageKey} ratio="16/9" rounded={false} fit="full" />
+          {/* Aqui, y SOLO aqui, la foto se encuadra en 16:9. Una foto vertical
+              dejaba la portada mas alta que la pantalla y el titular quedaba
+              abajo, fuera de la vista. La foto completa, con su forma
+              original, sigue estando dentro de la noticia. */}
+          <AppImage imageKey={post.imageKey} ratio="16/9" rounded={false} fit="cover" />
           {/* El velo: de transparente arriba a oscuro abajo. */}
           <span
             aria-hidden

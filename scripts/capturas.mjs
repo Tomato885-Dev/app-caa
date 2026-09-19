@@ -45,6 +45,9 @@ const SESION = 'scripts/.sesion.json';
  *  que Apple pide para 6,9 pulgadas, y de la que deriva el resto. */
 const IPHONE = { viewport: { width: 440, height: 956 }, deviceScaleFactor: 3 };
 
+/** Con que tema salen las capturas: 'light' o 'dark'. */
+const TEMA = process.env.CAPTURAS_TEMA === 'dark' ? 'dark' : 'light';
+
 /** iPhone 11 Pro Max: 414x896 puntos por 3 = 1242x2688 pixeles. Es la medida
  *  de 6,5 pulgadas, y es la que App Store Connect pide en la ranura que sale
  *  por defecto. Sacar solo la de 6,9 obliga a convertirlas despues, y
@@ -149,7 +152,10 @@ async function capturar(nombreTienda, medidas, sufijo) {
     hasTouch: true,
     locale: 'es-CL',
     timezoneId: 'America/Santiago',
-    colorScheme: 'dark',
+    /* En claro. La ficha de la tienda se mira de dia y con el pulgar: el
+       verde sobre blanco se lee mejor en miniatura que el modo noche, que en
+       una captura chica se ve como un rectangulo negro. Se cambia aqui. */
+    colorScheme: TEMA,
     storageState: !modoDemo && existsSync(SESION) ? SESION : undefined,
   });
 
