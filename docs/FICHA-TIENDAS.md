@@ -35,7 +35,7 @@ QUÉ ENCUENTRAS
 • Proyectos — En qué está trabajando el Centro de Alumnos y cómo va cada cosa.
 • Casino — La minuta de la semana, con lo que hay hoy.
 • Central de apuntes — Las carpetas de apuntes de tu generación.
-• Colaboradores — Los convenios y descuentos vigentes, y cómo canjear cada uno.
+• Colaboradores — Las marcas y locales que acompañan al Centro de Alumnos.
 • Contactos — La comunidad del colegio, para escribirle a alguien sin tener
   que preguntar su correo.
 
@@ -182,14 +182,14 @@ solo indice.
 nueva):
 
 ```
-Los comunicados, los eventos y los beneficios del Centro de Alumnos, en tu telefono. El acceso es solo para la comunidad del colegio, con correo @verbo.cl.
+Todo lo del Centro de Alumnos en tu telefono: comunicados, eventos, la minuta del casino y los apuntes. Solo para la comunidad del colegio.
 ```
 
 **Palabras clave** (maximo 100 caracteres, separadas por coma y sin espacios).
 Desde la 1.1:
 
 ```
-colegio,comunicados,eventos,estudiantes,escolar,noticias,calendario,convenios,cursos,avisos
+colegio,comunicados,eventos,estudiantes,noticias,calendario,convenios,cursos,avisos,apuntes,casino
 ```
 
 La regla: **ninguna palabra que ya este en el nombre o el subtitulo**. Apple
@@ -233,6 +233,27 @@ Alumnos y los equipos designados por el colegio.
 
 Desde el 12 de septiembre de 2026, las notas completas para el revisor estan
 en `docs/apple/2-notas-app-review.txt`, en ingles. Esas son las que valen.
+
+---
+
+## Novedades de la version 1.13
+
+Se llama 1.13 y no 1.2 porque Apple compara version por partes: 1.2 es MENOR
+que 1.11 (dos < once) y rechaza el envio con el error 90062. La 1.12 se
+compilo y quedo en TestFlight, pero nunca se envio a revision, asi que estas
+novedades cubren la 1.12 y la 1.13 juntas: es lo que ve quien viene de la 1.11.
+
+```
+Arreglamos lo que más molestaba: si salías de la app y volvías, a veces se quedaba pegada y había que cerrarla. Ya no pasa.
+
+• El casino te dice qué se come MAÑANA desde las dos de la tarde, para que lo sepas el día antes y no cuando ya almorzaste.
+• Los números de "hay algo nuevo" se apagan apenas entras a la sección.
+• Central de apuntes con diseño nuevo: la carpeta de tu generación se encuentra al primer vistazo.
+• Colaboradores más directo: entras y ves de qué se trata, sin letra chica.
+• Contactos abre al instante, aunque seamos setecientos.
+• Si te quedas sin señal, la app te lo dice en vez de quedarse cargando para siempre.
+• Proyectos: categorías nuevas para que cada iniciativa esté donde corresponde.
+```
 
 ---
 
