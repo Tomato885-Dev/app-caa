@@ -4,6 +4,7 @@ import { NovedadesProvider } from '@/app/novedades/NovedadesContext';
 import { BottomNav } from './BottomNav';
 import { InvitacionAvisos } from './InvitacionAvisos';
 import { SideNav } from './SideNav';
+import { SinConexion } from './SinConexion';
 import { TopBar } from './TopBar';
 
 /**
@@ -37,6 +38,9 @@ export function AppShell() {
 
         <div className="lg:pl-64">
           <TopBar />
+          {/* Va bajo la barra de arriba y sobre el contenido: se ve en toda la
+              app sin tapar la navegacion. */}
+          <SinConexion />
           <main className="animate-fade" key={location.pathname}>
             <Outlet />
           </main>

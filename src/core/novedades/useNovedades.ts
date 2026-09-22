@@ -75,10 +75,27 @@ function anotarVisto(modulo: string, cuando = new Date().toISOString()): void {
   }
 }
 
+/**
+ * ¿Esta fila se le muestra de verdad a la comunidad?
+ *
+ * El contador lee las colecciones en crudo, y ahí conviven cosas que la
+ * persona nunca va a ver: una noticia despublicada, un colaborador apagado.
+ * Contarlas dejaba el número amarillo prometiendo algo que al entrar no
+ * estaba. Se comprueban los dos campos que usan las pantallas —`status` para
+ * lo publicable y `active` para lo que se enciende y apaga— y lo que no tenga
+ * ninguno de los dos se cuenta igual, que es como se comportaba antes.
+ */
+function seVe(fila: BaseEntity): boolean {
+  const posible = fila as BaseEntity & { status?: string; active?: boolean };
+  if (posible.status !== undefined && posible.status !== 'approved') return false;
+  if (posible.active === false) return false;
+  return true;
+}
+
 /** Cuántas de estas publicaciones son posteriores a la última visita. */
 function contarNuevas(filas: BaseEntity[] | undefined, desde: string | null): number {
   if (!filas || !desde) return 0;
-  return filas.filter((fila) => (fila.updatedAt ?? fila.createdAt) > desde).length;
+  return filas.filter((fila) => seVe(fila) && (fila.updatedAt ?? fila.createdAt) > desde).length;
 }
 
 /**

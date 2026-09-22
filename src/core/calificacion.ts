@@ -104,7 +104,30 @@ export function pedirCalificacionSiCorresponde(): () => void {
   const ultima = Number(leer(PEDIDA));
   if (Number.isFinite(ultima) && Date.now() - ultima < ENTRE_PEDIDOS_MS) return nada;
 
+  /* NUNCA PEDIRLO CON LA APP ESCONDIDA.
+     Los cuatro segundos de espera siguen corriendo aunque la persona bloquee
+     el telefono o se cambie de aplicacion. Si el cuadro de estrellas se pide
+     en ese momento, iOS lo monta en una ventana propia por encima de todo y,
+     al no estar la app activa, esa ventana queda puesta y sin cerrarse: la
+     app se ve bien pero deja de recibir los toques, y solo se arregla
+     matandola y abriendola de nuevo. Es el "no me deja navegar" de siempre.
+
+     Asi que se comprueba justo antes de pedir, y ademas se cancela la espera
+     en cuanto la app se esconde. Si no alcanzo a salir, no pasa nada: se
+     volvera a intentar la proxima vez que lea un comunicado o una noticia. */
+  const cancelar = () => {
+    window.clearTimeout(espera);
+    document.removeEventListener('visibilitychange', alEsconderse);
+  };
+
+  const alEsconderse = () => {
+    if (document.visibilityState !== 'visible') cancelar();
+  };
+
   const espera = window.setTimeout(() => {
+    document.removeEventListener('visibilitychange', alEsconderse);
+    if (document.visibilityState !== 'visible') return;
+
     // Se anota antes de pedir: aunque el sistema no lo muestre, no se insiste.
     escribir(PEDIDA, String(Date.now()));
     InAppReview.requestReview().catch(() => {
@@ -112,5 +135,6 @@ export function pedirCalificacionSiCorresponde(): () => void {
     });
   }, ESPERA_MS);
 
-  return () => window.clearTimeout(espera);
+  document.addEventListener('visibilitychange', alEsconderse);
+  return cancelar;
 }

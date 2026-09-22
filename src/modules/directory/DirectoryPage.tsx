@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Mail, Phone, Search, UserSearch } from 'lucide-react';
 import { appConfig } from '@/config/app.config';
 import { ROLE_LABEL } from '@/core/types';
@@ -7,6 +7,7 @@ import { matchesSearch } from '@/core/utils/text';
 import {
   Avatar,
   Badge,
+  Button,
   Card,
   CardListSkeleton,
   EmptyState,
@@ -41,10 +42,23 @@ import { listedInDirectory, telHref, useDirectory, whatsappHref } from './api';
 
 const ALL = 'todos';
 
+/* CUANTAS FICHAS SE DIBUJAN DE UNA VEZ
+   La comunidad son cerca de setecientas personas. Dibujar las setecientas
+   fichas juntas —cada una con su foto, su correo, su telefono y el boton de
+   WhatsApp— son miles de elementos de golpe, y en un telefono normal la app
+   se queda pegada varios segundos al abrir Contactos.
+
+   Se dibujan de a poco, con un boton para pedir mas. Casi nadie va a apretarlo:
+   a una persona se la encuentra escribiendo su nombre en la busqueda, que es
+   justo lo que esta pantalla pone primero. */
+const A_LA_VEZ = 40;
+
 export function DirectoryPage() {
   const { data, isLoading } = useDirectory();
   const [query, setQuery] = useState('');
   const [grade, setGrade] = useState(ALL);
+  /* Cuantas fichas hay dibujadas ahora mismo. Ver el comentario de A_LA_VEZ. */
+  const [cuantas, setCuantas] = useState(A_LA_VEZ);
 
   const people = useMemo(() => listedInDirectory(data ?? []), [data]);
 
@@ -57,6 +71,14 @@ export function DirectoryPage() {
       ),
     [people, grade, query],
   );
+
+  /* Al cambiar la busqueda o el curso se vuelve al principio: si alguien
+     apreto "Mostrar mas" tres veces y despues escribe un nombre, la lista
+     nueva no tiene por que arrancar con 150 fichas dibujadas. */
+  useEffect(() => setCuantas(A_LA_VEZ), [query, grade]);
+
+  const visibles = filtered.slice(0, cuantas);
+  const faltan = filtered.length - visibles.length;
 
   const gradeOptions = useMemo(
     () => [
@@ -110,12 +132,25 @@ export function DirectoryPage() {
             {filtered.length === 1 ? '1 persona' : `${filtered.length} personas`}
           </p>
           <ul className="lista-animada space-y-2.5">
-            {filtered.map((person) => (
+            {visibles.map((person) => (
               <li key={person.id}>
                 <ContactRow person={person} />
               </li>
             ))}
           </ul>
+
+          {faltan > 0 ? (
+            <Button
+              variant="secondary"
+              onClick={() => setCuantas((actual) => actual + A_LA_VEZ)}
+              className="mt-3 w-full"
+            >
+              Mostrar {Math.min(faltan, A_LA_VEZ)} más
+              <span className="ml-1 font-normal text-ink-3">
+                (quedan {faltan})
+              </span>
+            </Button>
+          ) : null}
         </>
       )}
     </Page>

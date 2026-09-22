@@ -153,11 +153,13 @@ function CarpetaCard({ carpeta, destacada }: { carpeta: CarpetaApuntes; destacad
         destacada && 'ring-2 ring-accent-400 dark:ring-accent-500',
       )}
     >
+      {/* La etiqueta va como cinta arriba y no flotando sobre el contenido:
+          encima del titulo le comia las letras cuando el nombre era largo. */}
       {destacada ? (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent-500 px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-wide text-on-accent shadow-raised">
-          <Sparkles size={11} />
+        <p className="flex items-center gap-1.5 bg-accent-500 px-4 py-1.5 text-[10.5px] font-extrabold uppercase tracking-wide text-on-accent">
+          <Sparkles size={12} />
           Tu generación
-        </span>
+        </p>
       ) : null}
 
       <div className="flex items-stretch gap-3.5 p-4 pb-3.5">

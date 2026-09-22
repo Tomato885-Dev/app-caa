@@ -38,6 +38,7 @@ import {
   type ActivationSummary,
 } from './activaciones';
 import { ActivationSummaryCard } from './components/ActivationSummaryCard';
+import { SubirLosCursos } from './components/SubirLosCursos';
 import { NombreFormSheet } from './components/NombreFormSheet';
 import { NominaFormSheet } from './components/NominaFormSheet';
 
@@ -310,6 +311,9 @@ export function UsersPage() {
           })}
         </ul>
       )}
+
+      {/* Al final del todo y plegado: es lo mas destructivo de la app. */}
+      <SubirLosCursos />
 
       <NombreFormSheet user={renaming} onClose={() => setRenaming(null)} />
     </Page>

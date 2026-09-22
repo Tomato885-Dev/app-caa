@@ -14,8 +14,24 @@ export function useBenefit(id: ID | undefined) {
 }
 
 /**
- * ¿El beneficio se puede canjear hoy? Un convenio vencido sigue visible para
- * los administradores, pero deja de ofrecer el código a los estudiantes.
+ * ¿Este colaborador se le muestra a la comunidad?
+ *
+ * Desde que se sacó el sistema de canje, lo único que decide si un
+ * colaborador aparece es el interruptor "activo" del panel. La fecha de
+ * término ya no esconde a nadie: el equipo apaga a quien ya no corresponde.
+ *
+ * Antes esto no se comprobaba en el listado, solo en Inicio, así que un
+ * colaborador apagado seguía apareciendo en la lista —y encima Inicio decía
+ * un número distinto del que se veía al entrar.
+ */
+export function esVisible(benefit: Benefit): boolean {
+  return benefit.active;
+}
+
+/**
+ * ¿El beneficio se puede canjear hoy? Ya no se usa en las pantallas de la
+ * comunidad —el canje se quitó de la vista— pero el panel lo sigue
+ * necesitando para avisarle al equipo que un convenio venció.
  */
 export function isRedeemable(benefit: Benefit): boolean {
   const termino = terminoDelConvenio(benefit.validUntil);

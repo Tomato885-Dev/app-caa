@@ -3,7 +3,7 @@ import { Search, Ticket } from 'lucide-react';
 import { benefitCategories } from '@/content/taxonomies';
 import { matchesSearch } from '@/core/utils/text';
 import { CardListSkeleton, EmptyState, FilterChips, Input, Page, PageHeader } from '@/ui';
-import { sortBenefits, useBenefitList } from './api';
+import { esVisible, sortBenefits, useBenefitList } from './api';
 import { BenefitCard } from './components/BenefitCard';
 import { useMarcarVisto } from '@/core/novedades/useNovedades';
 
@@ -27,7 +27,9 @@ export function BenefitsListPage() {
   const [category, setCategory] = useState(ALL);
   const [query, setQuery] = useState('');
 
-  const benefits = useMemo(() => sortBenefits(data ?? []), [data]);
+  /* Solo los que el equipo tiene encendidos. Un colaborador apagado desde el
+     panel no debe seguir en la lista como si nada. */
+  const benefits = useMemo(() => sortBenefits((data ?? []).filter(esVisible)), [data]);
 
   const filtered = useMemo(
     () =>
@@ -57,7 +59,7 @@ export function BenefitsListPage() {
     <Page>
       <PageHeader
         title="Colaboradores"
-        description="Quiénes apoyan la campaña. Abre uno y revisa los requisitos para canjearlo."
+        description="Las marcas y locales que acompañan al Centro de Alumnos."
       />
 
       <div className="relative mb-3">

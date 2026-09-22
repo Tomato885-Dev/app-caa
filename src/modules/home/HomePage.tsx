@@ -15,7 +15,7 @@ import {
 import { EventHighlightCard } from '@/modules/events/components/EventCard';
 import { upcoming, useEventList } from '@/modules/events/api';
 import { useMenuDeHoy } from '@/modules/casino/components/HoyEnElCasino';
-import { useBenefitList, isRedeemable, sortBenefits } from '@/modules/benefits/api';
+import { useBenefitList, esVisible, sortBenefits } from '@/modules/benefits/api';
 import { Bento } from './components/Bento';
 import { NewsFeatureCard, NewsRowCard } from '@/modules/news/components/NewsCard';
 import { sortNews, useNewsList } from '@/modules/news/api';
@@ -90,7 +90,7 @@ export function HomePage() {
   const casino = useMenuDeHoy();
   const beneficios = useBenefitList();
   const colaboradores = useMemo(
-    () => sortBenefits((beneficios.data ?? []).filter(isRedeemable)),
+    () => sortBenefits((beneficios.data ?? []).filter(esVisible)),
     [beneficios.data],
   );
 

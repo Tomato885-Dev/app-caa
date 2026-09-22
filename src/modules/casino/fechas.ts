@@ -40,11 +40,14 @@ export function diasDeLaSemana(lunes: Date): Date[] {
   );
 }
 
+/** A qué hora la portada deja de mirar hoy y empieza a mirar mañana. */
+const HORA_DEL_SALTO = 14;
+
 /**
  * El día que conviene mostrar primero en la portada.
  *
- * Regla: hasta las 16:00 se muestra el menú de HOY —a la hora del almuerzo la
- * gente todavía quiere confirmar qué le toca—; a partir de las 16:00 se salta
+ * Regla: hasta las 14:00 se muestra el menú de HOY —a la hora del almuerzo la
+ * gente todavía quiere confirmar qué le toca—; a partir de las 14:00 se salta
  * al día siguiente —ya comieron y ahora quieren planear el de mañana—. Si el
  * salto cae en fin de semana, se ajusta al lunes: un sábado no importa lo que
  * hubo el viernes, sino lo que viene.
@@ -52,7 +55,7 @@ export function diasDeLaSemana(lunes: Date): Date[] {
 export function diaHabilDeReferencia(hoy = new Date()): Date {
   const dia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
   const enSemana = hoy.getDay() >= 1 && hoy.getDay() <= 5;
-  if (enSemana && hoy.getHours() >= 16) dia.setDate(dia.getDate() + 1);
+  if (enSemana && hoy.getHours() >= HORA_DEL_SALTO) dia.setDate(dia.getDate() + 1);
   if (dia.getDay() === 6) dia.setDate(dia.getDate() + 2);
   if (dia.getDay() === 0) dia.setDate(dia.getDate() + 1);
   return dia;
