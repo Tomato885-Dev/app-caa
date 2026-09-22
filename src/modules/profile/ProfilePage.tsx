@@ -341,6 +341,23 @@ function PhoneSection({ phone }: { phone?: string }) {
           cualquier persona de la comunidad. Puedes borrarlo cuando quieras.
         </p>
 
+        {/* Aviso y enlace a la politica de privacidad. Va aca abajo del campo
+            porque es donde la persona decide dejar su numero: si acepta, es
+            en este momento, no en una pantalla aparte. */}
+        <p className="mt-2.5 text-[12.5px] leading-relaxed text-ink-3">
+          Al agregar tu número aceptas la{' '}
+          <a
+            href={appConfig.organization.privacyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-brand-600 underline underline-offset-2 hover:text-brand-700 dark:text-brand-300"
+          >
+            política de privacidad
+            <ExternalLink size={11.5} />
+          </a>
+          .
+        </p>
+
         <Button
           variant="secondary"
           size="sm"

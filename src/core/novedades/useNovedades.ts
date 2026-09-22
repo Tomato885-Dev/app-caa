@@ -43,6 +43,12 @@ const CLAVE = 'appcaa:visto:';
    barra. */
 const TOPE = 9;
 
+/* Quienes quieran enterarse cuando una sección se marque como vista. Es una
+   señal interna, no toca la red ni el disco. La usa el contador de arriba para
+   apagar el número al instante: si no, la fecha nueva la escribiría el disco
+   pero el contador seguiría con la fecha vieja hasta que la app se recargue. */
+const oyentes = new Set<() => void>();
+
 function leerVisto(modulo: string): string | null {
   try {
     return localStorage.getItem(CLAVE + modulo);
@@ -58,6 +64,15 @@ function anotarVisto(modulo: string, cuando = new Date().toISOString()): void {
   } catch {
     /* sin almacenamiento, la sesión sigue funcionando igual */
   }
+  /* Avisar SIEMPRE, aunque el disco haya fallado: al menos en esta sesión el
+     número se apaga y no queda un "1" fantasma sobre una pestaña ya abierta. */
+  for (const oyente of oyentes) {
+    try {
+      oyente();
+    } catch {
+      /* un oyente que reviente no puede tumbar a los demás */
+    }
+  }
 }
 
 /** Cuántas de estas publicaciones son posteriores a la última visita. */
@@ -72,10 +87,11 @@ function contarNuevas(filas: BaseEntity[] | undefined, desde: string | null): nu
  * nuevo en cada rincón de la navegación.
  */
 export function useContarNovedades(): Record<string, number> {
-  /* Las fechas se leen UNA vez al abrir la app. Si se leyeran en cada dibujo,
-     apagar una sección volvería a contar desde ese instante y el número
-     parpadearía. */
-  const [vistos] = useState(() => {
+  /* Las fechas se guardan en el estado para poder refrescarlas cuando una
+     sección se marca como vista. La primera vez que arranca la app, si no hay
+     fecha guardada se anota la de ahora: alguien recién llegado no tiene
+     "14 convenios nuevos", los tiene todos por primera vez. */
+  const [vistos, setVistos] = useState(() => {
     const inicial: Record<string, string | null> = {};
     for (const seccion of SECCIONES) {
       const guardado = leerVisto(seccion.modulo);
@@ -84,6 +100,21 @@ export function useContarNovedades(): Record<string, number> {
     }
     return inicial;
   });
+
+  /* Cuando alguna pantalla llama a `useMarcarVisto`, este hook se entera y
+     vuelve a leer las fechas del disco. Así el numerito amarillo se apaga en
+     el mismo instante en que la persona abre la categoría. */
+  useEffect(() => {
+    const refrescar = () => {
+      const nuevos: Record<string, string | null> = {};
+      for (const seccion of SECCIONES) nuevos[seccion.modulo] = leerVisto(seccion.modulo);
+      setVistos(nuevos);
+    };
+    oyentes.add(refrescar);
+    return () => {
+      oyentes.delete(refrescar);
+    };
+  }, []);
 
   /* Las mismas consultas que ya usan las pantallas: react-query las comparte,
      así que esto no agrega tráfico salvo la primera vez. */
@@ -117,15 +148,16 @@ export function useContarNovedades(): Record<string, number> {
 }
 
 /**
- * Marca una sección como vista. Lo llama su propia pantalla al abrirse, con un
- * respiro: apagar el número antes de que alcance a verse deja a la persona sin
- * entender por qué había un número.
+ * Marca una sección como vista. Lo llama su propia pantalla al abrirse: apenas
+ * la persona abre la categoría, el numerito amarillo se apaga. Antes se
+ * esperaba un respiro para que el número alcanzara a verse, pero Mateo prefiere
+ * que desaparezca al instante: si la persona ya está mirando la sección, el
+ * "1" ya cumplió su tarea de traerla hasta acá.
  */
 export function useMarcarVisto(modulo: string, listo = true): void {
   useEffect(() => {
     if (!listo) return;
-    const temporizador = setTimeout(() => anotarVisto(modulo), 1200);
-    return () => clearTimeout(temporizador);
+    anotarVisto(modulo);
   }, [modulo, listo]);
 }
 

@@ -41,7 +41,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Acción social',
+    area: 'Acción Social',
     status: 'activo',
     startYear: 2026,
     endYear: null,
@@ -54,7 +54,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Cultura y arte',
+    area: 'Cultura',
     status: 'activo',
     startYear: 2026,
     endYear: null,
@@ -80,7 +80,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Ciencia y tecnología',
+    area: 'Tecnología',
     status: 'activo',
     startYear: 2026,
     endYear: null,
@@ -119,7 +119,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Acción social',
+    area: 'Acción Social',
     status: 'activo',
     startYear: 2026,
     endYear: null,
@@ -132,7 +132,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Cultura y arte',
+    area: 'Cultura',
     status: 'activo',
     startYear: 2026,
     endYear: null,
@@ -158,7 +158,7 @@ export const seedProjects: Project[] = [
     summary: 'Pendiente de completar: describe el proyecto en una frase.',
     description:
       'Pendiente de completar.\nCuenta cómo partió el proyecto, qué hace hoy y qué ha logrado. Escribe simple: este apartado lo leen sobre todo los cursos más pequeños.',
-    area: 'Ciencia y tecnología',
+    area: 'Tecnología',
     status: 'activo',
     startYear: 2026,
     endYear: null,

@@ -37,14 +37,23 @@ export const eventCategories = [
   'Recreativo',
 ] as const;
 
-/** Áreas de los proyectos del colegio. */
+/** Áreas de los proyectos del colegio.
+ *
+ * El listado antiguo (Medioambiente, Acción social, Cultura y arte, Deporte,
+ * Ciencia y tecnología, Convivencia) se quedó corto: quedaban afuera cosas que
+ * el Centro sí hace, como la Barra, los recreos armados o los eventos grandes.
+ * Se abre la lista para que cada iniciativa encuentre su lugar. */
 export const projectAreas = [
-  'Medioambiente',
-  'Acción social',
-  'Cultura y arte',
+  'Comunidad',
   'Deporte',
-  'Ciencia y tecnología',
   'Convivencia',
+  'Barra',
+  'Cultura',
+  'Recreativos',
+  'Eventos',
+  'Tecnología',
+  'Acción Social',
+  'Medioambiente',
 ] as const;
 
 /* --- Comunicados del Centro de Alumnos --------------------------------------

@@ -1,34 +1,21 @@
 import { useParams } from 'react-router-dom';
-import { CalendarClock, Clock, FileQuestion, ScrollText, Store } from 'lucide-react';
-import { formatDate } from '@/core/utils/date';
-import {
-  ButtonLink,
-  Card,
-  EmptyState,
-  MetaRow,
-  Page,
-  Prose,
-  SectionHeader,
-  Skeleton,
-  cn,
-} from '@/ui';
-import { isRedeemable, useBenefit } from './api';
-import { diasParaVencer, terminoDelConvenio } from './canje';
-import { ComoCanjear } from './components/ComoCanjear';
+import { FileQuestion } from 'lucide-react';
+import { ButtonLink, EmptyState, Page, Prose, SectionHeader, Skeleton } from '@/ui';
+import { useBenefit } from './api';
 import { LogoDelColaborador } from './components/LogoDelColaborador';
 
 /* ============================================================================
    FICHA DEL COLABORADOR
    ----------------------------------------------------------------------------
-   Se abre parado en la caja, así que lo primero es reconocer el local —el
-   logo, grande— y lo segundo es la acción: el código, el QR o el botón a la
-   tienda. Todo lo demás viene después.
+   El colaborador se presenta y ya está: quién es, y de qué se trata.
+   Antes esta ficha era el mostrador de un canjeo —código, QR, vigencia, dónde
+   canjear, condiciones—; el sistema no cuajó con los locales y se le sacaron
+   todas esas piezas. Se dejan por dentro (ver `Benefit` en el modelo) por si
+   algún convenio vuelve a traer descuento, pero acá no se muestran.
 
-   AQUÍ HUBO UN CÓDIGO INVENTADO
-   Primero cada convenio tenía un QR que ningún local escaneaba, y después un
-   "código de canje" que inventaba el Centro de Alumnos y el local no conocía.
-   Ahora cada convenio dice su propia forma, la que definió el local (ver
-   `canje.ts`), y esa forma va integrada en la ficha, sin un recuadro aparte.
+   LA PORTADA MANDA
+   Se abre parado en el logo, con el nombre del local y del beneficio grande.
+   Debajo, lo único que importa: la descripción.
    ========================================================================== */
 
 export function BenefitDetailPage() {
@@ -50,21 +37,17 @@ export function BenefitDetailPage() {
       <Page>
         <EmptyState
           icon={FileQuestion}
-          title="Beneficio no encontrado"
-          description="Es posible que el convenio haya terminado o que el enlace no sea válido."
+          title="Colaborador no encontrado"
+          description="Es posible que ya no aparezca en el listado o que el enlace no sea válido."
           action={<ButtonLink to="/colaboradores">Volver a colaboradores</ButtonLink>}
         />
       </Page>
     );
   }
 
-  const available = isRedeemable(benefit);
-  const termino = terminoDelConvenio(benefit.validUntil);
-  const quedan = available ? diasParaVencer(benefit.validUntil) : null;
-
   return (
     <Page>
-      {/* Portada: el logo y el nombre del beneficio, sin nada entremedio. */}
+      {/* Portada: el logo y el nombre del colaborador, sin nada entremedio. */}
       <header className="mb-5 overflow-hidden rounded-card border border-line bg-surface shadow-card">
         <div className="relative flex gap-4 p-4">
           {/* El verde de fondo da el aire de la app sin tapar el logo. */}
@@ -83,27 +66,10 @@ export function BenefitDetailPage() {
               {benefit.name}
             </h1>
 
-            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11.5px] font-medium text-ink-3">
-              <span className="inline-flex items-center gap-1.5">
-                <span aria-hidden className="size-1.5 rounded-full bg-brand-500" />
-                {benefit.category}
-              </span>
-              {quedan !== null ? (
-                <span
-                  className={cn(
-                    'inline-flex items-center gap-1.5 font-semibold',
-                    quedan <= 3 ? 'text-danger-500' : 'text-ink-3',
-                  )}
-                >
-                  <Clock size={13} />
-                  {quedan === 0
-                    ? 'Vence hoy'
-                    : quedan === 1
-                      ? 'Vence mañana'
-                      : `Vence en ${quedan} días`}
-                </span>
-              ) : null}
-            </div>
+            <p className="mt-2 inline-flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.08em] text-brand-600 dark:text-brand-300">
+              <span aria-hidden className="size-1.5 rounded-full bg-brand-500" />
+              Colaborador
+            </p>
           </div>
         </div>
 
@@ -114,46 +80,12 @@ export function BenefitDetailPage() {
         ) : null}
       </header>
 
-      {/* La acción, apenas debajo de la portada: es a lo que se viene. */}
-      {available && benefit.redeem ? (
-        <ComoCanjear benefit={benefit} redeem={benefit.redeem} />
-      ) : null}
-
-      {!available ? (
-        <Card className="mb-5 border-danger-500/30">
-          <p className="text-center text-[13px] font-semibold text-danger-500">
-            Este beneficio ya no está vigente.
-          </p>
-        </Card>
-      ) : null}
-
       {benefit.description.trim() ? (
         <section className="mb-6">
           <SectionHeader title="De qué se trata" />
           <Prose text={benefit.description} />
         </section>
       ) : null}
-
-      {benefit.terms ? (
-        <section className="mb-6">
-          <SectionHeader title="Condiciones de uso" />
-          <Card>
-            <div className="flex gap-3">
-              <ScrollText size={17} className="mt-0.5 shrink-0 text-ink-3" />
-              <p className="text-[13.5px] leading-relaxed text-ink-2">{benefit.terms}</p>
-            </div>
-          </Card>
-        </section>
-      ) : null}
-
-      <Card className="mb-6">
-        <MetaRow icon={Store} label="Dónde se canjea" value={benefit.partner} />
-        <MetaRow
-          icon={CalendarClock}
-          label="Vigencia"
-          value={termino ? `Hasta el ${formatDate(termino)}` : 'Sin fecha de término definida'}
-        />
-      </Card>
     </Page>
   );
 }

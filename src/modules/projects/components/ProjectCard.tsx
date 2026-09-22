@@ -1,11 +1,15 @@
 import {
+  CalendarDays,
+  Cpu,
+  Handshake,
   HeartHandshake,
   Leaf,
   Lightbulb,
+  Megaphone,
   Palette,
+  PartyPopper,
   Trophy,
   Users,
-  FlaskConical,
   type LucideIcon,
 } from 'lucide-react';
 import type { Project } from '@/core/types';
@@ -29,12 +33,16 @@ import { projectYears } from '../api';
 
 /** Cada área con su ícono. Un área nueva cae en la bombilla, sin romper nada. */
 const ICONO_DEL_AREA: Record<string, LucideIcon> = {
-  Medioambiente: Leaf,
-  'Acción social': HeartHandshake,
-  'Cultura y arte': Palette,
+  Comunidad: Users,
   Deporte: Trophy,
-  'Ciencia y tecnología': FlaskConical,
-  Convivencia: Users,
+  Convivencia: Handshake,
+  Barra: Megaphone,
+  Cultura: Palette,
+  Recreativos: PartyPopper,
+  Eventos: CalendarDays,
+  Tecnología: Cpu,
+  'Acción Social': HeartHandshake,
+  Medioambiente: Leaf,
 };
 
 export function ProjectCard({ project }: { project: Project }) {

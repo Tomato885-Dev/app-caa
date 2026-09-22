@@ -11,7 +11,7 @@ import { AppImage, Avatar, cn } from '@/ui';
    ----------------------------------------------------------------------------
    En vez de una grilla de íconos iguales que no dicen nada, Inicio muestra
    bloques de distinto tamaño con lo que está pasando AHORA: qué se come hoy,
-   cuándo es lo próximo, el último aviso y cuántos descuentos hay.
+   cuándo es lo próximo, el último aviso y los colaboradores del CAA.
 
    Cada bloque es a la vez un dato y un atajo. Así la portada cambia todos los
    días, y abrir la app siempre enseña algo nuevo: esa es la razón para volver.
@@ -174,9 +174,13 @@ export function Bento({
         </span>
         <span className="min-w-0 pr-6">
           <span className="block text-[15px] font-extrabold leading-tight">
-            {colaboradores.length > 0 ? `${colaboradores.length} descuentos` : 'Colaboradores'}
+            {colaboradores.length > 0
+              ? `${colaboradores.length} ${colaboradores.length === 1 ? 'colaborador' : 'colaboradores'}`
+              : 'Colaboradores'}
           </span>
-          <span className="block text-[12.5px] text-ink-2">Para ti, y cómo canjear cada uno</span>
+          <span className="block text-[12.5px] text-ink-2">
+            Descuentos que consiguió el Centro de Alumnos para ti
+          </span>
         </span>
       </Bloque>
     </section>

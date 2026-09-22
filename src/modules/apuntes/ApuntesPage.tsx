@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { BookOpen, ExternalLink, FolderOpen, Info } from 'lucide-react';
+import { BookOpen, ExternalLink, Folders, Info, Sparkles } from 'lucide-react';
 import { useAuth } from '@/core/auth/AuthContext';
 import type { CarpetaApuntes } from '@/core/types';
-import { Card, CardListSkeleton, EmptyState, Page, PageHeader, SectionHeader } from '@/ui';
+import { Card, CardListSkeleton, EmptyState, Page, PageHeader, SectionHeader, cn } from '@/ui';
 import { ordenarCarpetas, useCarpetas } from './api';
 import { cursoDeGeneracion, esEnlaceSeguro, generacionDe } from './generacion';
 import { useMarcarVisto } from '@/core/novedades/useNovedades';
@@ -127,39 +127,81 @@ export function ApuntesPage() {
   );
 }
 
+/* ============================================================================
+   TARJETA DE UNA CARPETA
+   ----------------------------------------------------------------------------
+   Cada carpeta se ve como una portada de material: a la izquierda, un cuadro
+   verde con el icono grande de "muchas carpetas" —dos carpetas apiladas, que
+   sugiere apuntes acumulados y no una carpeta vacía— y a la derecha el título
+   con su descripción. Debajo, un botón ancho para abrirla en Drive.
+
+   LA DE MI GENERACIÓN, SEÑALADA
+   Cuando la tarjeta pertenece a la generación de quien mira, lleva un anillo
+   dorado y una pequeña etiqueta arriba: es lo que la persona vino a buscar y
+   no debería costarle encontrarla entre las demás.
+   ========================================================================== */
+
 function CarpetaCard({ carpeta, destacada }: { carpeta: CarpetaApuntes; destacada?: boolean }) {
   const seguro = esEnlaceSeguro(carpeta.url);
   const esDrive = seguro && /(^|\.)google\.com$/i.test(new URL(carpeta.url.trim()).hostname);
 
   return (
-    <Card className={destacada ? 'ring-1 ring-brand-400 dark:ring-brand-700' : undefined}>
-      <div className="flex items-start gap-3.5">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">
-          <FolderOpen size={20} />
+    <Card
+      flush
+      className={cn(
+        'relative',
+        destacada && 'ring-2 ring-accent-400 dark:ring-accent-500',
+      )}
+    >
+      {destacada ? (
+        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent-500 px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-wide text-on-accent shadow-raised">
+          <Sparkles size={11} />
+          Tu generación
         </span>
-        <div className="min-w-0 flex-1">
-          <h3 className="text-[15px] font-bold leading-snug text-ink">{carpeta.titulo}</h3>
-          {carpeta.descripcion ? (
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{carpeta.descripcion}</p>
-          ) : null}
+      ) : null}
 
-          {seguro ? (
-            <a
-              href={carpeta.url.trim()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex h-9 items-center gap-2 rounded-field bg-brand-500 px-3.5 text-[13px] font-semibold text-white transition hover:bg-brand-600 active:scale-[0.98]"
-            >
-              {esDrive ? 'Abrir en Drive' : 'Abrir carpeta'}
-              <ExternalLink size={14} />
-            </a>
-          ) : (
-            <p className="mt-2 text-[12.5px] text-ink-3">
-              El enlace de esta carpeta no es válido. Avísale al Centro de Alumnos.
+      <div className="flex items-stretch gap-3.5 p-4 pb-3.5">
+        {/* El icono va sobre un cuadro con gradiente verde: el mismo verde de
+            la marca, para que la carpeta se sienta parte de la app y no un
+            adorno pegado. */}
+        <span
+          aria-hidden
+          className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-raised"
+        >
+          <Folders size={26} strokeWidth={2} />
+        </span>
+        <div className="min-w-0 flex-1 self-center">
+          <h3 className="text-[16px] font-extrabold leading-tight tracking-tight text-ink">
+            {carpeta.titulo}
+          </h3>
+          {carpeta.descripcion ? (
+            <p className="mt-1 line-clamp-2 text-[13px] leading-relaxed text-ink-2">
+              {carpeta.descripcion}
             </p>
-          )}
+          ) : null}
         </div>
       </div>
+
+      {seguro ? (
+        <a
+          href={carpeta.url.trim()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            'flex items-center justify-center gap-2 border-t border-line px-4 py-3',
+            'bg-brand-50 text-[13.5px] font-bold text-brand-700 transition',
+            'hover:bg-brand-100 active:scale-[0.99]',
+            'dark:bg-brand-950 dark:text-brand-200 dark:hover:bg-brand-900',
+          )}
+        >
+          {esDrive ? 'Abrir en Drive' : 'Abrir carpeta'}
+          <ExternalLink size={14} />
+        </a>
+      ) : (
+        <p className="border-t border-line px-4 py-3 text-[12.5px] text-ink-3">
+          El enlace de esta carpeta no es válido. Avísale al Centro de Alumnos.
+        </p>
+      )}
     </Card>
   );
 }
