@@ -38,6 +38,18 @@
 -- Devuelve el curso del año que viene, o NULL si ese texto no es un curso que
 -- deba subir (un cargo, un "Egresado 2026" de la vez pasada, cualquier cosa).
 --
+-- OJO CON EL LIMITE DE PALABRA
+-- Aqui va `\y` y no ``. En JavaScript `` es "limite de palabra", pero en
+-- PostgreSQL `` es el caracter de BORRADO, asi que `'^IV\s+Medio'` busca
+-- "IV Medio" seguido de un borrado: no calza nunca y la funcion devolvia NULL
+-- para todos los cursos. El limite de palabra en Postgres se escribe `\y`.
+--
+-- OJO CON EL LIMITE DE PALABRA
+-- Aqui va \y y no \b. En JavaScript \b es "limite de palabra",
+-- pero en PostgreSQL \b es el caracter de BORRADO: el patron buscaba
+-- "IV Medio" seguido de un borrado, no calzaba nunca, y la funcion devolvia
+-- NULL para todos los cursos. El limite de palabra en Postgres es \y.
+--
 -- EL ORDEN DE LOS NIVELES IMPORTA
 -- "I Medio", "II Medio", "III Medio" y "IV Medio" empiezan todos con I. Cada
 -- patrón exige el espacio justo después del número romano, así que "II Medio"
@@ -55,11 +67,11 @@ immutable
 set search_path = public
 as $$
   select case
-    when p_curso ~ '^IV\s+Medio\b'        then 'Egresado ' || p_anio
-    when p_curso ~ '^III\s+Medio\b'       then regexp_replace(p_curso, '^III\s+Medio',  'IV Medio')
-    when p_curso ~ '^II\s+Medio\b'        then regexp_replace(p_curso, '^II\s+Medio',   'III Medio')
-    when p_curso ~ '^I\s+Medio\b'         then regexp_replace(p_curso, '^I\s+Medio',    'II Medio')
-    when p_curso ~ '^8\s*°?\s*B[aá]sico\b' then regexp_replace(p_curso, '^8\s*°?\s*B[aá]sico', 'I Medio')
+    when p_curso ~ '^IV\s+Medio\y'        then 'Egresado ' || p_anio
+    when p_curso ~ '^III\s+Medio\y'       then regexp_replace(p_curso, '^III\s+Medio',  'IV Medio')
+    when p_curso ~ '^II\s+Medio\y'        then regexp_replace(p_curso, '^II\s+Medio',   'III Medio')
+    when p_curso ~ '^I\s+Medio\y'         then regexp_replace(p_curso, '^I\s+Medio',    'II Medio')
+    when p_curso ~ '^8\s*°?\s*B[aá]sico\y' then regexp_replace(p_curso, '^8\s*°?\s*B[aá]sico', 'I Medio')
     else null
   end;
 $$;
@@ -124,11 +136,11 @@ begin
 
   -- --- El resumen, que sirve igual para el ensayo y para el resultado ------
   select jsonb_build_object(
-      'octavo_a_primero',   count(*) filter (where curso ~ '^8\s*°?\s*B[aá]sico\b'),
-      'primero_a_segundo',  count(*) filter (where curso ~ '^I\s+Medio\b'),
-      'segundo_a_tercero',  count(*) filter (where curso ~ '^II\s+Medio\b'),
-      'tercero_a_cuarto',   count(*) filter (where curso ~ '^III\s+Medio\b'),
-      'cuarto_egresa',      count(*) filter (where curso ~ '^IV\s+Medio\b'),
+      'octavo_a_primero',   count(*) filter (where curso ~ '^8\s*°?\s*B[aá]sico\y'),
+      'primero_a_segundo',  count(*) filter (where curso ~ '^I\s+Medio\y'),
+      'segundo_a_tercero',  count(*) filter (where curso ~ '^II\s+Medio\y'),
+      'tercero_a_cuarto',   count(*) filter (where curso ~ '^III\s+Medio\y'),
+      'cuarto_egresa',      count(*) filter (where curso ~ '^IV\s+Medio\y'),
       'sin_tocar',          count(*) filter (where public.curso_del_ano_siguiente(curso, p_anio) is null)
     ) into v_resumen
     from public.nomina;
@@ -142,7 +154,7 @@ begin
   update public.nomina
      set curso = public.curso_del_ano_siguiente(curso, p_anio),
          -- Quien egresa deja de poder crear cuenta.
-         habilitado = case when curso ~ '^IV\s+Medio\b' then false else habilitado end
+         habilitado = case when curso ~ '^IV\s+Medio\y' then false else habilitado end
    where public.curso_del_ano_siguiente(curso, p_anio) is not null;
   get diagnostics v_nomina = row_count;
 
@@ -150,13 +162,13 @@ begin
   -- Se cuenta primero a los que egresan, porque después de subirlos su curso
   -- ya no dice "IV Medio" y no habría forma de contarlos.
   select count(*) into v_egresan
-    from public.perfiles where curso ~ '^IV\s+Medio\b';
+    from public.perfiles where curso ~ '^IV\s+Medio\y';
 
   update public.perfiles
      set curso = public.curso_del_ano_siguiente(curso, p_anio),
          -- Egresar cierra el acceso, pero NO borra nada: la cuenta se puede
          -- volver a activar a mano desde Cuentas y permisos.
-         activo = case when curso ~ '^IV\s+Medio\b' then false else activo end,
+         activo = case when curso ~ '^IV\s+Medio\y' then false else activo end,
          editado_en = now()
    where public.curso_del_ano_siguiente(curso, p_anio) is not null;
   get diagnostics v_perfiles = row_count;
