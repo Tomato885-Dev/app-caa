@@ -116,6 +116,14 @@ const PANTALLAS = [
   { archivo: '6-noticias', ruta: '/noticias', espera: 'Noticias' },
 ];
 
+/* Sacar una sola pantalla, cuando cambio el diseño de una y las demás siguen
+   sirviendo. Se le da el nombre del archivo o un trozo:
+   CAPTURAS_SOLO=colaboradores. Sin esto salen las seis. */
+const SOLO = (process.env.CAPTURAS_SOLO ?? '').trim().toLowerCase();
+const pantallasAsacar = SOLO
+  ? PANTALLAS.filter((p) => p.archivo.toLowerCase().includes(SOLO))
+  : PANTALLAS;
+
 const args = process.argv.slice(2);
 const modoDemo = args.includes('--demo');
 const modoEntrar = args.includes('--entrar');
@@ -189,7 +197,7 @@ async function capturar(nombreTienda, medidas, sufijo) {
     }
   }
 
-  for (const pantalla of PANTALLAS) {
+  for (const pantalla of pantallasAsacar) {
     await pagina.goto(`${SERVIDOR}${pantalla.ruta}`, { waitUntil: 'networkidle' });
 
     /* Las imágenes entran después del primer dibujo. Sin esperarlas, la
@@ -260,7 +268,11 @@ if (!modoDemo && !existsSync(SESION)) {
   process.exit(1);
 }
 
-await rm(CARPETA, { recursive: true, force: true });
+/* La carpeta se vacía para que no queden capturas de una versión anterior
+   mezcladas con las nuevas. Pero si se pidió UNA sola pantalla, borrarla se
+   llevaría por delante las otras cinco, que siguen sirviendo: ahí solo se
+   sobrescribe la que toca. */
+if (!SOLO) await rm(CARPETA, { recursive: true, force: true });
 
 console.log(`\n${modoDemo ? 'Contenido de DEMOSTRACIÓN' : 'Contenido REAL'}\n`);
 console.log('App Store · 1320x2868  (6,9 pulgadas)');

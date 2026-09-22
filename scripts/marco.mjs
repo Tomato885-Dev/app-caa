@@ -33,7 +33,10 @@ export const FRASES = {
   '2-casino': ['Mira qué se sirve', 'hoy en el casino'],
   '3-eventos': ['No te pierdas', 'ningún evento'],
   '4-comunicados': ['Los avisos oficiales,', 'apenas salen'],
-  '5-colaboradores': ['Descuentos', 'solo para ti'],
+  /* Decia "Descuentos solo para ti". Se cambio al sacar el sistema de canje:
+     la pantalla ya no muestra codigos ni descuentos, y una frase que promete
+     algo que la captura no ensena es motivo de reparo en la revision. */
+  '5-colaboradores': ['Las marcas', 'que nos apoyan'],
   '6-noticias': ['Entérate de todo', 'lo que pasa'],
 };
 
