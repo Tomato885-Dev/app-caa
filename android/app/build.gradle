@@ -34,10 +34,11 @@ android {
            iPhone para no tener que explicar dos numeraciones.
 
            `versionCode` es interno: Google solo acepta un .aab cuyo numero sea
-           MAYOR que el del anterior, y no se puede reutilizar aunque se borre
-           la version. Se deriva del nombre (1.13 -> 113) para que nunca haya
-           que recordar en cual se quedo: la 1.14 sera 114. */
-        versionCode 113
+           MAYOR que el del anterior, y no se puede reutilizar aunque el envio
+           se haya rechazado. Partio en 113 (derivado de 1.13); el 114 es el
+           reintento despues de que Google exigiera compilar contra API 36.
+           Cuando cambie el nombre de version, volver a derivarlo: 1.14 -> 140. */
+        versionCode 114
         versionName "1.13"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
